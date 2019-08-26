@@ -234,10 +234,10 @@ export class GostDigest {
                 let q = (n - r) / 64;
 
                 for (let i = 0; i < q; i++) {
-                    stage2( new Uint8Array(d.buffer, i * 64, 64));
+                    stage2(new Uint8Array(d.buffer, i * 64, 64));
                 }
 
-                stage3( new Uint8Array(d.buffer, q * 64, r));
+                stage3(new Uint8Array(d.buffer, q * 64, r));
 
                 let digest;
                 if (this.bitLength === 256) {
@@ -271,194 +271,6 @@ export class GostDigest {
 //  } else {
 //             throw new Error('ArrayBuffer or ArrayBufferView required');
 //  }
-//     }
-    digest94 = (() => {
-            let C;
-            let H;
-            let M;
-            let Sum;
-
-            // (i + 1 + 4(k - 1)) = 8i + k      i = 0-3, k = 1-8
-            function P(d) {
-                let K = new Uint8Array(32);
-
-                for (let k = 0; k < 8; k++) {
-                    K[4 * k] = d[k];
-                    K[1 + 4 * k] = d[8 + k];
-                    K[2 + 4 * k] = d[16 + k];
-                    K[3 + 4 * k] = d[24 + k];
-                }
-
-                return K;
-            }
-
-            // A (x) = (x0 ^ x1) || x3 || x2 || x1
-            function A(d) {
-                let a = new Uint8Array(8);
-
-                for (let j = 0; j < 8; j++) {
-                    a[j] = (d[j] ^ d[j + 8]);
-                }
-
-                GostDigest.arraycopy(d, 8, d, 0, 24);
-                GostDigest.arraycopy(a, 0, d, 24, 8);
-
-                return d;
-            }
-
-            // (in:) n16||..||n1 ==> (out:) n1^n2^n3^n4^n13^n16||n16||..||n2
-            function fw(d) {
-                let wS = new Uint16Array(d.buffer, 0, 16);
-                let wS15 = wS[0] ^ wS[1] ^ wS[2] ^ wS[3] ^ wS[12] ^ wS[15];
-                GostDigest.arraycopy(wS, 1, wS, 0, 15);
-                wS[15] = wS15;
-            }
-
-            // Encrypt function, ECB mode
-            function encrypt(key, s, sOff, d, dOff) {
-                let t = new Uint8Array(8);
-                GostDigest.arraycopy(d, dOff, t, 0, 8);
-                let r = new Uint8Array(this.gostCipher.encrypt(key, t));
-                GostDigest.arraycopy(r, 0, s, sOff, 8);
-            }
-
-            // block processing
-            function process(d, dOff) {
-                let S = new Uint8Array(32);
-                let U = new Uint8Array(32);
-                let V = new Uint8Array(32);
-                let W = new Uint8Array(32);
-
-                GostDigest.arraycopy(d, dOff, M, 0, 32);
-
-                // key step 1
-
-                // H = h3 || h2 || h1 || h0
-                // S = s3 || s2 || s1 || s0
-                GostDigest.arraycopy(H, 0, U, 0, 32);
-                GostDigest.arraycopy(M, 0, V, 0, 32);
-                for (let j = 0; j < 32; j++) {
-                    W[j] = (U[j] ^ V[j]);
-                }
-                // Encrypt GOST 28147-ECB
-                encrypt( P(W), S, 0, H, 0); // s0 = EK0 [h0]
-
-                // keys step 2,3,4
-                for (let i = 1; i < 4; i++) {
-                    let tmpA = A(U);
-                    for (let j = 0; j < 32; j++) {
-                        U[j] = (tmpA[j] ^ C[i][j]);
-                    }
-                    V = A(A(V));
-                    for (let j = 0; j < 32; j++) {
-                        W[j] = (U[j] ^ V[j]);
-                    }
-                    // Encrypt GOST 28147-ECB
-                    encrypt( P(W), S, i * 8, H, i * 8); // si = EKi [hi]
-                }
-
-                // x(M, H) = y61(H^y(M^y12(S)))
-                for (let n = 0; n < 12; n++) {
-                    fw(S);
-                }
-                for (let n = 0; n < 32; n++) {
-                    S[n] = (S[n] ^ M[n]);
-                }
-
-                fw(S);
-
-                for (let n = 0; n < 32; n++) {
-                    S[n] = (H[n] ^ S[n]);
-                }
-                for (let n = 0; n < 61; n++) {
-                    fw(S);
-                }
-                GostDigest.arraycopy(S, 0, H, 0, H.length);
-            }
-
-
-            //  256 bitsblock modul -> (Sum + a mod (2^256))
-            function summing(d) {
-                let carry = 0;
-                for (let i = 0; i < Sum.length; i++) {
-                    let sum = (Sum[i] & 0xff) + (d[i] & 0xff) + carry;
-
-                    Sum[i] = sum;
-
-                    carry = sum >>> 8;
-                }
-            }
-
-            // reset the chaining variables to the IV values.
-            let C2 = new Uint8Array([
-                0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
-                0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
-                0x00, 0xFF, 0xFF, 0x00, 0xFF, 0x00, 0x00, 0xFF,
-                0xFF, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0xFF
-            ]);
-
-            return function(data) {
-
-                // Reset buffers
-                H = new Uint8Array(32);
-                M = new Uint8Array(32);
-                Sum = new Uint8Array(32);
-
-                // Reset IV value
-                C = new Array(4);
-                for (let i = 0; i < 4; i++) {
-                    C[i] = new Uint8Array(32);
-                }
-                GostDigest.arraycopy(C2, 0, C[2], 0, C2.length);
-
-                // Make data
-                let d = new Uint8Array(GostCoding.buffer(data));
-
-                let n = d.length;
-                let r = n % 32;
-                let q = (n - r) / 32;
-
-                // Proccess full blocks
-                for (let i = 0; i < q; i++) {
-                    let b = new Uint8Array(d.buffer, i * 32, 32);
-
-                    summing( b); // calc sum M
-                    process( b, 0);
-                }
-
-                // load d the remadder with padding zero;
-                if (r > 0) {
-                    let b = new Uint8Array(d.buffer, q * 32);
-                    let c = new Uint8Array(32);
-                    GostDigest.arraycopy(b, 0, c, 0, r);
-                    summing( c); // calc sum M
-                    process( c, 0);
-
-                }
-
-                // get length into L (byteCount * 8 = bitCount) in little endian.
-                let L = new Uint8Array(32);
-                let n8 = n * 8;
-                let k = 0;
-                while (n8 > 0) {
-                    L[k++] = n8 & 0xff;
-                    n8 = Math.floor(n8 / 256);
-                }
-                process( L, 0);
-                process( Sum, 0);
-
-                let h = H.buffer;
-
-                // Swap hash for SignalCom
-                if (this.procreator === 'SC') {
-                    h = this.swap(h);
-                }
-
-                return h;
-            };
-
-        } // </editor-fold>
-    )();
     digestSHA1 = (() => {
 
             // Create a buffer for each 80 word block.
@@ -595,7 +407,6 @@ export class GostDigest {
     constructor(public algorithm: AlgorithmIndentifier) {
 
 
-
         this.name = (algorithm.name || 'GOST R 34.10') + '-' + ((algorithm.version || 2012) % 100) +
             ((algorithm.version || 2012) > 1 ? '-' + (algorithm.length || 256) : '') +
             (((algorithm.mode || 'HASH') !== 'HASH') ? '-' + algorithm.mode : '') +
@@ -684,6 +495,192 @@ export class GostDigest {
         for (let i = 0; i < len; i++) {
             d[dOfs + i] = s[sOfs + i];
         }
+    }
+
+//     }
+    digest94(data) {
+        let C;
+        let H;
+        let M;
+        let Sum;
+
+        // (i + 1 + 4(k - 1)) = 8i + k      i = 0-3, k = 1-8
+        function P(d) {
+            let K = new Uint8Array(32);
+
+            for (let k = 0; k < 8; k++) {
+                K[4 * k] = d[k];
+                K[1 + 4 * k] = d[8 + k];
+                K[2 + 4 * k] = d[16 + k];
+                K[3 + 4 * k] = d[24 + k];
+            }
+
+            return K;
+        }
+
+        // A (x) = (x0 ^ x1) || x3 || x2 || x1
+        function A(d) {
+            let a = new Uint8Array(8);
+
+            for (let j = 0; j < 8; j++) {
+                a[j] = (d[j] ^ d[j + 8]);
+            }
+
+            GostDigest.arraycopy(d, 8, d, 0, 24);
+            GostDigest.arraycopy(a, 0, d, 24, 8);
+
+            return d;
+        }
+
+        // (in:) n16||..||n1 ==> (out:) n1^n2^n3^n4^n13^n16||n16||..||n2
+        function fw(d) {
+            let wS = new Uint16Array(d.buffer, 0, 16);
+            let wS15 = wS[0] ^ wS[1] ^ wS[2] ^ wS[3] ^ wS[12] ^ wS[15];
+            GostDigest.arraycopy(wS, 1, wS, 0, 15);
+            wS[15] = wS15;
+        }
+
+        // Encrypt function, ECB mode
+        function encrypt(gostCipher, key, s, sOff, d, dOff) {
+            let t = new Uint8Array(8);
+            GostDigest.arraycopy(d, dOff, t, 0, 8);
+            let r = new Uint8Array(gostCipher.encrypt(key, t));
+            GostDigest.arraycopy(r, 0, s, sOff, 8);
+        }
+
+        // block processing
+        function process(gostCipher, d, dOff) {
+            let S = new Uint8Array(32);
+            let U = new Uint8Array(32);
+            let V = new Uint8Array(32);
+            let W = new Uint8Array(32);
+
+            GostDigest.arraycopy(d, dOff, M, 0, 32);
+
+            // key step 1
+
+            // H = h3 || h2 || h1 || h0
+            // S = s3 || s2 || s1 || s0
+            GostDigest.arraycopy(H, 0, U, 0, 32);
+            GostDigest.arraycopy(M, 0, V, 0, 32);
+            for (let j = 0; j < 32; j++) {
+                W[j] = (U[j] ^ V[j]);
+            }
+            // Encrypt GOST 28147-ECB
+            encrypt(gostCipher, P(W), S, 0, H, 0); // s0 = EK0 [h0]
+
+            // keys step 2,3,4
+            for (let i = 1; i < 4; i++) {
+                let tmpA = A(U);
+                for (let j = 0; j < 32; j++) {
+                    U[j] = (tmpA[j] ^ C[i][j]);
+                }
+                V = A(A(V));
+                for (let j = 0; j < 32; j++) {
+                    W[j] = (U[j] ^ V[j]);
+                }
+                // Encrypt GOST 28147-ECB
+                encrypt(gostCipher, P(W), S, i * 8, H, i * 8); // si = EKi [hi]
+            }
+
+            // x(M, H) = y61(H^y(M^y12(S)))
+            for (let n = 0; n < 12; n++) {
+                fw(S);
+            }
+            for (let n = 0; n < 32; n++) {
+                S[n] = (S[n] ^ M[n]);
+            }
+
+            fw(S);
+
+            for (let n = 0; n < 32; n++) {
+                S[n] = (H[n] ^ S[n]);
+            }
+            for (let n = 0; n < 61; n++) {
+                fw(S);
+            }
+            GostDigest.arraycopy(S, 0, H, 0, H.length);
+        }
+
+
+        //  256 bitsblock modul -> (Sum + a mod (2^256))
+        function summing(d) {
+            let carry = 0;
+            for (let i = 0; i < Sum.length; i++) {
+                let sum = (Sum[i] & 0xff) + (d[i] & 0xff) + carry;
+
+                Sum[i] = sum;
+
+                carry = sum >>> 8;
+            }
+        }
+
+        // reset the chaining variables to the IV values.
+        let C2 = new Uint8Array([
+            0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
+            0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
+            0x00, 0xFF, 0xFF, 0x00, 0xFF, 0x00, 0x00, 0xFF,
+            0xFF, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0xFF
+        ]);
+
+
+        // Reset buffers
+        H = new Uint8Array(32);
+        M = new Uint8Array(32);
+        Sum = new Uint8Array(32);
+
+        // Reset IV value
+        C = new Array(4);
+        for (let i = 0; i < 4; i++) {
+            C[i] = new Uint8Array(32);
+        }
+        GostDigest.arraycopy(C2, 0, C[2], 0, C2.length);
+
+        // Make data
+        let d = new Uint8Array(GostCoding.buffer(data));
+
+        let n = d.length;
+        let r = n % 32;
+        let q = (n - r) / 32;
+
+        // Proccess full blocks
+        for (let i = 0; i < q; i++) {
+            let b = new Uint8Array(d.buffer, i * 32, 32);
+
+            summing(b); // calc sum M
+            process(this.gostCipher, b, 0);
+        }
+
+        // load d the remadder with padding zero;
+        if (r > 0) {
+            let b = new Uint8Array(d.buffer, q * 32);
+            let c = new Uint8Array(32);
+            GostDigest.arraycopy(b, 0, c, 0, r);
+            summing(c); // calc sum M
+            process(this.gostCipher, c, 0);
+
+        }
+
+        // get length into L (byteCount * 8 = bitCount) in little endian.
+        let L = new Uint8Array(32);
+        let n8 = n * 8;
+        let k = 0;
+        while (n8 > 0) {
+            L[k++] = n8 & 0xff;
+            n8 = Math.floor(n8 / 256);
+        }
+        process(this.gostCipher, L, 0);
+        process(this.gostCipher, Sum, 0);
+
+        let h = H.buffer;
+
+        // Swap hash for SignalCom
+        if (this.procreator === 'SC') {
+            h = this.swap(h);
+        }
+
+        return h;
+
     }
 
     // Swap bytes in buffer
