@@ -42,7 +42,6 @@ export class GostCipher {
     /*
     * */
     defaultIV = new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0]);
-    // cryptoOperationData = ArrayBuffer; // FixMe это ссылка на конструктор, алиас, не нужен потом убрать
     defaultIV128 = new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     sBoxes = {
         'E-TEST': [
@@ -149,6 +148,7 @@ export class GostCipher {
     };
     // 148, 32, 133, 16, 194, 192, 1, 251, 1, 192, 194, 16, 133, 32, 148, 1
     kB = [4, 2, 3, 1, 6, 5, 0, 7, 0, 5, 6, 1, 3, 2, 4, 0];
+
     C = new Uint8Array([
         0x69, 0x00, 0x72, 0x22, 0x64, 0xC9, 0x04, 0x23,
         0x8D, 0x3A, 0xDB, 0x96, 0x46, 0xE9, 0x2A, 0xC4,
@@ -426,7 +426,23 @@ export class GostCipher {
     public multTable(): number[][] {
         // Multiply two numbers in the GF(2^8) finite field defined
         // by the polynomial x^8 + x^7 + x^6 + x + 1 = 0 */
-
+        function gmul(a, b) {
+            let p = 0;
+            let counter;
+            let carry;
+            for (counter = 0; counter < 8; counter++) {
+                if (b & 1) {
+                    p ^= a;
+                }
+                carry = a & 0x80; // detect if x^8 term is about to be generated
+                a = (a << 1) & 0xff;
+                if (carry) {
+                    a ^= 0xc3;
+                } // replace x^8 with x^7 + x^6 + x + 1
+                b >>= 1;
+            }
+            return p & 0xff;
+        }
         // It is required only this values for R function
         //       0   1   2    3    4    5    6    7
         const x = [1, 16, 32, 133, 148, 192, 194, 251];
@@ -434,7 +450,7 @@ export class GostCipher {
         for (let i = 0; i < 8; i++) {
             m[i] = [];
             for (let j = 0; j < 256; j++) {
-                m[i][j] = this.gmul(x[i], j);
+                m[i][j] = gmul(x[i], j);
             }
         }
         return m;
@@ -444,7 +460,7 @@ export class GostCipher {
         let sum = 0;
         for (let i = 0; i < 16; i++) {
 
-            sum ^= this.multTable[this.kB[i]][d[i]];
+            sum ^= this.multTable()[this.kB[i]][d[i]];
         }
 
         for (let i = 16; i > 0; --i) {
@@ -463,7 +479,7 @@ export class GostCipher {
         let sum = 0;
         for (let i = 0; i < 16; i++) {
 
-            sum ^= this.multTable[this.kB[i]][d[i]];
+            sum ^= this.multTable()[this.kB[i]][d[i]];
         }
         d[15] = sum;
     }
@@ -537,8 +553,7 @@ export class GostCipher {
     /**
      * Key schedule for GOST R 34.12-15 128bits
      */
-    keySchedule128(k: Uint8Array): Uint8Array {
-        // tslint:disable-next-line:one-variable-per-declaration
+    keySchedule128(k: Uint8Array, ignored): Uint8Array {
         const keys = new Uint8Array(160);
         const c = new Uint8Array(16);
         keys.set(this.byteArray(k));
@@ -1818,30 +1833,6 @@ export class GostCipher {
         r.set(d);
         this.randomSeed(e);
         return r;
-    }
-
-    private gmul(a: number, b: number): number {
-        let p = 0;
-        let counter;
-        let carry;
-        for (counter = 0; counter < 8; counter++) {
-            if (b & 1) {
-
-                p ^= a;
-
-                carry = a & 0x80; // detect if x^8 term is about to be generated
-
-                a = (a << 1) & 0xff;
-            }
-            if (carry) {
-
-                a ^= 0xc3; // replace x^8 with x^7 + x^6 + x + 1
-
-                b >>= 1;
-            }
-        }
-
-        return p & 0xff;
     }
 
 }

@@ -11,6 +11,6 @@ export class AlgorithmIndentifier {
     sBox;
     iv;
     macLength;
-    length;
+    length: number;
     ukm;
 }
