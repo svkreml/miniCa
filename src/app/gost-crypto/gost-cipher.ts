@@ -21,7 +21,7 @@ export class GostCipher {
     sBox: Int8Array;
     iv: Uint8Array;
     ukm;
-
+    multTableCalculated = this.multTable();
     /*
     algorithm
     * */
@@ -460,7 +460,7 @@ export class GostCipher {
         let sum = 0;
         for (let i = 0; i < 16; i++) {
 
-            sum ^= this.multTable()[this.kB[i]][d[i]];
+            sum ^= this.multTableCalculated[this.kB[i]][d[i]];
         }
 
         for (let i = 16; i > 0; --i) {
@@ -479,7 +479,7 @@ export class GostCipher {
         let sum = 0;
         for (let i = 0; i < 16; i++) {
 
-            sum ^= this.multTable()[this.kB[i]][d[i]];
+            sum ^= this.multTableCalculated[this.kB[i]][d[i]];
         }
         d[15] = sum;
     }
@@ -1836,27 +1836,6 @@ export class GostCipher {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
