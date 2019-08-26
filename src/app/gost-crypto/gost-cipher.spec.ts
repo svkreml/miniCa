@@ -1,7 +1,7 @@
 import {GostCipher} from './gost-cipher';
 import {GostRandom} from './gost-random';
 import {AlgorithmIndentifier} from '../dto/algorithm-indentifier';
-import {Hex} from './gost-utils';
+import {Hex} from './gost-coding';
 
 
 describe('GostCipher', () => {

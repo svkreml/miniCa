@@ -13,4 +13,13 @@ export class AlgorithmIndentifier {
     macLength;
     length: number;
     ukm;
+
+
+    /*from digest*/
+    salt: any;
+    iterations: number;
+    diversifier: number;
+    context: any;
+    label: any;
+    keySize: number;
 }

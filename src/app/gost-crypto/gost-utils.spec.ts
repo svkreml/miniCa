@@ -1,8 +1,8 @@
-import { GostUtils, Hex } from './gost-utils';
+import { GostCoding, Hex } from './gost-coding';
 
 describe('GostUtils', () => {
   it('should create an instance', () => {
-    expect(new GostUtils()).toBeTruthy();
+    expect(new GostCoding()).toBeTruthy();
   });
 
 /*

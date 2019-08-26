@@ -1,6 +1,6 @@
 import {GostRandom} from './gost-random';
 import {AlgorithmIndentifier} from '../dto/algorithm-indentifier';
-import {GostUtils} from './gost-utils';
+import {GostCoding} from './gost-coding';
 
 
 export class GostCipher {
@@ -176,7 +176,7 @@ export class GostCipher {
     ];
     Uint16Array;
 
-    constructor(private gostRandom: GostRandom, private algorithm: AlgorithmIndentifier) {
+    constructor(public gostRandom: GostRandom, public algorithm: AlgorithmIndentifier) {
 
         // Check little endian support
         if (!this.littleEndian()) {
@@ -407,7 +407,7 @@ export class GostCipher {
 
 
     public byteArray(d: Uint8Array): Uint8Array {
-        return new Uint8Array(GostUtils.buffer(d));
+        return new Uint8Array(GostCoding.buffer(d));
     }
 
     public cloneArray(d: Uint8Array) {
@@ -415,7 +415,7 @@ export class GostCipher {
     }
 
     public intArray(d: Uint8Array): Int32Array {
-        return new Int32Array(GostUtils.buffer(d));
+        return new Int32Array(GostCoding.buffer(d));
     }
 
     public swap32(b: number): number { // FixMe уточнить тип
@@ -656,7 +656,7 @@ export class GostCipher {
 
     keySchedule89(k: Uint8Array, e: boolean): Int32Array {
         const sch = new Int32Array(32);
-        const key = new Int32Array(GostUtils.buffer(k));
+        const key = new Int32Array(GostCoding.buffer(k));
         for (let i = 0; i < 8; i++) {
             sch[i] = key[i];
         }
@@ -687,7 +687,7 @@ export class GostCipher {
      */
     keySchedule15(k: Uint8Array, e: boolean): Int32Array {
         const sch = new Int32Array(32);
-        const key = new Int32Array(GostUtils.buffer(k));
+        const key = new Int32Array(GostCoding.buffer(k));
         for (let i = 0; i < 8; i++) {
             sch[i] = this.swap32(key[i]);
         }
@@ -737,7 +737,7 @@ export class GostCipher {
             0x0d, 0x38, 0x34, 0x1b, 0xab, 0x33, 0xff, 0xb0, 0xbb, 0x48, 0x0c, 0x5f, 0xb9, 0xb1, 0xcd, 0x2e,
             0xc5, 0xf3, 0xdb, 0x47, 0xe5, 0xa5, 0x9c, 0x77, 0x0a, 0xa6, 0x20, 0x68, 0xfe, 0x7f, 0xc1, 0xad
         ]);
-        const key = new Uint8Array(GostUtils.buffer(k));
+        const key = new Uint8Array(GostCoding.buffer(k));
         const T = Math.min(key.length, 128);
         const T1 = this.effectiveLength;
         const T8 = Math.floor((T1 + 7) / 8);
@@ -1309,7 +1309,7 @@ export class GostCipher {
         let k = this.keySize;
         let len = k + (n >> 1);
         // 1) If the wrapped content-encryption key is not 44 octets, then error.
-        let d = GostUtils.buffer(data);
+        let d = GostCoding.buffer(data);
         if (d.byteLength !== len) {
             throw new Error('Wrapping key size must be ' + len + ' bytes');
         }
@@ -1431,7 +1431,7 @@ export class GostCipher {
         let k = this.keySize;
         let len = k + (n >> 1);
         // 1) If the wrapped content-encryption key is not 44 octets, then error.
-        let d = GostUtils.buffer(data);
+        let d = GostCoding.buffer(data);
         if (d.byteLength !== len) {
             throw new Error('Wrapping key size must be ' + len + ' bytes');
         }
@@ -1489,14 +1489,14 @@ export class GostCipher {
         let m = this.blockSize >> 1;
         let k = this.keySize;
         let mcount = 8;
-        let key = new Uint8Array(GostUtils.buffer(unpacked));
+        let key = new Uint8Array(GostCoding.buffer(unpacked));
         if (key.byteLength !== k) {
             throw new Error('Wrong cleartext size ' + key.byteLength + ' bytes');
         }
         // Check or generate UKM
         ukm = ukm || this.ukm;
         if (ukm) {
-            ukm = new Uint8Array(GostUtils.buffer(ukm));
+            ukm = new Uint8Array(GostCoding.buffer(ukm));
             if (ukm.byteLength > 0 && ukm.byteLength % k === 0) {
                 mcount = ukm.byteLength / k + 1;
             } else {
@@ -1538,7 +1538,7 @@ export class GostCipher {
     unpackKeySC(packed) {
         let m = this.blockSize >> 1;
         let k = this.keySize;
-        let b = GostUtils.buffer(packed);
+        let b = GostCoding.buffer(packed);
         // Unpack master key
         let magic = new Uint8Array(b, 0, 1)[0];
         if (magic !== 0x22) {
@@ -1585,8 +1585,8 @@ export class GostCipher {
     wrapKeySC(kek, cek) {
         let m = this.blockSize >> 1;
         let n = this.keySize;
-        let k = GostUtils.buffer(kek);
-        let c = GostUtils.buffer(cek);
+        let k = GostCoding.buffer(kek);
+        let c = GostCoding.buffer(cek);
         if (k.byteLength !== n) {
             k = this.unpackKeySC.call(this, k);
         }
@@ -1606,8 +1606,8 @@ export class GostCipher {
     unwrapKeySC(kek, cek) {
         let m = this.blockSize >> 1;
         let n = new Uint8Array(cek).length - m;
-        let k = GostUtils.buffer(kek);
-        let c = GostUtils.buffer(cek);
+        let k = GostCoding.buffer(kek);
+        let c = GostCoding.buffer(cek);
         if (k.byteLength !== this.keySize) {
             k = this.unpackKeySC.call(this, k);
         }
@@ -1638,8 +1638,8 @@ export class GostCipher {
 
     maskKey(mask, key, inverse, keySize) {
         let k = keySize / 4;
-        let m32 = new Int32Array(GostUtils.buffer(mask));
-        let k32 = new Int32Array(GostUtils.buffer(key));
+        let m32 = new Int32Array(GostCoding.buffer(mask));
+        let k32 = new Int32Array(GostCoding.buffer(key));
         let r32 = new Int32Array(k);
         if (inverse) {
             for (let i = 0; i < k; i++) {
