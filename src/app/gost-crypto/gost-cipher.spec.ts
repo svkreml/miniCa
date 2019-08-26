@@ -132,13 +132,13 @@ describe('GostCipher', () => {
     it('4 GOST 28147-89/GOST R 34.12-2015 TEST', () => {
 
         let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
-
+        algorithm.block = 'CFB';
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'D-TEST';
+        algorithm.iv = 'aafd12f659cae634';
+        let key = 'aafd12f659cae63489b479e5076ddec2f06cb58faafd12f659cae63489b479e5';
 
-        let key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
-
-        let result = perform(algorithm, key, input1, output1);
+        let result = perform(algorithm, key, input4, output4);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
@@ -368,9 +368,56 @@ describe('GostCipher', () => {
        // algorithm.block = 'ECB';
         //  algorithm.iv = '1234567890abcdef';
 
-        let key = '8182838485868788898a8b8c8d8e8f80d1d2d3d4d5d6d7d8d9dadbdcdddedfd0';
-
         let result = performMac(algorithm, gkeyBytes5, input5, output5);
+        expect(result.includes('PASSED')).toBeTruthy();
+    });
+
+
+    it('2 MAC sing/verify', () => {
+
+        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+
+        algorithm.name = 'GOST 28147';
+        algorithm.mode = 'MAC';
+        algorithm.sBox = 'E-A';
+        //  algorithm.shiftBits = 8;
+        // algorithm.block = 'ECB';
+        //  algorithm.iv = '1234567890abcdef';
+
+        let result = performMac(algorithm, gkeyBytes6, input6, output6);
+        expect(result.includes('PASSED')).toBeTruthy();
+    });
+
+
+    it('1 Padding', () => {
+
+        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+
+        algorithm.name = 'GOST 28147';
+        algorithm.name = 'BIT';
+      //  algorithm.mode = 'MAC';
+        algorithm.sBox = 'D-TEST';
+        //  algorithm.shiftBits = 8;
+        // algorithm.block = 'ECB';
+        //  algorithm.iv = '1234567890abcdef';
+
+        let result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba98765432', undefined);
+        expect(result.includes('PASSED')).toBeTruthy();
+    });
+
+    it('2 Padding', () => {
+
+        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+
+        algorithm.name = 'GOST 28147';
+        algorithm.name = 'BIT';
+        //  algorithm.mode = 'MAC';
+        algorithm.sBox = 'D-TEST';
+        //  algorithm.shiftBits = 8;
+        // algorithm.block = 'ECB';
+        //  algorithm.iv = '1234567890abcdef';
+
+        let result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba9876543210', undefined);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 });

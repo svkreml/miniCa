@@ -1279,7 +1279,7 @@ export class GostCipher {
         let ukm = new Uint8Array(this.ukm);
         // 2) Compute a 4-byte checksum value, GOST 28147IMIT (UKM, KEK, CEK).
         // Call the result CEK_MAC.
-        let mac = this.signMAC.call(this, kek, cek, ukm);
+        let mac = this.signMAC( kek, cek, ukm);
         // 3) Encrypt the CEK in ECB mode using the KEK.  Call the ciphertext CEK_ENC.
         let enc = this.encryptECB.call(this, kek, cek);
         // 4) The wrapped content-encryption key is (UKM | CEK_ENC | CEK_MAC).
@@ -1394,7 +1394,7 @@ export class GostCipher {
         let dek = this.diversifyKEK.call(this, kek, ukm);
         // 3) Compute a 4-byte checksum value, GOST 28147IMIT (UKM, KEK(UKM),
         // CEK).  Call the result CEK_MAC.
-        let mac = this.signMAC.call(this, dek, cek, ukm);
+        let mac = this.signMAC(dek, cek, ukm);
         // 4) Encrypt CEK in ECB mode using KEK(UKM).  Call the ciphertext
         // CEK_ENC.
         let enc = this.encryptECB.call(this, dek, cek);
@@ -1495,7 +1495,7 @@ export class GostCipher {
         let b = d.buffer;
         // Calculate MAC
         let zero32 = new Uint8Array(k);
-        let mac = this.signMAC.call(this, key, zero32);
+        let mac = this.signMAC(key, zero32, undefined);
         d[0] = 0x22; // Magic code
         d[1] = mcount; // Count of masks
         d.set(new Uint8Array(mac), 2);
@@ -1576,7 +1576,7 @@ export class GostCipher {
             k = this.unpackKeySC.call(this, k);
         }
         let enc = this.encryptECB.call(this, k, c);
-        let mac = this.signMAC.call(this, k, c);
+        let mac = this.signMAC(k, c, undefined);
         let d = new Uint8Array(m + n);
         d.set(new Uint8Array(enc), 0);
         d.set(new Uint8Array(mac), n);
