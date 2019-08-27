@@ -1,4 +1,4 @@
-import {AlgorithmIndentifier} from '../../dto/algorithm-indentifier';
+import {AlgorithmDto} from '../../dto/algorithm-dto';
 import {Chars, Hex} from '../gost-coding/gost-coding';
 import {GostDigest} from './gost-digest';
 
@@ -6,7 +6,7 @@ describe('GostDigest', () => {
 
 
     it('GOST R 34.11 1994 1', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.version = 1994;
         const result = digest(algorithm, Chars.decode('', undefined),
@@ -15,7 +15,7 @@ describe('GostDigest', () => {
     });
 
     it('GOST R 34.11 1994 2', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.version = 1994;
         const result = digest(algorithm, Chars.decode('This is message, length=32 bytes', undefined),
@@ -25,7 +25,7 @@ describe('GostDigest', () => {
 
 
     it('GOST R 34.11 1994 3', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.version = 1994;
         const result = digest(algorithm, Chars.decode('Suppose the original message has length = 50 bytes', undefined),
@@ -34,7 +34,7 @@ describe('GostDigest', () => {
     });
 
     it('GOST R 34.11 1994 4', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.version = 1994;
         const result = digest(algorithm, Chars.decode('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', undefined),
@@ -43,7 +43,7 @@ describe('GostDigest', () => {
     });
 
     it('GOST R 34.11 1994 5', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.version = 1994;
         const result = digest(algorithm, Chars.decode(new Array(1000001).join('a'), undefined),
@@ -51,14 +51,14 @@ describe('GostDigest', () => {
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
-    const algorithm2 = new AlgorithmIndentifier();
+    const algorithm2 = new AlgorithmDto();
     algorithm2.name = 'GOST R 34.11';
     algorithm2.version = 1994;
     algorithm2.sBox = 'D-TEST';
 
 
     it('GOST R 34.11 1994 D-TEST 1', () => {
-        const algorithm2 = new AlgorithmIndentifier();
+        const algorithm2 = new AlgorithmDto();
         algorithm2.name = 'GOST R 34.11';
         algorithm2.version = 1994;
         algorithm2.sBox = 'D-TEST';
@@ -69,7 +69,7 @@ describe('GostDigest', () => {
     });
 
     it('GOST R 34.11 1994 D-TEST 2', () => {
-        const algorithm2 = new AlgorithmIndentifier();
+        const algorithm2 = new AlgorithmDto();
         algorithm2.name = 'GOST R 34.11';
         algorithm2.version = 1994;
         algorithm2.sBox = 'D-TEST';
@@ -81,7 +81,7 @@ describe('GostDigest', () => {
 
 
     it('GOST R 34.11 1994 D-TEST 3', () => {
-        const algorithm2 = new AlgorithmIndentifier();
+        const algorithm2 = new AlgorithmDto();
         algorithm2.name = 'GOST R 34.11';
         algorithm2.version = 1994;
         algorithm2.sBox = 'D-TEST';
@@ -92,7 +92,7 @@ describe('GostDigest', () => {
     });
 
     it('GOST R 34.11 1994 D-TEST 4', () => {
-        const algorithm2 = new AlgorithmIndentifier();
+        const algorithm2 = new AlgorithmDto();
         algorithm2.name = 'GOST R 34.11';
         algorithm2.version = 1994;
         algorithm2.sBox = 'D-TEST';
@@ -104,7 +104,7 @@ describe('GostDigest', () => {
 
 
     it('PBKDF2 1', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.mode = 'PBKDF2';
         algorithm.version = 1994;
@@ -118,7 +118,7 @@ describe('GostDigest', () => {
     });
 
     it('PBKDF2 2', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.mode = 'PBKDF2';
         algorithm.version = 1994;
@@ -132,7 +132,7 @@ describe('GostDigest', () => {
     });
 
     it('PBKDF2 3', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.mode = 'PBKDF2';
         algorithm.version = 1994;
@@ -146,7 +146,7 @@ describe('GostDigest', () => {
     });
 
     it('PBKDF2 4096 1', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.mode = 'PBKDF2';
         algorithm.version = 1994;
@@ -161,7 +161,7 @@ describe('GostDigest', () => {
 
 
     it('PBKDF2 4096 2', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.mode = 'PBKDF2';
         algorithm.version = 1994;
@@ -176,7 +176,7 @@ describe('GostDigest', () => {
     });
 
     it('PBKDF2 4096 3', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.mode = 'PBKDF2';
         algorithm.version = 1994;
@@ -192,7 +192,7 @@ describe('GostDigest', () => {
 
 
     it('GOST R 34.11-2012 1', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         const result = digest(algorithm,
             Chars.decode('012345678901234567890123456789012345678901234567890123456789012', undefined),
             '9d151eefd8590b89daa6ba6cb74af9275dd051026bb149a452fd84e5e57b5500');
@@ -200,7 +200,7 @@ describe('GostDigest', () => {
     });
 
     it('GOST R 34.11-2012 2', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         const result = digest(algorithm,
             Chars.decode('Се ветри, Стрибожи внуци, веютъ с моря стрелами на храбрыя плъкы Игоревы', undefined),
             '9dd2fe4e90409e5da87f53976d7405b0c0cac628fc669a741d50063c557e8f50');
@@ -208,7 +208,7 @@ describe('GostDigest', () => {
     });
 
     it('GOST R 34.11-2012 3', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         const result = digest(algorithm,
             new Uint8Array(0),
             '3f539a213e97c802cc229d474c6aa32a825a360b2a933a949fd925208d9ce1bb');
@@ -217,7 +217,7 @@ describe('GostDigest', () => {
 
 
     it('GOST R 34.11-2012 4', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         const result = digest(algorithm,
             new Uint8Array([
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -230,7 +230,7 @@ describe('GostDigest', () => {
 
 
     it('GOST R 34.11-2012 5', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.version = 2012;
         algorithm.mode = 'KDF';
@@ -244,7 +244,7 @@ describe('GostDigest', () => {
 
 
     it('GOST R 34.11-2012 6', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.version = 2012;
         algorithm.mode = 'KDF';
@@ -258,7 +258,7 @@ describe('GostDigest', () => {
     });
 
     it('HMAC/PBKDF2 1', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         // algorithm.version = 2012;
         algorithm.mode = 'HMAC';
@@ -273,7 +273,7 @@ describe('GostDigest', () => {
     });
 
     it('HMAC/PBKDF2 2', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.length = 512;
         // algorithm.version = 2012;
@@ -290,7 +290,7 @@ describe('GostDigest', () => {
 
 
     it('HMAC/PBKDF2 3', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         // algorithm.length = 512;
         // algorithm.version = 2012;
@@ -310,7 +310,7 @@ describe('GostDigest', () => {
 
 
     it('HMAC/PBKDF2 4', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.length = 512;
         // algorithm.version = 2012;
@@ -331,7 +331,7 @@ describe('GostDigest', () => {
 
 
     it('HMAC/PBKDF2 5', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.length = 512;
         // algorithm.version = 2012;
@@ -353,7 +353,7 @@ describe('GostDigest', () => {
 
 
     it('GOST R 34.11-12-512 1', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.length = 512;
         // algorithm.version = 2012;
@@ -373,7 +373,7 @@ describe('GostDigest', () => {
 
 
     it('GOST R 34.11-12-512 2', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.length = 512;
         // algorithm.version = 2012;
@@ -393,7 +393,7 @@ describe('GostDigest', () => {
 
 
     it('GOST R 34.11-12-512 3', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.length = 512;
         // algorithm.version = 2012;
@@ -413,7 +413,7 @@ describe('GostDigest', () => {
 
 
     it('GOST R 34.11-12-512 4', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.length = 512;
         // algorithm.version = 2012;
@@ -436,7 +436,7 @@ describe('GostDigest', () => {
     });
 
     it('PBKDF2 4096 2012 1', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         // algorithm.length = 512;
         // algorithm.version = 2012;
@@ -455,7 +455,7 @@ describe('GostDigest', () => {
 
 
     it('PBKDF2 4096 2012 2', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         // algorithm.length = 512;
         // algorithm.version = 2012;
@@ -476,7 +476,7 @@ describe('GostDigest', () => {
 
 
     it('PBKDF2 4096 2012 3', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         // algorithm.length = 512;
         // algorithm.version = 2012;
@@ -496,7 +496,7 @@ describe('GostDigest', () => {
 
 
     it('PBKDF2 4096 2012 4', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.length = 512;
         // algorithm.version = 2012;
@@ -518,7 +518,7 @@ describe('GostDigest', () => {
 
 
     it('PBKDF2 4096 2012 5', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.length = 512;
         // algorithm.version = 2012;
@@ -541,7 +541,7 @@ describe('GostDigest', () => {
 
 
     it('PBKDF2 4096 2012 6', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'GOST R 34.11';
         algorithm.length = 512;
         // algorithm.version = 2012;
@@ -564,7 +564,7 @@ describe('GostDigest', () => {
 
 
     it('SHA1 1', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'SHA';
        // algorithm.length = 512;
         algorithm.version = 1;
@@ -583,7 +583,7 @@ describe('GostDigest', () => {
 
 
     it('SHA1 2', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'SHA';
         // algorithm.length = 512;
         algorithm.version = 1;
@@ -602,7 +602,7 @@ describe('GostDigest', () => {
 
 
     it('SHA1 3', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'SHA';
         // algorithm.length = 512;
         algorithm.version = 1;
@@ -623,7 +623,7 @@ describe('GostDigest', () => {
 
 
     it('PBKDF2 4096 SHA1 1', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'SHA';
         // algorithm.length = 512;
         algorithm.version = 1;
@@ -642,7 +642,7 @@ describe('GostDigest', () => {
 
 
     it('PBKDF2 4096 SHA1 2', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'SHA';
         // algorithm.length = 512;
         algorithm.version = 1;
@@ -661,7 +661,7 @@ describe('GostDigest', () => {
     });
 
     it('PBKDF2 4096 SHA1 3', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'SHA';
         // algorithm.length = 512;
         algorithm.version = 1;
@@ -681,7 +681,7 @@ describe('GostDigest', () => {
 
 
     it('PBKDF2 4096 SHA1 4', () => {
-        const algorithm = new AlgorithmIndentifier();
+        const algorithm = new AlgorithmDto();
         algorithm.name = 'SHA';
         // algorithm.length = 512;
         algorithm.version = 1;
@@ -702,7 +702,7 @@ describe('GostDigest', () => {
 });
 
 
-function digest(algorithm: AlgorithmIndentifier, input: ArrayBuffer, output) {
+function digest(algorithm: AlgorithmDto, input: ArrayBuffer, output) {
     const gostDigest = new GostDigest(algorithm);
     let start;
     let finish;
@@ -732,7 +732,7 @@ function digest(algorithm: AlgorithmIndentifier, input: ArrayBuffer, output) {
     return result;
 }
 
-function deriveKey(algorithm: AlgorithmIndentifier, input: ArrayBuffer, output: string) {
+function deriveKey(algorithm: AlgorithmDto, input: ArrayBuffer, output: string) {
 
     let start;
     let finish;
@@ -762,7 +762,7 @@ function deriveKey(algorithm: AlgorithmIndentifier, input: ArrayBuffer, output: 
 }
 
 
-function deriveBits(algorithm: AlgorithmIndentifier, input: ArrayBuffer, output: string, param: number) {
+function deriveBits(algorithm: AlgorithmDto, input: ArrayBuffer, output: string, param: number) {
 
     let start;
     let finish;
@@ -792,7 +792,7 @@ function deriveBits(algorithm: AlgorithmIndentifier, input: ArrayBuffer, output:
 }
 
 
-function sign(algorithm: AlgorithmIndentifier, input: ArrayBuffer, output, data) {
+function sign(algorithm: AlgorithmDto, input: ArrayBuffer, output, data) {
     const gostDigest = new GostDigest(algorithm);
     let start;
     let finish;

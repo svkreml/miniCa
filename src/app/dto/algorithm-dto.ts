@@ -1,4 +1,4 @@
-export class AlgorithmIndentifier {
+export class AlgorithmDto {
     name: string;
     version: number;
     block: string;
@@ -22,4 +22,15 @@ export class AlgorithmIndentifier {
     context: ArrayBuffer;
     label: ArrayBuffer;
     keySize: number;
+
+
+
+    /*from sign*/
+    namedParam: string;
+    namedCurve: string;
+    hash: any;
+    public: any;
+    param: any;
+    modulusLength: number | number;
+    curve: any;
 }

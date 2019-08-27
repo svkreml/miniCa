@@ -1,7 +1,7 @@
 import {GostCipher} from '../gost-cipher/gost-cipher';
 import {GostRandom} from '../gost-random/gost-random';
 import {GostCoding} from '../gost-coding/gost-coding';
-import {AlgorithmIndentifier} from '../../dto/algorithm-indentifier';
+import {AlgorithmDto} from '../../dto/algorithm-dto';
 
 export class GostDigest {
 
@@ -404,7 +404,7 @@ export class GostDigest {
 //  } else {
 //             throw new Error('ArrayBuffer or ArrayBufferView required');
 
-    constructor(public algorithm: AlgorithmIndentifier) {
+    constructor(public algorithm: AlgorithmDto) {
 
 
         this.name = (algorithm.name || 'GOST R 34.10') + '-' + ((algorithm.version || 2012) % 100) +
@@ -429,7 +429,7 @@ export class GostDigest {
                 // Define chiper algorithm
                 this.sBox = (algorithm.sBox || (algorithm.procreator === 'SC' ? 'D-SC' : 'D-A')).toUpperCase();
 
-                const algorithmIndentifier: AlgorithmIndentifier = new AlgorithmIndentifier();
+                const algorithmIndentifier: AlgorithmDto = new AlgorithmDto();
                 algorithmIndentifier.name = 'GOST 28147';
                 algorithmIndentifier.block = 'ECB';
                 algorithmIndentifier.sBox = this.sBox;

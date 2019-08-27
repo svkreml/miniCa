@@ -18,28 +18,66 @@ export class GostCoding {
 export class Hex {
 
 
-    public static decode(s: string): ArrayBufferLike {
-
+    public static decode(s: string, endean): ArrayBufferLike {
         s = s.replace(/[^A-fa-f0-9]/g, '');
         const n = Math.ceil(s.length / 2);
         const r = new Uint8Array(n);
         s = (s.length % 2 > 0 ? '0' : '') + s;
-        for (let i = 0; i < n; i++) {
-            r[i] = parseInt(s.substr(i * 2, 2), 16);
+        if (endean && ((typeof endean !== 'string') ||
+            (endean.toLowerCase().indexOf('little') < 0))) {
+            for (let i = 0; i < n; i++) {
+                r[i] = parseInt(s.substr((n - i - 1) * 2, 2), 16);
+            }
+        } else {
+            for (let i = 0; i < n; i++) {
+                r[i] = parseInt(s.substr(i * 2, 2), 16);
+            }
         }
         return r.buffer;
     }
 
-    public static encode(data: ArrayBuffer): string {
+    public static encode(data: Uint8Array, endean): string {
         const s = [];
         const d = new Uint8Array(GostCoding.buffer(data));
         const n = d.length;
-        for (let i = 0; i < n; i++) {
-            s[i] = (i > 0 && i % 32 === 0 ? '\r\n' : '') +
-                ('00' + d[i].toString(16)).slice(-2);
+        if (endean && ((typeof endean !== 'string') ||
+            (endean.toLowerCase().indexOf('little') < 0))) {
+            for (let i = 0; i < n; i++) {
+                const j = n - i - 1;
+                s[j] = (j > 0 && j % 32 === 0 ? '\r\n' : '') +
+                    ('00' + d[i].toString(16)).slice(-2);
+            }
+        } else {
+            for (let i = 0; i < n; i++) {
+                s[i] = (i > 0 && i % 32 === 0 ? '\r\n' : '') +
+                    ('00' + d[i].toString(16)).slice(-2);
+            }
         }
         return s.join('');
     }
+
+    /*    public static decode(s: string): ArrayBufferLike {
+
+            s = s.replace(/[^A-fa-f0-9]/g, '');
+            const n = Math.ceil(s.length / 2);
+            const r = new Uint8Array(n);
+            s = (s.length % 2 > 0 ? '0' : '') + s;
+            for (let i = 0; i < n; i++) {
+                r[i] = parseInt(s.substr(i * 2, 2), 16);
+            }
+            return r.buffer;
+        }
+
+        public static encode(data: ArrayBuffer): string {
+            const s = [];
+            const d = new Uint8Array(GostCoding.buffer(data));
+            const n = d.length;
+            for (let i = 0; i < n; i++) {
+                s[i] = (i > 0 && i % 32 === 0 ? '\r\n' : '') +
+                    ('00' + d[i].toString(16)).slice(-2);
+            }
+            return s.join('');
+        }*/
 }
 
 export class Base64 {
@@ -545,7 +583,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
                     break;
                 case 0x04:
                     content = Hex.decode(
-                        typeof object === 'number' ? object.toString(16) : object);
+                        typeof object === 'number' ? object.toString(16) : object, undefined);
                     break;
                 // case 0x05: // NULL
                 case 0x06: // OBJECT IDENTIFIER

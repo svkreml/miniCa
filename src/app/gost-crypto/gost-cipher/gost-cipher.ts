@@ -1,5 +1,5 @@
 import {GostRandom} from '../gost-random/gost-random';
-import {AlgorithmIndentifier} from '../../dto/algorithm-indentifier';
+import {AlgorithmDto} from '../../dto/algorithm-dto';
 import {GostCoding} from '../gost-coding/gost-coding';
 
 
@@ -171,7 +171,7 @@ export class GostCipher {
         89, 166, 116, 210, 230, 244, 180, 192, 209, 102, 175, 194, 57, 75, 99, 182
     ];
 
-    constructor(public algorithm: AlgorithmIndentifier) {
+    constructor(public algorithm: AlgorithmDto) {
 
         // Check little endian support
         if (!GostCipher.littleEndian()) {

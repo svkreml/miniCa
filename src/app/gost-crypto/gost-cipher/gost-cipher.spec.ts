@@ -1,6 +1,6 @@
 import {GostCipher} from './gost-cipher';
 import {GostRandom} from '../gost-random/gost-random';
-import {AlgorithmIndentifier} from '../../dto/algorithm-indentifier';
+import {AlgorithmDto} from '../../dto/algorithm-dto';
 import {Hex} from '../gost-coding/gost-coding';
 
 
@@ -35,7 +35,7 @@ describe('GostCipher', () => {
     const output6 = '93468a46';
 
     it('1 GOST 28147-89', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'D-TEST';
         const key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
@@ -45,7 +45,7 @@ describe('GostCipher', () => {
     });
 
     it('2 GOST 28147-89', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.block = 'CBC';
@@ -60,7 +60,7 @@ describe('GostCipher', () => {
 
     it('3 GOST 28147-89', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.block = 'CTR';
@@ -75,7 +75,7 @@ describe('GostCipher', () => {
 
     it('4 GOST 28147-89', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
         algorithm.block = 'CFB';
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'D-TEST';
@@ -88,7 +88,7 @@ describe('GostCipher', () => {
 
     it('5 GOST 28147-89', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'D-TEST';
@@ -102,7 +102,7 @@ describe('GostCipher', () => {
 
     it('6 GOST 28147-89', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'D-TEST';
@@ -118,7 +118,7 @@ describe('GostCipher', () => {
 
     it('7 GOST 28147-89', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-TEST';
@@ -134,7 +134,7 @@ describe('GostCipher', () => {
 
     it('8 GOST 28147-89', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-A';
@@ -155,7 +155,7 @@ describe('GostCipher', () => {
         '546d203368656c326973652073736e62206167796967747473656865202c3d73', '0000000000000000', '80d8723fcd3aba28');
         * */
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-B';
@@ -177,7 +177,7 @@ describe('GostCipher', () => {
         '546d203368656c326973652073736e62206167796967747473656865202c3d73', '0000000000000000', '739f6f95068499b5');
         * */
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-C';
@@ -199,7 +199,7 @@ describe('GostCipher', () => {
         '546d203368656c326973652073736e62206167796967747473656865202c3d73', '0000000000000000', '4663f720f4340f57');
         * */
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-D';
@@ -221,7 +221,7 @@ describe('GostCipher', () => {
         '546d203368656c326973652073736e62206167796967747473656865202c3d73', '0000000000000000', '5bb0a31d218ed564');
         * */
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'D-A';
@@ -242,7 +242,7 @@ describe('GostCipher', () => {
         '546d203368656c326973652073736e62206167796967747473656865202c3d73', '0000000000000000', 'c3af96ef788667c5');
         * */
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = testSBox;
@@ -263,7 +263,7 @@ describe('GostCipher', () => {
         '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', 'bc350e71aa11345709acde', '1bcc2282707c676fb656dc');
         * */
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-A';
@@ -284,7 +284,7 @@ describe('GostCipher', () => {
         '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', 'bc350e71aa11345709acde', '1bcc2282707c676fb656dc');
         * */
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-Z';
@@ -302,7 +302,7 @@ describe('GostCipher', () => {
     it('1 MAC sing/verify', () => {
 
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.mode = 'MAC';
@@ -318,7 +318,7 @@ describe('GostCipher', () => {
 
     it('2 MAC sing/verify', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.mode = 'MAC';
@@ -334,7 +334,7 @@ describe('GostCipher', () => {
 
     it('1 Padding', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.name = 'BIT';
@@ -350,7 +350,7 @@ describe('GostCipher', () => {
 
     it('2 Padding', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.name = 'BIT';
@@ -367,7 +367,7 @@ describe('GostCipher', () => {
 
     it('3 Padding', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.name = 'PKCS5P';
@@ -383,7 +383,7 @@ describe('GostCipher', () => {
 
     it('4 Padding', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.name = 'PKCS5P';
@@ -399,7 +399,7 @@ describe('GostCipher', () => {
 
     it('5 Padding', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         algorithm.name = 'ZERO';
@@ -417,7 +417,7 @@ describe('GostCipher', () => {
 
     it('1 Key meshing', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -435,7 +435,7 @@ describe('GostCipher', () => {
 
     it('2 Key meshing', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -452,7 +452,7 @@ describe('GostCipher', () => {
 
     it('3 Key meshing', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -470,7 +470,7 @@ describe('GostCipher', () => {
 
     it('4 Key meshing', () => {
 
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -487,7 +487,7 @@ describe('GostCipher', () => {
 
 
     it('1 Key wrapping', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -509,7 +509,7 @@ describe('GostCipher', () => {
 
 
     it('2 Key wrapping', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -531,7 +531,7 @@ describe('GostCipher', () => {
 
 
     it('3 Key wrapping', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -554,7 +554,7 @@ describe('GostCipher', () => {
 
 
     it('4 Key wrapping', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -577,7 +577,7 @@ describe('GostCipher', () => {
 
 
     it('5 Key wrapping', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -611,7 +611,7 @@ describe('GostCipher', () => {
     const key64 = 'ffeeddccbbaa99887766554433221100f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff';
     const inp64 = '92def06b3c130a59db54c704f8189d204a98fb2e67a8024c8912409b17b57e41';
     it('1 GOST R 34.12-2015/64bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -636,7 +636,7 @@ describe('GostCipher', () => {
 
 
     it('2 GOST R 34.12-2015/64bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -662,7 +662,7 @@ describe('GostCipher', () => {
 
 
     it('3 GOST R 34.12-2015/64bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -687,7 +687,7 @@ describe('GostCipher', () => {
 
 
     it('4 GOST R 34.12-2015/64bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -711,7 +711,7 @@ describe('GostCipher', () => {
 
 
     it('5 GOST R 34.12-2015/64bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -736,7 +736,7 @@ describe('GostCipher', () => {
 
 
     it('6 GOST R 34.12-2015/64bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -762,7 +762,7 @@ describe('GostCipher', () => {
 
 
     it('7 GOST R 34.12-2015/64bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -790,7 +790,7 @@ describe('GostCipher', () => {
                  '112233445566778899aabbcceeff0a002233445566778899aabbcceeff0a0011';
 
     it('1 GOST R 34.12-2015/128bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -814,7 +814,7 @@ describe('GostCipher', () => {
     });
 
     it('2 GOST R 34.12-2015/128bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -840,7 +840,7 @@ describe('GostCipher', () => {
 
 
     it('3 GOST R 34.12-2015/128bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -868,7 +868,7 @@ describe('GostCipher', () => {
 
 
     it('4 GOST R 34.12-2015/128bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -894,7 +894,7 @@ describe('GostCipher', () => {
 
 
     it('5 GOST R 34.12-2015/128bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -920,7 +920,7 @@ describe('GostCipher', () => {
 
 
     it('6 GOST R 34.12-2015/128bits', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -945,7 +945,7 @@ describe('GostCipher', () => {
 
 
     it('1 RC2', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -969,7 +969,7 @@ describe('GostCipher', () => {
     });
 
     it('2 RC2', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -993,7 +993,7 @@ describe('GostCipher', () => {
     });
 
     it('3 RC2', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1018,7 +1018,7 @@ describe('GostCipher', () => {
 
 
     it('4 RC2', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1043,7 +1043,7 @@ describe('GostCipher', () => {
 
 
     it('5 RC2', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1067,7 +1067,7 @@ describe('GostCipher', () => {
     });
 
     it('6 RC2', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1092,7 +1092,7 @@ describe('GostCipher', () => {
 
 
     it('7 RC2', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1116,7 +1116,7 @@ describe('GostCipher', () => {
     });
 
     it('8 RC2', () => {
-        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmDto = new AlgorithmDto();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1162,7 +1162,7 @@ describe('GostCipher', () => {
 
 
 
-function perform(algorithm: AlgorithmIndentifier, key: string, input: string, output: string) {
+function perform(algorithm: AlgorithmDto, key: string, input: string, output: string) {
     if (algorithm.iv) {
         (algorithm.iv = Hex.decode(algorithm.iv));
     }
@@ -1194,7 +1194,7 @@ function perform(algorithm: AlgorithmIndentifier, key: string, input: string, ou
     return result;
 }
 
-function performMac(algorithm: AlgorithmIndentifier, key: string, input: string, output: string) {
+function performMac(algorithm: AlgorithmDto, key: string, input: string, output: string) {
     if (algorithm.iv) {
         (algorithm.iv = Hex.decode(algorithm.iv));
     }
@@ -1222,7 +1222,7 @@ function performMac(algorithm: AlgorithmIndentifier, key: string, input: string,
     return result;
 }
 
-function performWrap(algorithm: AlgorithmIndentifier, key: string, input: string, output: string) {
+function performWrap(algorithm: AlgorithmDto, key: string, input: string, output: string) {
 
     if (algorithm.ukm) {
         (algorithm.ukm = Hex.decode(algorithm.ukm));
