@@ -234,10 +234,10 @@ describe('GostDigest', () => {
         algorithm.name = 'GOST R 34.11';
         algorithm.version = 2012;
         algorithm.mode = 'KDF';
-        algorithm.context = Hex.decode('af21434145656378');
-        algorithm.label = Hex.decode('26bdb878');
+        algorithm.context = Hex.decode('af21434145656378', undefined);
+        algorithm.label = Hex.decode('26bdb878', undefined);
         const result = deriveKey(algorithm,
-            Hex.decode('000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'),
+            Hex.decode('000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f', undefined),
             'a1aa5f7de402d7b3d323f2991c8d4534013137010a83754fd0af6d7cd4922ed9');
         expect(result.includes('PASSED')).toBeTruthy();
     });
@@ -248,10 +248,10 @@ describe('GostDigest', () => {
         algorithm.name = 'GOST R 34.11';
         algorithm.version = 2012;
         algorithm.mode = 'KDF';
-        algorithm.context = Hex.decode('af21434145656378');
-        algorithm.label = Hex.decode('26bdb878');
+        algorithm.context = Hex.decode('af21434145656378', undefined);
+        algorithm.label = Hex.decode('26bdb878', undefined);
         const result = deriveBits(algorithm,
-            Hex.decode('000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'),
+            Hex.decode('000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f', undefined),
             '22b6837845c6bef65ea71672b265831086d3c76aebe6dae91cad51d83f79d16b074c9330599d7f8d712fca54392f4ddde93751206b3584c8f43f9e6dc51531f9',
             512);
         expect(result.includes('PASSED')).toBeTruthy();
@@ -265,9 +265,9 @@ describe('GostDigest', () => {
         // algorithm.context = Hex.decode('af21434145656378');
         // algorithm.label = Hex.decode('26bdb878');
         const result = sign(algorithm,
-            Hex.decode('000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'),
+            Hex.decode('000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f', undefined),
             'a1aa5f7de402d7b3d323f2991c8d4534013137010a83754fd0af6d7cd4922ed9',
-            Hex.decode('0126bdb87800af214341456563780100')
+            Hex.decode('0126bdb87800af214341456563780100', undefined)
         );
         expect(result.includes('PASSED')).toBeTruthy();
     });
@@ -281,9 +281,9 @@ describe('GostDigest', () => {
         // algorithm.context = Hex.decode('af21434145656378');
         // algorithm.label = Hex.decode('26bdb878');
         const result = sign(algorithm,
-            Hex.decode('000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'),
+            Hex.decode('000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f', undefined),
             'a59bab22ecae19c65fbde6e5f4e9f5d8549d31f037f9df9b905500e171923a773d5f1530f2ed7e964cb2eedc29e9ad2f3afe93b2814f79f5000ffc0366c251e6',
-            Hex.decode('0126bdb87800af214341456563780100')
+            Hex.decode('0126bdb87800af214341456563780100', undefined)
         );
         expect(result.includes('PASSED')).toBeTruthy();
     });
@@ -715,7 +715,7 @@ function digest(algorithm: AlgorithmDto, input: ArrayBuffer, output) {
     result = 'Test ' + ' ' + (gostDigest.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
     try {
 
-        out = Hex.encode(gostDigest.digest(input));
+        out = Hex.encode(gostDigest.digest(input), undefined);
         finish = new Date().getTime();
         out = out.replace(/[^\-A-Fa-f0-9]/g, '').toLowerCase();
         test = (out !== output);
@@ -744,7 +744,7 @@ function deriveKey(algorithm: AlgorithmDto, input: ArrayBuffer, output: string) 
     start = new Date().getTime();
     result = 'Test ' + ' ' + (gostDigest.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
     try {
-        out = Hex.encode(gostDigest.deriveKey(input));
+        out = Hex.encode(gostDigest.deriveKey(input), undefined);
         finish = new Date().getTime();
         out = out.replace(/[^\-A-Fa-f0-9]/g, '').toLowerCase();
         test = (out !== output);
@@ -774,12 +774,12 @@ function deriveBits(algorithm: AlgorithmDto, input: ArrayBuffer, output: string,
     start = new Date().getTime();
     result = 'Test ' + ' ' + (gostDigest.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
     try {
-        out = Hex.encode(gostDigest.deriveBits(input, param));
+        out = Hex.encode(gostDigest.deriveBits(input, param), undefined);
         finish = new Date().getTime();
         out = out.replace(/[^\-A-Fa-f0-9]/g, '').toLowerCase();
         test = (out !== output);
         if (test) {
-            result += 'FAILED: Expected ' + Hex.encode(input) + ' got ' + out;
+            result += 'FAILED: Expected ' + Hex.encode(input, undefined) + ' got ' + out;
         } else {
             result += 'PASSED ' + (finish - start) / 1000 + ' sec';
         }
@@ -805,7 +805,7 @@ function sign(algorithm: AlgorithmDto, input: ArrayBuffer, output, data) {
     result = 'Test ' + ' ' + (gostDigest.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
     try {
 
-        out = Hex.encode(gostDigest.sign(input, data));
+        out = Hex.encode(gostDigest.sign(input, data), undefined);
         finish = new Date().getTime();
         out = out.replace(/[^\-A-Fa-f0-9]/g, '').toLowerCase();
         test = (out !== output);

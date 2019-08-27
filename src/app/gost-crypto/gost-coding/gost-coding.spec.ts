@@ -6,8 +6,8 @@ describe('GostCoding', () => {
     it('hex encode-decode test', () => {
 
         const input = '11121314151617181920aabbcceeff';
-        const decoded = Hex.decode(input);
-        const encoded = Hex.encode(decoded);
+        const decoded = Hex.decode(input, undefined);
+        const encoded = Hex.encode(decoded, undefined);
 
         console.log('expected ' + input + ' , got ' + encoded + ', ' + (encoded === input ? 'PASSED' : 'FAILED'));
         expect(encoded === input).toBeTruthy();

@@ -122,12 +122,12 @@ export class GostSign {
             a: '0x3F1817052BAA7598FE3E4F4FC5C5F616E122CFF9EBD89EF81DC7CE8BF56CC64B43586C80F1C4F56DD5718FDD76300BE336784259CA25AADE5A483F64C02A20CF4A10F9C189C433DEFE31D263E6C9764660A731ECCAECB74C8279303731E8CF69205BC73E5A70BDF93E5BB681DAB4EEB9C733CAAB2F673C475E0ECA921D29782E'
         }
     };
-    private DM = (1 << this.DB) - 1;
-    private DV = 1 << this.DB;
+    DM = (1 << this.DB) - 1;
+    DV = 1 << this.DB;
     private FV = Math.pow(2, 52);
     private F1 = 52 - this.DB;
     private F2 = 2 * this.DB - 52;
-    private ZERO = this.nbv(0);
+    ZERO = this.nbv(0);
     private THREE = this.nbv(3);
 
 
@@ -152,6 +152,7 @@ export class GostSign {
     private keyLength: any;
     private dostDigest: GostDigest;
     private version: number;
+    private bitLength: number;
    // private sign: any;
    // private verify: any;
   //  private generateKey: any;
@@ -239,7 +240,7 @@ export class GostSign {
         let hashLen;
         let keyLen;
         if (this.curve) {
-            keyLen = algorithm.length || this.bitLength(this.q);
+            keyLen = algorithm.length || this.bitLengthF(this.q);
             if (keyLen > 508 && keyLen <= 512) {
                 keyLen = 512;
             } else if (keyLen > 254 && keyLen <= 256) {
@@ -249,7 +250,7 @@ export class GostSign {
             }
             hashLen = keyLen;
         } else {
-            keyLen = algorithm.modulusLength || this.bitLength(this.p);
+            keyLen = algorithm.modulusLength || this.bitLengthF(this.p);
             if (keyLen > 1016 && keyLen <= 1024) {
                 keyLen = 1024;
             } else if (keyLen > 508 && keyLen <= 512) {
@@ -533,7 +534,7 @@ export class GostSign {
         return x;
     }
 
-    private am(y, i, x, w, j, c, n): number {
+    am(y, i, x, w, j, c, n): number {
         const xl = x & 0x3fff;
         const xh = x >> 14;
         while (--n >= 0) {
@@ -609,7 +610,7 @@ export class GostSign {
         return this.negTo(x, this.nbi(x.t));
     }
 
-    private abs(x) {
+    abs(x) {
         return (x.s < 0) ? this.neg(x) : x;
     }
 
@@ -713,7 +714,7 @@ export class GostSign {
         return r;
     }
 
-    private bitLength(x) {
+    private bitLengthF(x) {
         if (x.t <= 0) {
             return 0;
         }
@@ -728,7 +729,7 @@ export class GostSign {
         return this.sqrTo(a, this.nbi(a.t * 2));
     }
 
-    private divRemTo(n, m, q, r) {
+    divRemTo(n, m, q, r) {
         const pm = this.abs(m);
         if (pm.t <= 0) {
             throw new Error('Division by zero');
@@ -814,7 +815,7 @@ export class GostSign {
 
     // FIXME Превратить в нормальный класс или вызывать в конструкторе
 
-    private isZero(x) {
+    private isZero(x): any { // FIXME костыль чтобы не ругался линтер
         return this.equals(x, this.ZERO);
     }
 
@@ -899,7 +900,7 @@ export class GostSign {
         }
     }
 
-    private testBit(x, n) {
+    private testBit(x, n): any { // FIXME костыль
         const j = Math.floor(n / this.DB);
         if (j >= x.t) {
             return (x.s !== 0);
@@ -908,7 +909,7 @@ export class GostSign {
     }
 
     private expMod(x, e, m) {
-        let i = this.bitLength(e);
+        let i = this.bitLengthF(e);
         let k;
         let r = this.nbv(1);
         let z;
@@ -1206,7 +1207,7 @@ export class GostSign {
         let R = a;
 
         let i;
-        for (i = this.bitLength(h) - 2; i > 0; --i) {
+        for (i = this.bitLengthF(h) - 2; i > 0; --i) {
             R = this.twiceEC(R);
 
             const hBit = this.testBit(h, i);
@@ -1221,19 +1222,19 @@ export class GostSign {
     }
 
     private mul2AndAddEC(a, k) {
-        const nbits = this.bitLength(k);
+        const nbits = this.bitLengthF(k);
         let R = a;
         let Q = this.getInfinity(a);
 
         for (let i = 0; i < nbits - 1; i++) {
-            if (this.testBit(k, i) === true) { // FIXME не факт
+            if (this.testBit(k, i) === 1) { // FIXME не факт
                 Q = this.addEC(Q, R);
             }
 
             R = this.twiceEC(R);
         }
 
-        if (this.testBit(k, nbits - 1) === true) { // FIXME не факт
+        if (this.testBit(k, nbits - 1) === 1) { // FIXME не факт
             Q = this.addEC(Q, R);
         }
 
@@ -1243,10 +1244,10 @@ export class GostSign {
     // Compute a*j + x*k (simultaneous multiplication)
     private mulTwoEC(a, j, x, k) {
         let i;
-        if (this.bitLength(j) > this.bitLength(k)) {
-            i = this.bitLength(j) - 1;
+        if (this.bitLengthF(j) > this.bitLengthF(k)) {
+            i = this.bitLengthF(j) - 1;
         } else {
-            i = this.bitLength(k) - 1;
+            i = this.bitLengthF(k) - 1;
         }
 
         let R = this.getInfinity(a);
@@ -1307,7 +1308,7 @@ export class GostSign {
         return this.clamp(r);
     }
 
-    private bitoa(s, bitLength) {
+    private bitoa(s, bl) {
         const k = 8;
         const km = (1 << k) - 1;
         let d;
@@ -1339,7 +1340,7 @@ export class GostSign {
                 }
             }
         }
-        const r8 = new Uint8Array(bitLength ? bitLength / 8 : r.length);
+        const r8 = new Uint8Array(bl ? bl / 8 : r.length);
         if (m) {
             r8.set(r.reverse());
         }
@@ -1531,9 +1532,9 @@ export class GostSign {
         return [this.atobi(new Uint8Array(b, 0, n)), this.atobi(new Uint8Array(b, n, n))];
     }
 
-    private from2(x, y, bitLength) {
-        const a = this.bitoa(x, bitLength);
-        const b = this.bitoa(y, bitLength);
+    private from2(x, y, bl) {
+        const a = this.bitoa(x, bl);
+        const b = this.bitoa(y, bl);
         const d = new Uint8Array(a.byteLength + b.byteLength);
         d.set(new Uint8Array(a));
         d.set(new Uint8Array(b), a.byteLength);
@@ -1639,10 +1640,10 @@ export class GostSign {
         }
         // Stage 2
         const b = this.buffer(data);
-        const alpha = this.atobi(this.hash( b));
+        const alpha = this.atobi(this.hash(b));
         // Stage 3
         let e = this.mod(alpha, q);
-        if (this.isZero(e) === false) {
+        if (this.isZero(e) === 0) {// FIXME тут жи баг???!!!!  (this.isZero(e) === false) не рабоатет
             e = this.ONE;
         }
         // Stage 4
@@ -1691,8 +1692,10 @@ export class GostSign {
                 if (this.ukm) {
                     d = this.atobi(this.ukm);
                 } else {
+                    let errorCounter = 0;
                     while (this.isZero(d)) {
                         d = this.mod(this.atobi(this.getSeed(this.bitLength)), this.q);
+                        if (errorCounter++ > 100000) { throw new Error('while inf loop'); }
                     } // 0 < d < q
                 }
 
@@ -1814,13 +1817,13 @@ export class GostSign {
         return r.buffer;
     } // </editor-fold>
 
-    private deriveKey(baseKey) {
+    deriveKey(baseKey) {
         const b = this.derive(baseKey);
         const r = new Uint8Array(32);
 
         r.set(new Uint8Array(b, 0, 32));
         return r.buffer;
-    } 
+    }
 
 
 
@@ -1895,6 +1898,12 @@ class Montgomery {
     um;
     mt2;
 
+   revert: (x) => any;
+   convert: (x) => (any | any | any);
+   reduce: (x) => void;
+   sqrTo: (x, r) => void;
+   mulTo: (x, y, r) => void;
+
     constructor(m, private gostSign: GostSign) {
         this.m = m;
         this.mp = gostSign.invDig(m);
@@ -1902,16 +1911,67 @@ class Montgomery {
         this.mph = this.mp >> 15;
         this.um = (1 << (gostSign.DB - 15)) - 1;
         this.mt2 = 2 * m.t;
+
+        // xR mod m
+        this.convert = (x) => {
+            let r = gostSign.nbi(x.t);
+            gostSign.dshlTo(gostSign.abs(x), this.m.t, r);
+            gostSign.divRemTo(r, this.m, null, r);
+            if (x.s < 0 && gostSign.compare(r, gostSign.ZERO) > 0) {
+                gostSign.subTo(this.m, r, r);
+            }
+            return r;
+        };
+        // x/R mod m
+        this.revert = (x) => {
+            const r = gostSign.nbi(x.t);
+            gostSign.copyTo(x, r);
+            this.reduce(r);
+            return r;
+        };
+        // x = x/R mod m (HAC 14.32)
+        this.reduce = (x) =>  {
+            while (x.t <= this.mt2) {
+                x[x.t++] = 0;
+            }
+            for (let i = 0; i < this.m.t; ++i) {
+                let j = x[i] & 0x7fff;
+                const u0 = (j * this.mpl + (((j * this.mph + (x[i] >> 15) * this.mpl) & this.um) << 15)) & gostSign.DM;
+                j = i + this.m.t;
+                x[j] += gostSign.am(this.m, 0, u0, x, i, 0, this.m.t);
+                while (x[j] >= gostSign.DV) {
+                    x[j] -= gostSign.DV;
+                    x[++j]++;
+                }
+            }
+            gostSign.clamp(x);
+            gostSign.dshrTo(x, this.m.t, x);
+            if (gostSign.compare(x, this.m) >= 0) {
+                gostSign.subTo(x, this.m, x);
+            }
+        };
+        // r = "x^2/R mod m"; x != r
+        this.sqrTo = (x, r) =>  {
+            gostSign.sqrTo(x, r);
+            this.reduce(r);
+        };
+        // r = "xy/R mod m"; x,y != r
+        this.mulTo = (x, y, r) =>  {
+            gostSign.mulTo(x, y, r);
+            this.reduce(r);
+        };
+
+
     }
 }
 
 class Barrett {
     m;
-    private revert: (x) => any;
-    private convert: (x) => (any | any | any);
-    private reduce: (x) => void;
-    private sqrTo: (x, r) => void;
-    private mulTo: (x, y, r) => void;
+    revert: (x) => any;
+    convert: (x) => (any | any | any);
+    reduce: (x) => void;
+    sqrTo: (x, r) => void;
+    mulTo: (x, y, r) => void;
     private r2: any;
     private q3: any;
     private mu: any;

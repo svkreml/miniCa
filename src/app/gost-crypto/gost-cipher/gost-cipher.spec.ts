@@ -1164,19 +1164,19 @@ describe('GostCipher', () => {
 
 function perform(algorithm: AlgorithmDto, key: string, input: string, output: string) {
     if (algorithm.iv) {
-        (algorithm.iv = Hex.decode(algorithm.iv));
+        (algorithm.iv = Hex.decode(algorithm.iv, undefined));
     }
     const cipher = new GostCipher(algorithm);
     let result = 'Test ' + ' ' + (cipher.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
 
     try {
-        let out = Hex.encode(cipher.encrypt(Hex.decode(key), Hex.decode(input), undefined));
+        let out = Hex.encode(cipher.encrypt(Hex.decode(key, undefined), Hex.decode(input, undefined), undefined), undefined);
         const test = (output && out.replace(/[^\-A-Fa-f0-9]/g, '').toLowerCase() !== output.toLowerCase());
         // console.log('-----------------');
         // console.log(out);
 
         if (!test) {
-            out = Hex.encode(cipher.decrypt(Hex.decode(key), Hex.decode(out), undefined));
+            out = Hex.encode(cipher.decrypt(Hex.decode(key, undefined), Hex.decode(out, undefined), undefined), undefined);
             // console.log('--------------');
             // console.log(out);
             if (!test) {
@@ -1196,16 +1196,16 @@ function perform(algorithm: AlgorithmDto, key: string, input: string, output: st
 
 function performMac(algorithm: AlgorithmDto, key: string, input: string, output: string) {
     if (algorithm.iv) {
-        (algorithm.iv = Hex.decode(algorithm.iv));
+        (algorithm.iv = Hex.decode(algorithm.iv, undefined));
     }
 
     const cipher = new GostCipher(algorithm);
     let result = 'Test ' + ' ' + (cipher.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
     try {
-        const out = Hex.encode(cipher.sign(Hex.decode(key), Hex.decode(input), undefined));
+        const out = Hex.encode(cipher.sign(Hex.decode(key, undefined), Hex.decode(input, undefined), undefined), undefined);
         let test = (output && out.replace(/[^\-A-Fa-f0-9]/g, '').toLowerCase() !== output.toLowerCase());
         if (!test) {
-            const res = cipher.verify(Hex.decode(key), Hex.decode(out), Hex.decode(input), undefined);
+            const res = cipher.verify(Hex.decode(key, undefined), Hex.decode(out, undefined), Hex.decode(input, undefined), undefined);
             test = (!res);
             if (!test) {
                 result += 'PASSED';
@@ -1225,16 +1225,16 @@ function performMac(algorithm: AlgorithmDto, key: string, input: string, output:
 function performWrap(algorithm: AlgorithmDto, key: string, input: string, output: string) {
 
     if (algorithm.ukm) {
-        (algorithm.ukm = Hex.decode(algorithm.ukm));
+        (algorithm.ukm = Hex.decode(algorithm.ukm, undefined));
     }
 
     const cipher = new GostCipher(algorithm);
     let result = 'Test ' + ' ' + (cipher.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
     try {
-        let out = Hex.encode(cipher.wrapKey(Hex.decode(key), Hex.decode(input)));
+        let out = Hex.encode(cipher.wrapKey(Hex.decode(key, undefined), Hex.decode(input, undefined)), undefined);
         let test = (output && out.replace(/[^\-A-Fa-f0-9]/g, '').toLowerCase() !== output.toLowerCase());
         if (!test) {
-            out = Hex.encode(cipher.unwrapKey(Hex.decode(key), Hex.decode(out)));
+            out = Hex.encode(cipher.unwrapKey(Hex.decode(key, undefined), Hex.decode(out, undefined)), undefined);
             test = (out.replace(/[^\-A-Fa-f0-9]/g, '').toLowerCase() !== input.toLowerCase());
             if (!test) {
                 result += 'PASSED';

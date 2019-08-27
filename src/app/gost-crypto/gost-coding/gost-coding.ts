@@ -36,7 +36,7 @@ export class Hex {
         return r.buffer;
     }
 
-    public static encode(data: Uint8Array, endean): string {
+    public static encode(data: Uint8Array| ArrayBuffer, endean): string {
         const s = [];
         const d = new Uint8Array(GostCoding.buffer(data));
         const n = d.length;
