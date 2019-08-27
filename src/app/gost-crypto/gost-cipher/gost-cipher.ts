@@ -460,9 +460,9 @@ export class GostCipher {
         let cm = (m[0] + k) & 0xffffffff;
 
 
-        let om = s[0 + ((cm >> (0 * 4)) & 0xF)] << (0 * 4);
+        let om = s[((cm >> (0)) & 0xF)] << (0);
 
-        om |= s[16 + ((cm >> (1 * 4)) & 0xF)] << (1 * 4);
+        om |= s[16 + ((cm >> (4)) & 0xF)] << (4);
 
         om |= s[32 + ((cm >> (2 * 4)) & 0xF)] << (2 * 4);
 
@@ -581,8 +581,7 @@ export class GostCipher {
     }
 
     private static bitUnpad(d: Uint8Array): Uint8Array {
-        const m = d.byteLength;
-        let n = m;
+        let n = d.byteLength;
         while (n > 1 && d[n - 1] === 0) {
             n--;
         }
@@ -1231,7 +1230,6 @@ export class GostCipher {
 
     private processMAC15(key, s, d) {
         const n = this.blockSize;
-        const sBox = this.sBox;
         let c = GostCipher.byteArray(d);
         const r = new Uint8Array(n);
         // R
@@ -1550,15 +1548,14 @@ export class GostCipher {
         const mac = new Uint8Array(c, n, m); // MAC for clear kek
 
         let d;
-        const test = this.verifyMACSC( k, mac, function() {
-            d = this.decryptECB(k, enc);
-            return d;
+        const test = this.verifyMACSC( k, mac, () => {
+                d = this.decryptECB(k, enc);
+                return d;
         });
         if (!test) {
             throw new Error('Invalid key MAC');
         }
-
-        return d;
+        return d ? d : undefined; // FIXME или надо кинуть ошибку? или так не может быть?
     }
 
     private generateWrappingKeySC() {
