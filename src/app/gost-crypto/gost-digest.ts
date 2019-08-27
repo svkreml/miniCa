@@ -18,9 +18,9 @@ export class GostDigest {
     sBox;
 
     /*Переопределение функций*/
-    deriveKey: (baseKey) => {};
-    deriveBits: (baseKey: any, n: number) => {};
-    generateKey: () => {};
+    deriveKey: (baseKey) => ArrayBuffer;
+    deriveBits: (baseKey: any, n: number) => ArrayBuffer;
+    generateKey: () => ArrayBuffer;
     digest: (data) => (ArrayBufferLike | any);
     sign: (key, data) => any;
     verify: (key, signature, data) => (boolean);
@@ -732,7 +732,7 @@ export class GostDigest {
     }
 
 
-    signHMAC(key, data) {
+    signHMAC(key, data): ArrayBufferLike {
         // GOST R 34.11-94 - B=32b, L=32b
         // GOST R 34.11-256 - B=64b, L=32b
         // GOST R 34.11-512 - B=64b, L=64b
@@ -744,7 +744,7 @@ export class GostDigest {
         if (k.byteLength === b) {
             k0 = new Uint8Array(k);
         } else {
-            let k0 = new Uint8Array(b);
+            k0 = new Uint8Array(b);
             if (k.byteLength > b) {
                 k0.set(new Uint8Array(this.digest(k)));
             } else {
@@ -752,8 +752,8 @@ export class GostDigest {
             }
         }
         // tslint:disable-next-line:one-variable-per-declaration
-        let s0 = new Uint8Array(b + d.byteLength),
-            s1 = new Uint8Array(b + l);
+        let s0 = new Uint8Array(b + d.byteLength);
+        let s1 = new Uint8Array(b + l);
         for (let i = 0; i < b; i++) {
             s0[i] = k0[i] ^ 0x36;
             s1[i] = k0[i] ^ 0x5C;
@@ -761,10 +761,10 @@ export class GostDigest {
         s0.set(new Uint8Array(d), b);
         s1.set(new Uint8Array(this.digest(s0)), b);
         return this.digest(s1);
-    } // </editor-fold>
+    }
 
 
-    verifyHMAC(key, signature, data) {
+    verifyHMAC(key, signature, data): boolean {
         let hmac = new Uint8Array(this.sign(key, data));
         let test = new Uint8Array(signature);
         if (hmac.length !== test.length) {
@@ -779,12 +779,12 @@ export class GostDigest {
     } // </editor-fold>
 
 
-    generateKeyDefault() {
+    generateKeyDefault(): ArrayBuffer {
         return this.getSeed(this.bitLength).buffer;
     } // </editor-fold>
 
 
-    deriveBitsPFXKDF(baseKey, length) {
+    deriveBitsPFXKDF(baseKey, length): ArrayBuffer {
         if (length % 8 > 0) {
             throw new Error('Length must multiple of 8');
         }
@@ -924,7 +924,7 @@ export class GostDigest {
     } // </editor-fold>
 
 
-    deriveBitsPBKDF2(baseKey, length) {
+    deriveBitsPBKDF2(baseKey, length): ArrayBuffer {
         let diversifier = this.diversifier || 1; // For PKCS12 MAC required 3*length
         length = length * diversifier;
         if (length < this.bitLength / 2 || length % 8 > 0) {
@@ -1038,7 +1038,7 @@ export class GostDigest {
     }
 
 
-    deriveKeyDefault(baseKey) {
+    deriveKeyDefault(baseKey): ArrayBuffer {
         return this.deriveBits(baseKey, this.keySize * 8);
     }
 
