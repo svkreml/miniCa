@@ -7,19 +7,19 @@ export class AlgorithmIndentifier {
     padding: string;
     mode: string;
     keyMeshing;
-    procreator;
-    sBox;
-    iv;
-    macLength;
+    procreator: string;
+    sBox: any; // : string | ArrayBuffer;
+    iv: any; // string | ArrayBuffer ;
+    macLength: number;
     length: number;
-    ukm;
+    ukm: any; //  ArrayBuffer | string;
 
 
     /*from digest*/
-    salt: any;
+    salt: ArrayBuffer;
     iterations: number;
     diversifier: number;
-    context: any;
-    label: any;
+    context: ArrayBuffer;
+    label: ArrayBuffer;
     keySize: number;
 }

@@ -1166,7 +1166,7 @@ function perform(algorithm: AlgorithmIndentifier, key: string, input: string, ou
     if (algorithm.iv) {
         (algorithm.iv = Hex.decode(algorithm.iv));
     }
-    const cipher = new GostCipher(new GostRandom(), algorithm);
+    const cipher = new GostCipher(algorithm);
     let result = 'Test ' + ' ' + (cipher.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
 
     try {
@@ -1199,7 +1199,7 @@ function performMac(algorithm: AlgorithmIndentifier, key: string, input: string,
         (algorithm.iv = Hex.decode(algorithm.iv));
     }
 
-    const cipher = new GostCipher(new GostRandom(), algorithm);
+    const cipher = new GostCipher(algorithm);
     let result = 'Test ' + ' ' + (cipher.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
     try {
         const out = Hex.encode(cipher.sign(Hex.decode(key), Hex.decode(input), undefined));
@@ -1228,7 +1228,7 @@ function performWrap(algorithm: AlgorithmIndentifier, key: string, input: string
         (algorithm.ukm = Hex.decode(algorithm.ukm));
     }
 
-    const cipher = new GostCipher(new GostRandom(), algorithm);
+    const cipher = new GostCipher(algorithm);
     let result = 'Test ' + ' ' + (cipher.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
     try {
         let out = Hex.encode(cipher.wrapKey(Hex.decode(key), Hex.decode(input)));

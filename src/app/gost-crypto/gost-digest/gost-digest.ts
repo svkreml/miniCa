@@ -4,37 +4,37 @@ import {GostCoding} from '../gost-coding/gost-coding';
 import {AlgorithmIndentifier} from '../../dto/algorithm-indentifier';
 
 export class GostDigest {
+
     gostCipher: GostCipher;
-    /* Из Algorithm*/
-    label;
-    context;
-    salt;
-    iterations;
-    diversifier;
-    bitLength;
-    keySize;
-    name;
-    procreator;
-    sBox;
-
+    public name;
     /*Переопределение функций*/
-    deriveKey: (baseKey) => ArrayBuffer;
-    deriveBits: (baseKey: any, n: number) => ArrayBuffer;
-    generateKey: () => ArrayBuffer;
-    digest: (data) => (ArrayBufferLike | any);
-    sign: (key, data) => any;
-    verify: (key, signature, data) => (boolean);
-    digest2012 = (() => {
+    public deriveKey: (baseKey) => ArrayBuffer;
+    public deriveBits: (baseKey: any, n: number) => ArrayBuffer;
+    public generateKey: () => ArrayBuffer;
+    public digest: (data) => (ArrayBufferLike | any);
+    public sign: (key, data) => any;
+    public verify: (key, signature, data) => (boolean);
+    /* Из Algorithm*/
+    private label;
+    private context;
+    private salt;
+    private iterations;
+    private diversifier;
+    private bitLength;
+    private keySize;
+    private procreator;
+    private sBox;
+    private digest2012 = (() => {
             // Constants
-            let buffer0 = new Int32Array(16); // [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            const buffer0 = new Int32Array(16); // [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-            let buffer512 = new Int32Array(16); // [512, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            const buffer512 = new Int32Array(16); // [512, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             buffer512[0] = 512;
 
             // Constant C
-            let C = ((s) => {
-                let h = new Int32Array(this.b64decode(s));
-                let r = new Array(12);
+            const C = ((s) => {
+                const h = new Int32Array(GostDigest.b64decode(s));
+                const r = new Array(12);
                 for (let i = 0; i < 12; i++) {
                     r[i] = new Int32Array(h.buffer, i * 64, 16);
                 }
@@ -44,8 +44,8 @@ export class GostDigest {
                 '2ahRWTXCrDYvxKXRK43RaZAGm5LLK4n0msTbTTtEtIke3jaccfi3TkFBbgwCqucDp8mTTUJbH5vbWiODUURhcmAqH8uS3DgOVJwHppqKK3uxzrLbC0QKgIQJDeC3Vdk8JEKJJRs6fTreXxbs2JpMlJsiMRZUWo837ZxFmPvHtHTDtjsV0fqYNvRSdjswbB56SzNprwJn558DYTMbiuH/H9t4iv8c50GJ8/PkskjlKjhSbwWApt6+qxst84HNpMprXdhvwEpZot6Ybkd9Hc2678q5SOrvcR2KeWaEFCGAASBhB6vru2v62JT+WmPNxgIw+4nI79CezXsg1xvxSpK8SJkbstnVF/T6UijhiKqkHeeGzJEYne+AXZufITDUEiD4dx3fvDI8pM16sUkEsIAT0roxFvFn5443');
 
             // Precalc Ax
-            let Ax = ((s) => {
-                return new Int32Array(this.b64decode(s));
+            const Ax = ((s) => {
+                return new Int32Array(GostDigest.b64decode(s));
             })(
                 '5vh+XFtxH9Alg3eACST6FshJ4H6FLqSoW0aGoY8GwWoLMumi13tBbqvaN6RngVxm9heWqBpoZnb13AtwY5GVS0hi84235kvx/1ximmi9hcXLgn2m/NdXlWbTba9pufCJNWyfdEg9g7B8vOyxI4yZoTanAqwxxHCNnrao0C+839aLGfpR5bOuN5zPtUCKEn0LvAx4tQggj1rlM+OEIojs7c7Cx9N3wV/S7HgXtlBdD165TMLAgzaHHYwgXbTLCwStdjyFWyigiS9YjRt59v8yVz/s9p5DEZM+D8DTn4A6GMnuAQom9fOtgxDv6PRBGXmmXc2hDH3pOhBKG+4dEkjpLFO/8tshhHM5tPUMz6aiPQlftLyc2EeYzeiKLYsHHFb5f3dxaVp1apzF8C5xoLoevKZj+atCFeZyLrGeIt5fu3gNuc4PJZS6FIJSDmOXZk2ELwMeagII6phcfyFEob5r8Ho3yxzRY2Lbg+COK0sxHGTPcEebq5YOMoVrqYa53ucetUeMh3r1bOm4/kKIX2HW/RvdAVaWYjjIYiFXkj74qS78l/9CEUR2+J19NQhWRSzrTJDJsOCnElYjCFAt+8sBbC16A/qnpkhF' +
                 '9G6LOL/GxKu9vvj91HfeujqsTOvIB5t58JyxBeiHnQwn+moQrIpYy4lg58FAHQzqGm+BHko1aSiQxPsHc9GW/0NQGi9gnQqf96UW4MY/N5Yc5KazuNqSUhMkdSw44IqbpahkczvsFU8r8SRXVUmzP9dm2xVEDcXHp9F5455Ct5La3xUaYZl/04agNF7AJxQjONVRe22pOaRlGPB3EEADtAJ5HZClrqLdiNJniZxKXQqTD2bfCihlwk7p1CBFCbCLMlU4kWaFKSpBKQe/xTOoQrJ+K2JUTcZzbFMERWKV4Ada9AbpU1GQih8vO2vBI2Fvw3sJ3FJV5cY5Z9Ezsf5oRCmIOcfw5xHiQJuH9xlk+aLpOK3D20sHGQwLTkf5w+v0VTTVdtNriENGEKBa64sC2CDDzfWCMvJRbeGEDb7Cseeg6N4GsPodCHuFS1QNNDM7QuKaZ7zKW3/YpgiKxDfdDsY7s6nZQ+2BIXFNvV5lo7FnYe3nte6haSQx98jVc6v21R/GheGjZxpeBjzUBBDJLSg6uY8ssEACj+vAbLLy95AX1k8Rb6HTPOBzWfGpnuSqeE7WjHTNwAZuKhnVxztC2ocStBYccEXD' +
@@ -130,7 +130,7 @@ export class GostDigest {
             }
 
 
-            let r = new512();
+            const r = new512();
 
             function XLPS(x, y) {
                 copy512(r, x);
@@ -151,8 +151,8 @@ export class GostDigest {
                 }
             }
 
-            let data = new512();
-            let Ki = new512();
+            const data = new512();
+            const Ki = new512();
 
             function g(h, N, m) {
                 let i;
@@ -179,7 +179,7 @@ export class GostDigest {
 
             // Stages
             function stage2(d) {
-                let m = get512(d);
+                const m = get512(d);
                 g(h, N, m);
 
                 add512(N, buffer512);
@@ -187,22 +187,22 @@ export class GostDigest {
             }
 
             function stage3(d) {
-                let n = d.length;
+                const n = d.length;
                 if (n > 63) {
                     return;
                 }
 
-                let b0 = new Int32Array(16);
+                const b0 = new Int32Array(16);
                 b0[0] = n << 3;
 
-                let b = new Uint8Array(64);
+                const b = new Uint8Array(64);
                 for (let i = 0; i < n; i++) {
                     b[i] = d[i];
                 }
                 b[n] = 0x01;
 
-                let m = get512(b);
-                let m0 = get512(b0);
+                const m = get512(b);
+                const m0 = get512(b0);
                 g(h, N, m);
 
                 add512(N, m0);
@@ -212,7 +212,7 @@ export class GostDigest {
                 g(h, buffer0, sigma);
             }
 
-            return function(data) {
+            return (data) => {
 
                 // Cleanup
                 sigma = new512();
@@ -227,11 +227,11 @@ export class GostDigest {
                 }
 
                 // Make data
-                let d = new Uint8Array(GostCoding.buffer(data));
+                const d = new Uint8Array(GostCoding.buffer(data));
 
-                let n = d.length;
-                let r = n % 64;
-                let q = (n - r) / 64;
+                const n = d.length;
+                const r = n % 64;
+                const q = (n - r) / 64;
 
                 for (let i = 0; i < q; i++) {
                     stage2(new Uint8Array(d.buffer, i * 64, 64));
@@ -253,29 +253,19 @@ export class GostDigest {
                 }
                 // Swap hash for SignalCom
                 if (this.procreator === 'SC' || this.procreator === 'VN') {
-                    return this.swap(digest.buffer);
+                    return GostDigest.swap(digest.buffer);
                 } else {
                     return digest.buffer;
                 }
             };
         } // </editor-fold>
     )();
-
-    // Check buffer
-// buffer(d) {
-//         if (d instanceof ArrayBuffer) {
-//             return d;
-//         } else if (d && d.buffer && d.buffer instanceof ArrayBuffer) {
-//             return d.byteOffset === 0 && d.byteLength === d.buffer.byteLength ?
-//                 d.buffer : new Uint8Array(new Uint8Array(d, d.byteOffset, d.byteLength)).buffer;
-//  } else {
-//             throw new Error('ArrayBuffer or ArrayBufferView required');
 //  }
-    digestSHA1 = (() => {
+    private digestSHA1 = (() => {
 
             // Create a buffer for each 80 word block.
             let state;
-            let block = new Uint32Array(80);
+            const block = new Uint32Array(80);
 
             function common(a, e, w, k, f) {
                 return (f + e + w + k + ((a << 5) | (a >>> 27))) >>> 0;
@@ -342,8 +332,8 @@ export class GostDigest {
 
             // input is a Uint8Array bitstream of the data
             return (data) => {
-                let d = new Uint8Array(GostCoding.buffer(data));
-                let dlen = d.length;
+                const d = new Uint8Array(GostCoding.buffer(data));
+                const dlen = d.length;
 
                 // Pad the input string length.
                 let len = dlen + 9;
@@ -363,14 +353,14 @@ export class GostDigest {
                     // Copy input to block and write padding as needed
                     for (let i = 0; i < 64; i++) {
                         let b = 0;
-                        let o = ofs + i;
+                        const o = ofs + i;
                         if (o < dlen) {
                             b = d[o];
                         } else if (o === dlen) {
                             b = 0x80;
                         } else {
                             // Write original bit length as a 64bit big-endian integer to the end.
-                            let x = len - o - 1;
+                            const x = len - o - 1;
                             if (x >= 0 && x < 4) {
                                 b = (dlen << 3 >>> (x * 8)) & 0xff;
                             }
@@ -386,7 +376,7 @@ export class GostDigest {
 
                     // Extend the block
                     for (let i = 16; i < 80; i++) {
-                        let w = block[i - 3] ^ block[i - 8] ^ block[i - 14] ^ block[i - 16];
+                        const w = block[i - 3] ^ block[i - 8] ^ block[i - 14] ^ block[i - 16];
                         block[i] = (w << 1) | (w >>> 31);
                     }
 
@@ -403,6 +393,16 @@ export class GostDigest {
 
         } // </editor-fold>
     )();
+
+    // Check buffer
+// buffer(d) {
+//         if (d instanceof ArrayBuffer) {
+//             return d;
+//         } else if (d && d.buffer && d.buffer instanceof ArrayBuffer) {
+//             return d.byteOffset === 0 && d.byteLength === d.buffer.byteLength ?
+//                 d.buffer : new Uint8Array(new Uint8Array(d, d.byteOffset, d.byteLength)).buffer;
+//  } else {
+//             throw new Error('ArrayBuffer or ArrayBufferView required');
 
     constructor(public algorithm: AlgorithmIndentifier) {
 
@@ -429,12 +429,12 @@ export class GostDigest {
                 // Define chiper algorithm
                 this.sBox = (algorithm.sBox || (algorithm.procreator === 'SC' ? 'D-SC' : 'D-A')).toUpperCase();
 
-                let algorithmIndentifier: AlgorithmIndentifier = new AlgorithmIndentifier();
+                const algorithmIndentifier: AlgorithmIndentifier = new AlgorithmIndentifier();
                 algorithmIndentifier.name = 'GOST 28147';
                 algorithmIndentifier.block = 'ECB';
                 algorithmIndentifier.sBox = this.sBox;
                 algorithmIndentifier.procreator = this.procreator;
-                this.gostCipher = new GostCipher(new GostRandom(), algorithmIndentifier);
+                this.gostCipher = new GostCipher(algorithmIndentifier);
 
                 break;
             case 2012:
@@ -497,8 +497,49 @@ export class GostDigest {
         }
     }
 
+    // Swap bytes in buffer
+    static swap(s) {
+        const src = new Uint8Array(s);
+        const dst = new Uint8Array(src.length);
+        for (let i = 0, n = src.length; i < n; i++) {
+            dst[n - i - 1] = src[i];
+        }
+        return dst.buffer;
+    }
+
+    // Convert BASE64 string to Uint8Array
+    // for decompression of constants and precalc values
+    static b64decode(s) {
+        // s = s.replace(/[^A-Za-z0-9\+\/]/g, '');
+        const n = s.length;
+        const k = n * 3 + 1 >> 2;
+        const r = new Uint8Array(k);
+
+        for (let m3, m4, u24 = 0, j = 0, i = 0; i < n; i++) {
+            m4 = i & 3;
+            let c = s.charCodeAt(i);
+
+            c = c > 64 && c < 91 ?
+                c - 65 : c > 96 && c < 123 ?
+                    c - 71 : c > 47 && c < 58 ?
+                        c + 4 : c === 43 ?
+                            62 : c === 47 ?
+                                63 : 0;
+
+            u24 |= c << 18 - 6 * m4;
+            if (m4 === 3 || n - i === 1) {
+                for (m3 = 0; m3 < 3 && j < k; m3++, j++) {
+                    r[j] = u24 >>> (16 >>> m3 & 24) & 255;
+                }
+                u24 = 0;
+
+            }
+        }
+        return r.buffer;
+    }
+
 //     }
-    digest94(data) {
+    private digest94(data) {
         let C;
         let H;
         let M;
@@ -506,7 +547,7 @@ export class GostDigest {
 
         // (i + 1 + 4(k - 1)) = 8i + k      i = 0-3, k = 1-8
         function P(d) {
-            let K = new Uint8Array(32);
+            const K = new Uint8Array(32);
 
             for (let k = 0; k < 8; k++) {
                 K[4 * k] = d[k];
@@ -520,7 +561,7 @@ export class GostDigest {
 
         // A (x) = (x0 ^ x1) || x3 || x2 || x1
         function A(d) {
-            let a = new Uint8Array(8);
+            const a = new Uint8Array(8);
 
             for (let j = 0; j < 8; j++) {
                 a[j] = (d[j] ^ d[j + 8]);
@@ -534,26 +575,26 @@ export class GostDigest {
 
         // (in:) n16||..||n1 ==> (out:) n1^n2^n3^n4^n13^n16||n16||..||n2
         function fw(d) {
-            let wS = new Uint16Array(d.buffer, 0, 16);
-            let wS15 = wS[0] ^ wS[1] ^ wS[2] ^ wS[3] ^ wS[12] ^ wS[15];
+            const wS = new Uint16Array(d.buffer, 0, 16);
+            const wS15 = wS[0] ^ wS[1] ^ wS[2] ^ wS[3] ^ wS[12] ^ wS[15];
             GostDigest.arraycopy(wS, 1, wS, 0, 15);
             wS[15] = wS15;
         }
 
         // Encrypt function, ECB mode
         function encrypt(gostCipher, key, s, sOff, d, dOff) {
-            let t = new Uint8Array(8);
+            const t = new Uint8Array(8);
             GostDigest.arraycopy(d, dOff, t, 0, 8);
-            let r = new Uint8Array(gostCipher.encrypt(key, t));
+            const r = new Uint8Array(gostCipher.encrypt(key, t));
             GostDigest.arraycopy(r, 0, s, sOff, 8);
         }
 
         // block processing
         function process(gostCipher, d, dOff) {
-            let S = new Uint8Array(32);
-            let U = new Uint8Array(32);
+            const S = new Uint8Array(32);
+            const U = new Uint8Array(32);
             let V = new Uint8Array(32);
-            let W = new Uint8Array(32);
+            const W = new Uint8Array(32);
 
             GostDigest.arraycopy(d, dOff, M, 0, 32);
 
@@ -571,7 +612,7 @@ export class GostDigest {
 
             // keys step 2,3,4
             for (let i = 1; i < 4; i++) {
-                let tmpA = A(U);
+                const tmpA = A(U);
                 for (let j = 0; j < 32; j++) {
                     U[j] = (tmpA[j] ^ C[i][j]);
                 }
@@ -607,7 +648,7 @@ export class GostDigest {
         function summing(d) {
             let carry = 0;
             for (let i = 0; i < Sum.length; i++) {
-                let sum = (Sum[i] & 0xff) + (d[i] & 0xff) + carry;
+                const sum = (Sum[i] & 0xff) + (d[i] & 0xff) + carry;
 
                 Sum[i] = sum;
 
@@ -616,7 +657,7 @@ export class GostDigest {
         }
 
         // reset the chaining variables to the IV values.
-        let C2 = new Uint8Array([
+        const C2 = new Uint8Array([
             0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF,
             0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00,
             0x00, 0xFF, 0xFF, 0x00, 0xFF, 0x00, 0x00, 0xFF,
@@ -637,15 +678,15 @@ export class GostDigest {
         GostDigest.arraycopy(C2, 0, C[2], 0, C2.length);
 
         // Make data
-        let d = new Uint8Array(GostCoding.buffer(data));
+        const d = new Uint8Array(GostCoding.buffer(data));
 
-        let n = d.length;
-        let r = n % 32;
-        let q = (n - r) / 32;
+        const n = d.length;
+        const r = n % 32;
+        const q = (n - r) / 32;
 
         // Proccess full blocks
         for (let i = 0; i < q; i++) {
-            let b = new Uint8Array(d.buffer, i * 32, 32);
+            const b = new Uint8Array(d.buffer, i * 32, 32);
 
             summing(b); // calc sum M
             process(this.gostCipher, b, 0);
@@ -653,8 +694,8 @@ export class GostDigest {
 
         // load d the remadder with padding zero;
         if (r > 0) {
-            let b = new Uint8Array(d.buffer, q * 32);
-            let c = new Uint8Array(32);
+            const b = new Uint8Array(d.buffer, q * 32);
+            const c = new Uint8Array(32);
             GostDigest.arraycopy(b, 0, c, 0, r);
             summing(c); // calc sum M
             process(this.gostCipher, c, 0);
@@ -662,7 +703,7 @@ export class GostDigest {
         }
 
         // get length into L (byteCount * 8 = bitCount) in little endian.
-        let L = new Uint8Array(32);
+        const L = new Uint8Array(32);
         let n8 = n * 8;
         let k = 0;
         while (n8 > 0) {
@@ -676,70 +717,29 @@ export class GostDigest {
 
         // Swap hash for SignalCom
         if (this.procreator === 'SC') {
-            h = this.swap(h);
+            h = GostDigest.swap(h);
         }
 
         return h;
 
     }
 
-    // Swap bytes in buffer
-    swap(s) {
-        let src = new Uint8Array(s);
-        let dst = new Uint8Array(src.length);
-        for (let i = 0, n = src.length; i < n; i++) {
-            dst[n - i - 1] = src[i];
-        }
-        return dst.buffer;
-    }
-
-    // Convert BASE64 string to Uint8Array
-    // for decompression of constants and precalc values
-    b64decode(s) {
-        // s = s.replace(/[^A-Za-z0-9\+\/]/g, '');
-        let n = s.length;
-        let k = n * 3 + 1 >> 2;
-        let r = new Uint8Array(k);
-
-        for (let m3, m4, u24 = 0, j = 0, i = 0; i < n; i++) {
-            m4 = i & 3;
-            let c = s.charCodeAt(i);
-
-            c = c > 64 && c < 91 ?
-                c - 65 : c > 96 && c < 123 ?
-                    c - 71 : c > 47 && c < 58 ?
-                        c + 4 : c === 43 ?
-                            62 : c === 47 ?
-                                63 : 0;
-
-            u24 |= c << 18 - 6 * m4;
-            if (m4 === 3 || n - i === 1) {
-                for (m3 = 0; m3 < 3 && j < k; m3++, j++) {
-                    r[j] = u24 >>> (16 >>> m3 & 24) & 255;
-                }
-                u24 = 0;
-
-            }
-        }
-        return r.buffer;
-    }
-
     // Random seed
-    getSeed(length) {
-        let d = new Uint8Array(Math.ceil(length / 8));
-        this.gostCipher.gostRandom.getRandomValues(d);
+    private getSeed(length) {
+        const d = new Uint8Array(Math.ceil(length / 8));
+        GostRandom.getRandomValues(d);
         return d;
     }
 
 
-    signHMAC(key, data): ArrayBufferLike {
+    private signHMAC(key, data): ArrayBufferLike {
         // GOST R 34.11-94 - B=32b, L=32b
         // GOST R 34.11-256 - B=64b, L=32b
         // GOST R 34.11-512 - B=64b, L=64b
-        let b = (this.digest === this.digest94) ? 32 : 64;
-        let l = this.bitLength / 8;
-        let k = GostCoding.buffer(key);
-        let d = GostCoding.buffer(data);
+        const b = (this.digest === this.digest94) ? 32 : 64;
+        const l = this.bitLength / 8;
+        const k = GostCoding.buffer(key);
+        const d = GostCoding.buffer(data);
         let k0;
         if (k.byteLength === b) {
             k0 = new Uint8Array(k);
@@ -752,8 +752,8 @@ export class GostDigest {
             }
         }
         // tslint:disable-next-line:one-variable-per-declaration
-        let s0 = new Uint8Array(b + d.byteLength);
-        let s1 = new Uint8Array(b + l);
+        const s0 = new Uint8Array(b + d.byteLength);
+        const s1 = new Uint8Array(b + l);
         for (let i = 0; i < b; i++) {
             s0[i] = k0[i] ^ 0x36;
             s1[i] = k0[i] ^ 0x5C;
@@ -764,9 +764,9 @@ export class GostDigest {
     }
 
 
-    verifyHMAC(key, signature, data): boolean {
-        let hmac = new Uint8Array(this.sign(key, data));
-        let test = new Uint8Array(signature);
+    private verifyHMAC(key, signature, data): boolean {
+        const hmac = new Uint8Array(this.sign(key, data));
+        const test = new Uint8Array(signature);
         if (hmac.length !== test.length) {
             return false;
         }
@@ -779,23 +779,23 @@ export class GostDigest {
     } // </editor-fold>
 
 
-    generateKeyDefault(): ArrayBuffer {
+    private generateKeyDefault(): ArrayBuffer {
         return this.getSeed(this.bitLength).buffer;
     } // </editor-fold>
 
 
-    deriveBitsPFXKDF(baseKey, length): ArrayBuffer {
+    private deriveBitsPFXKDF(baseKey, length): ArrayBuffer {
         if (length % 8 > 0) {
             throw new Error('Length must multiple of 8');
         }
-        let u = this.bitLength / 8;
-        let v = (this.digest === this.digest94) ? 32 : 64;
-        let n = length / 8;
-        let r = this.iterations;
+        const u = this.bitLength / 8;
+        const v = (this.digest === this.digest94) ? 32 : 64;
+        const n = length / 8;
+        const r = this.iterations;
         //   1.  Construct a string, D (the "diversifier"), by concatenating v/8
         //       copies of ID.
-        let ID = this.diversifier;
-        let D = new Uint8Array(v);
+        const ID = this.diversifier;
+        const D = new Uint8Array(v);
         for (let i = 0; i < v; i++) {
             D[i] = ID;
         }
@@ -803,10 +803,10 @@ export class GostDigest {
         //       length v(ceiling(s/v)) bits (the final copy of the salt may be
         //       truncated to create S).  Note that if the salt is the empty
         //       string, then so is S.
-        let S0 = new Uint8Array(GostCoding.buffer(this.salt));
-        let s = S0.length;
-        let slen = v * Math.ceil(s / v);
-        let S = new Uint8Array(slen);
+        const S0 = new Uint8Array(GostCoding.buffer(this.salt));
+        const s = S0.length;
+        const slen = v * Math.ceil(s / v);
+        const S = new Uint8Array(slen);
         for (let i = 0; i < slen; i++) {
             S[i] = S0[i % s];
         }
@@ -814,21 +814,21 @@ export class GostDigest {
         //       of length v(ceiling(p/v)) bits (the final copy of the password
         //       may be truncated to create P).  Note that if the password is the
         //       empty string, then so is P.
-        let P0 = new Uint8Array(GostCoding.buffer(baseKey));
-        let p = P0.length;
-        let plen = v * Math.ceil(p / v);
-        let P = new Uint8Array(plen);
+        const P0 = new Uint8Array(GostCoding.buffer(baseKey));
+        const p = P0.length;
+        const plen = v * Math.ceil(p / v);
+        const P = new Uint8Array(plen);
         for (let i = 0; i < plen; i++) {
             P[i] = P0[i % p];
         }
         //   4.  Set I=S||P to be the concatenation of S and P.
-        let I = new Uint8Array(slen + plen);
+        const I = new Uint8Array(slen + plen);
         GostDigest.arraycopy(S, 0, I, 0, slen);
         GostDigest.arraycopy(P, 0, I, slen, plen);
         //   5.  Set c=ceiling(n/u).
-        let c = Math.ceil(n / u);
+        const c = Math.ceil(n / u);
         //   6.  For i=1, 2, ..., c, do the following:
-        let A = new Uint8Array(c * u);
+        const A = new Uint8Array(c * u);
         for (let i = 0; i < c; i++) {
             //  A.  Set A2=H^r(D||I). (i.e., the r-th hash of D||1,
             //      H(H(H(... H(D||I))))
@@ -841,14 +841,14 @@ export class GostDigest {
             GostDigest.arraycopy(H, 0, A, i * u, u);
             //  B.  Concatenate copies of Ai to create a string B of length v
             //      bits (the final copy of Ai may be truncated to create B).
-            let B = new Uint8Array(v);
+            const B = new Uint8Array(v);
             for (let j = 0; j < v; j++) {
                 B[j] = H[j % u];
             }
             //  C.  Treating I as a concatenation I_0, I_1, ..., I_(k-1) of v-bit
             //      blocks, where k=ceiling(s/v)+ceiling(p/v), modify I by
             //      setting I_j=(I_j+B+1) mod 2^v for each j.
-            let k = (slen + plen) / v;
+            const k = (slen + plen) / v;
             for (let j = 0; j < k; j++) {
                 let cf = 1;
                 let w;
@@ -862,29 +862,29 @@ export class GostDigest {
         //   7.  Concatenate A_1, A_2, ..., A_c together to form a pseudorandom
         //       bit string, A.
         //   8.  Use the first n bits of A as the output of this entire process.
-        let R = new Uint8Array(n);
+        const R = new Uint8Array(n);
         GostDigest.arraycopy(A, 0, R, 0, n);
         return R.buffer;
     }
 
 
-    deriveBitsKDF(baseKey, length) {
+    private deriveBitsKDF(baseKey, length) {
         if (length % 8 > 0) {
             throw new Error('Length must be multiple of 8');
         }
-        let rlen = length / 8;
+        const rlen = length / 8;
         let label;
-        let context = new Uint8Array(GostCoding.buffer(this.context));
-        let blen = this.bitLength / 8;
-        let n = Math.ceil(rlen / blen);
+        const context = new Uint8Array(GostCoding.buffer(this.context));
+        const blen = this.bitLength / 8;
+        const n = Math.ceil(rlen / blen);
         if (this.label) {
             label = new Uint8Array(GostCoding.buffer(this.label));
         } else {
             label = new Uint8Array([0x26, 0xBD, 0xB8, 0x78]);
         }
-        let result = new Uint8Array(rlen);
+        const result = new Uint8Array(rlen);
         for (let i = 0; i < n; i++) {
-            let data = new Uint8Array(label.length + context.length + 4);
+            const data = new Uint8Array(label.length + context.length + 4);
             data[0] = i + 1;
             data.set(label, 1);
             data[label.length + 1] = 0x00;
@@ -898,19 +898,19 @@ export class GostDigest {
     } // </editor-fold>
 
 
-    deriveBitsPBKDF1(baseKey, length) {
+    private deriveBitsPBKDF1(baseKey, length) {
         if (length < this.bitLength / 2 || length % 8 > 0) {
             throw new Error('Length must be more than ' + this.bitLength / 2 + ' bits and multiple of 8');
         }
-        let hLen = this.bitLength / 8;
-        let dkLen = length / 8;
-        let c = this.iterations;
-        let P = new Uint8Array(GostCoding.buffer(baseKey));
-        let S = new Uint8Array(GostCoding.buffer(this.salt));
-        let slen = S.length;
-        let plen = P.length;
+        const hLen = this.bitLength / 8;
+        const dkLen = length / 8;
+        const c = this.iterations;
+        const P = new Uint8Array(GostCoding.buffer(baseKey));
+        const S = new Uint8Array(GostCoding.buffer(this.salt));
+        const slen = S.length;
+        const plen = P.length;
         let T = new Uint8Array(plen + slen);
-        let DK = new Uint8Array(dkLen);
+        const DK = new Uint8Array(dkLen);
         if (dkLen > hLen) {
             throw new Error('Invalid parameters: Length value');
         }
@@ -924,26 +924,26 @@ export class GostDigest {
     } // </editor-fold>
 
 
-    deriveBitsPBKDF2(baseKey, length): ArrayBuffer {
-        let diversifier = this.diversifier || 1; // For PKCS12 MAC required 3*length
+    private deriveBitsPBKDF2(baseKey, length): ArrayBuffer {
+        const diversifier = this.diversifier || 1; // For PKCS12 MAC required 3*length
         length = length * diversifier;
         if (length < this.bitLength / 2 || length % 8 > 0) {
             throw new Error('Length must be more than ' + this.bitLength / 2 + ' bits and multiple of 8');
         }
-        let hLen = this.bitLength / 8;
-        let dkLen = length / 8;
-        let c = this.iterations;
-        let P = new Uint8Array(GostCoding.buffer(baseKey));
-        let S = new Uint8Array(GostCoding.buffer(this.salt));
-        let slen = S.byteLength;
-        let data = new Uint8Array(slen + 4);
+        const hLen = this.bitLength / 8;
+        const dkLen = length / 8;
+        const c = this.iterations;
+        const P = new Uint8Array(GostCoding.buffer(baseKey));
+        const S = new Uint8Array(GostCoding.buffer(this.salt));
+        const slen = S.byteLength;
+        const data = new Uint8Array(slen + 4);
         GostDigest.arraycopy(S, 0, data, 0, slen);
 
         if (dkLen > (0xffffffff - 1) * 32) {
             throw new Error('Invalid parameters: Length value');
         }
-        let n = Math.ceil(dkLen / hLen);
-        let DK = new Uint8Array(dkLen);
+        const n = Math.ceil(dkLen / hLen);
+        const DK = new Uint8Array(dkLen);
         for (let i = 1; i <= n; i++) {
             data[slen] = i >>> 24 & 0xff;
             data[slen + 1] = i >>> 16 & 0xff;
@@ -951,19 +951,19 @@ export class GostDigest {
             data[slen + 3] = i & 0xff;
 
             let U = new Uint8Array(this.signHMAC(P, data));
-            let Z = U;
+            const Z = U;
             for (let j = 1; j < c; j++) {
                 U = new Uint8Array(this.signHMAC(P, U));
                 for (let k = 0; k < hLen; k++) {
                     Z[k] = U[k] ^ Z[k];
                 }
             }
-            let ofs = (i - 1) * hLen;
+            const ofs = (i - 1) * hLen;
             GostDigest.arraycopy(Z, 0, DK, ofs, Math.min(hLen, dkLen - ofs));
         }
         if (diversifier > 1) {
-            let rLen = dkLen / diversifier;
-            let R = new Uint8Array(rLen);
+            const rLen = dkLen / diversifier;
+            const R = new Uint8Array(rLen);
             GostDigest.arraycopy(DK, dkLen - rLen, R, 0, rLen);
             return R.buffer;
         } else {
@@ -972,20 +972,20 @@ export class GostDigest {
     } // </editor-fold>
 
 
-    deriveBitsCP(baseKey, length) {
+    private deriveBitsCP(baseKey, length) {
         if (length > this.bitLength || length % 8 > 0) {
             throw new Error('Length can\'t be more than ' + this.bitLength + ' bits and multiple of 8');
         }
         // GOST R 34.11-94 - B=32b, L=32b
         // GOST R 34.11-256 - B=64b, L=32b
         // GOST R 34.11-512 - B=64b, L=64b
-        let b = (this.digest === this.digest94) ? 32 : 64;
-        let l = this.bitLength / 8;
-        let p = baseKey && baseKey.byteLength > 0 ? new Uint8Array(GostCoding.buffer(baseKey)) : false;
-        let plen = p ? p.length : 0;
-        let iterations = this.iterations;
-        let salt = new Uint8Array(GostCoding.buffer(this.salt));
-        let slen = salt.length;
+        const b = (this.digest === this.digest94) ? 32 : 64;
+        const l = this.bitLength / 8;
+        const p = baseKey && baseKey.byteLength > 0 ? new Uint8Array(GostCoding.buffer(baseKey)) : false;
+        const plen = p ? p.length : 0;
+        const iterations = this.iterations;
+        const salt = new Uint8Array(GostCoding.buffer(this.salt));
+        const slen = salt.length;
         let d = new Uint8Array(slen + plen);
         GostDigest.arraycopy(salt, 0, d, 0, slen);
         if (p) {
@@ -993,10 +993,10 @@ export class GostDigest {
         }
 
         let h = new Uint8Array(this.digest(d));
-        let k = new Uint8Array(b);
-        let s0 = new Uint8Array(b);
-        let s1 = new Uint8Array(b);
-        let c = 'DENEFH028.760246785.IUEFHWUIO.EF';
+        const k = new Uint8Array(b);
+        const s0 = new Uint8Array(b);
+        const s1 = new Uint8Array(b);
+        const c = 'DENEFH028.760246785.IUEFHWUIO.EF';
         for (let i = 0; i < c.length; i++) {
             k[i] = c.charCodeAt(i);
         }
@@ -1030,18 +1030,16 @@ export class GostDigest {
         if (length === this.bitLength) {
             return h;
         } else {
-            let rlen = length / 8;
-            let r = new Uint8Array(rlen);
+            const rlen = length / 8;
+            const r = new Uint8Array(rlen);
             GostDigest.arraycopy(h, 0, r, 0, rlen);
             return r.buffer;
         }
     }
 
 
-    deriveKeyDefault(baseKey): ArrayBuffer {
+    private deriveKeyDefault(baseKey): ArrayBuffer {
         return this.deriveBits(baseKey, this.keySize * 8);
     }
-
-
 }
 

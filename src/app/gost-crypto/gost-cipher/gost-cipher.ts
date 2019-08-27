@@ -21,21 +21,21 @@ export class GostCipher {
     public sign: (k, d, iv) => ArrayBuffer;
     public verify: (k, m, d, iv) => boolean;
     public generateKey: () => {};
-    name: string;
     /*
     * selected from algorithm
     * */
+    public name: string;
     private keySize: number;
     private blockLength: number;
     private blockSize: number;
-    private procreator;
+    private procreator: string;
     private version: number;
     private effectiveLength: number;
     private shiftBits: number;
     private macLength: number;
     private sBox: Uint8Array;
     private iv: Uint8Array;
-    private ukm;
+    private ukm: Uint8Array;
     /*some constants*/
     private multTableCalculated = GostCipher.multTable();
     private defaultIV = new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0]);
@@ -171,7 +171,7 @@ export class GostCipher {
         89, 166, 116, 210, 230, 244, 180, 192, 209, 102, 175, 194, 57, 75, 99, 182
     ];
 
-    constructor(public gostRandom: GostRandom, public algorithm: AlgorithmIndentifier) {
+    constructor(public algorithm: AlgorithmIndentifier) {
 
         // Check little endian support
         if (!GostCipher.littleEndian()) {
@@ -593,7 +593,7 @@ export class GostCipher {
     }
 
     private randomSeed(randonArray): void {
-        this.gostRandom.getRandomValues(randonArray);
+        GostRandom.getRandomValues(randonArray);
     }
 
     private funcR(d): void {

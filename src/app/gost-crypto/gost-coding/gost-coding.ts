@@ -19,54 +19,36 @@ export class Hex {
 
 
     public static decode(s: string): ArrayBufferLike {
-        let endean;
 
         s = s.replace(/[^A-fa-f0-9]/g, '');
-        let n = Math.ceil(s.length / 2);
-        let r = new Uint8Array(n);
+        const n = Math.ceil(s.length / 2);
+        const r = new Uint8Array(n);
         s = (s.length % 2 > 0 ? '0' : '') + s;
-        if (endean && ((typeof endean !== 'string') ||
-            (endean.toLowerCase().indexOf('little') < 0))) {
-            for (let i = 0; i < n; i++) {
-                r[i] = parseInt(s.substr((n - i - 1) * 2, 2), 16);
-            }
-        } else {
-            for (let i = 0; i < n; i++) {
-                r[i] = parseInt(s.substr(i * 2, 2), 16);
-            }
+        for (let i = 0; i < n; i++) {
+            r[i] = parseInt(s.substr(i * 2, 2), 16);
         }
         return r.buffer;
     }
 
     public static encode(data: ArrayBuffer): string {
-        let endean;
-        let s = [];
-        let d = new Uint8Array(GostCoding.buffer(data));
-        let n = d.length;
-        if (endean && ((typeof endean !== 'string') ||
-            (endean.toLowerCase().indexOf('little') < 0))) {
-            for (let i = 0; i < n; i++) {
-                let j = n - i - 1;
-                s[j] = (j > 0 && j % 32 === 0 ? '\r\n' : '') +
-                    ('00' + d[i].toString(16)).slice(-2);
-            }
-        } else {
-            for (let i = 0; i < n; i++) {
-                s[i] = (i > 0 && i % 32 === 0 ? '\r\n' : '') +
-                    ('00' + d[i].toString(16)).slice(-2);
-            }
+        const s = [];
+        const d = new Uint8Array(GostCoding.buffer(data));
+        const n = d.length;
+        for (let i = 0; i < n; i++) {
+            s[i] = (i > 0 && i % 32 === 0 ? '\r\n' : '') +
+                ('00' + d[i].toString(16)).slice(-2);
         }
         return s.join('');
-    } // </editor-fold>
+    }
 }
 
 export class Base64 {
 
     public static decode(s: string): ArrayBufferLike {
         s = s.replace(/[^A-Za-z0-9\+\/]/g, '');
-        let n = s.length;
-        let k = n * 3 + 1 >> 2;
-        let r = new Uint8Array(k);
+        const n = s.length;
+        const k = n * 3 + 1 >> 2;
+        const r = new Uint8Array(k);
 
         for (let m3, m4, u24 = 0, j = 0, i = 0; i < n; i++) {
             m4 = i & 3;
@@ -92,8 +74,8 @@ export class Base64 {
     }
 
     public static encode(data): string {
-        let slen = 8;
-        let d = new Uint8Array(GostCoding.buffer(data));
+        const slen = 8;
+        const d = new Uint8Array(GostCoding.buffer(data));
         let m3 = 2;
         let s = '';
         for (let n = d.length, u24 = 0, i = 0; i < n; i++) {
@@ -183,18 +165,19 @@ export class Chars {
         0x455: 0xBE,
         0x457: 0xBf
     };
-/*
-    static win1251back = {
 
-    };
-*/
+    /*
+        static win1251back = {
+
+        };
+    */
 
     constructor() {
     }
 
     public static decode(s, charset) {
         charset = (charset || 'win1251').toLowerCase().replace('-', '');
-        let r = [];
+        const r = [];
         for (let i = 0, j = s.length; i < j; i++) {
             let c = s.charCodeAt(i);
             if (charset === 'utf8') {
@@ -232,8 +215,8 @@ export class Chars {
                     r.push(c & 0xff);
                 } else if (c >= 0x10000 && c < 0x110000) {
                     c -= 0x10000;
-                    let first = ((0xffc00 & c) >> 10) + 0xD800;
-                    let second = (0x3ff & c) + 0xDC00;
+                    const first = ((0xffc00 & c) >> 10) + 0xD800;
+                    const second = (0x3ff & c) + 0xDC00;
                     r.push(first >>> 8);
                     r.push(first & 0xff);
                     r.push(second >>> 8);
@@ -263,8 +246,8 @@ export class Chars {
 
     public static encode(data, charset: string): string {
         charset = (charset || 'win1251').toLowerCase().replace('-', '');
-        let r = [];
-        let d = new Uint8Array(GostCoding.buffer(data));
+        const r = [];
+        const d = new Uint8Array(GostCoding.buffer(data));
         for (let i = 0, n = d.length; i < n; i++) {
             let c = d[i];
             if (charset === 'utf8') {
@@ -283,10 +266,10 @@ export class Chars {
             } else if (charset === 'unicode' || charset === 'ucs2' || charset === 'utf16') {
                 c = (c << 8) + d[++i];
                 if (c >= 0xD800 && c < 0xE000) {
-                    let first = (c - 0xD800) << 10;
+                    const first = (c - 0xD800) << 10;
                     c = d[++i];
                     c = (c << 8) + d[++i];
-                    let second = c - 0xDC00;
+                    const second = c - 0xDC00;
                     c = first + second + 0x10000;
                 }
             } else if (charset === 'utf32' || charset === 'ucs4') {
@@ -309,8 +292,7 @@ export class Chars {
 }
 
 
-
-export class Int16  {
+export class Int16 {
 
     public static decode(s: string): ArrayBufferLike {
         s = (s || '').replace(/[^\-A-fa-f0-9]/g, '');
@@ -336,8 +318,8 @@ export class Int16  {
             s = '00' + s;
         }
         // Convert hex
-        let n = s.length / 2;
-        let r = new Uint8Array(n);
+        const n = s.length / 2;
+        const r = new Uint8Array(n);
         let t = 0;
         for (let i = n - 1; i >= 0; --i) {
             let c = parseInt(s.substr(i * 2, 2), 16);
@@ -352,13 +334,13 @@ export class Int16  {
 
 
     public static encode(data: Uint16Array): string {
-        let d = new Uint8Array(GostCoding.buffer(data));
-        let n = d.length;
+        const d = new Uint8Array(GostCoding.buffer(data));
+        const n = d.length;
         if (d.length === 0) {
             return '0x00';
         }
         let s = [];
-        let neg = d[0] > 0x7f;
+        const neg = d[0] > 0x7f;
         let t = 0;
         for (let i = n - 1; i >= 0; --i) {
             let v = d[i];
@@ -379,17 +361,18 @@ export class Int16  {
         return (neg ? '-' : '') + '0x' + s;
     }
 }
+
 export class PEM {
 
-    encode(data, name) {
+    public static encode(data, name) {
         return (name ? '-----BEGIN ' + name.toUpperCase() + '-----\r\n' : '') +
             Base64.encode(data instanceof ArrayBuffer ? data : BER.encode(data, undefined, undefined)) +
             (name ? '\r\n-----END ' + name.toUpperCase() + '-----' : '');
     }
 
-    decode(s, name, deep, index) {
+    public static decode(s, name, deep, index) {
         // Try clear base64
-        let re1 = /([A-Za-z0-9\+\/\s\=]+)/g;
+        const re1 = /([A-Za-z0-9\+\/\s\=]+)/g;
         let valid = re1.exec(s);
         if (valid[1].length !== s.length) {
             // @ts-ignore
@@ -397,7 +380,7 @@ export class PEM {
         }
         if (!valid && name) {
             // Try with the name
-            let re2 = new RegExp(
+            const re2 = new RegExp(
                 '-----\\s?BEGIN ' + name.toUpperCase() +
                 '-----([A-Za-z0-9\\+\\/\\s\\=]+)-----\\s?END ' +
                 name.toUpperCase() + '-----', 'g');
@@ -405,17 +388,17 @@ export class PEM {
         }
         if (!valid) {
             // Try with some name
-            let re3 = new RegExp(
+            const re3 = new RegExp(
                 '-----\\s?BEGIN [A-Z0-9\\s]+' +
                 '-----([A-Za-z0-9\\+\\/\\s\\=]+)-----\\s?END ' +
                 '[A-Z0-9\\s]+-----', 'g');
             valid = re3.exec(s);
         }
-        let r = valid && valid[1 + (index || 0)];
+        const r = valid && valid[1 + (index || 0)];
         if (!r) {
             throw new Error('Not valid PEM format');
         }
-        let out = Base64.decode(r);
+        const out = Base64.decode(r);
         if (deep) {
             return BER.decode(out);
         }
@@ -443,7 +426,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
         }
         let tagNumber;
         // Determinate tagClass
-        let tagClass = source.tagClass = source.tagClass || 0; // Universial default
+        const tagClass = source.tagClass = source.tagClass || 0; // Universial default
 
         // Determinate tagNumber. Use only for Universal class
         if (tagClass === 0) {
@@ -493,7 +476,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
             content = new Uint8Array(GostCoding.buffer(object));
             if (tagNumber === 0x03) { // BITSTRING
                 // Set unused bits
-                let a = new Uint8Array(GostCoding.buffer(content));
+                const a = new Uint8Array(GostCoding.buffer(content));
                 content = new Uint8Array(a.length + 1);
                 content[0] = 0; // No unused bits
                 content.set(a, 1);
@@ -501,8 +484,9 @@ export class BER { // <editor-fold defaultstate="collapsed">
         } else if (tagConstructed) { // Sub items coding
             if (object instanceof Array) {
                 let bytelen = 0;
-                let ba = [];
+                const ba = [];
                 let offset = 0;
+                // tslint:disable-next-line:prefer-const
                 let n;
                 for (let i = 0, n = object.length; i < n; i++) {
                     ba[i] = this.encodeBER(object[i], format, undefined);
@@ -511,7 +495,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
                 if (tagNumber === 0x11) {
                     ba.sort((a, b) => { // Sort order for SET components
                         for (let i = 0, n = Math.min(a.length, b.length); i < n; i++) {
-                            let r = a[i] - b[i];
+                            const r = a[i] - b[i];
                             if (r !== 0) {
                                 return r;
                             }
@@ -545,14 +529,14 @@ export class BER { // <editor-fold defaultstate="collapsed">
                     break;
                 case 0x03: // BIT STRING
                     if (typeof object === 'string') {
-                        let unusedBits = 7 - (object.length + 7) % 8;
-                        let n = Math.ceil(object.length / 8);
+                        const unusedBits = 7 - (object.length + 7) % 8;
+                        const n = Math.ceil(object.length / 8);
                         content = new Uint8Array(n + 1);
                         content[0] = unusedBits;
                         for (let i = 0; i < n; i++) {
                             let c = 0;
                             for (let j = 0; j < 8; j++) {
-                                let k = i * 8 + j;
+                                const k = i * 8 + j;
                                 c = (c << 1) + (k < object.length ? (object.charAt(k) === '1' ? 1 : 0) : 0);
                             }
                             content[i + 1] = c;
@@ -565,11 +549,11 @@ export class BER { // <editor-fold defaultstate="collapsed">
                     break;
                 // case 0x05: // NULL
                 case 0x06: // OBJECT IDENTIFIER
-                    let a = object.match(/\d+/g);
-                    let r = [];
+                    const a = object.match(/\d+/g);
+                    const r = [];
                     for (let i = 1; i < a.length; i++) {
                         let n = +a[i];
-                        let r1 = [];
+                        const r1 = [];
                         if (i === 1) {
                             n = n + a[0] * 40;
                         }
@@ -618,7 +602,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
                 case 0x18: // GeneralizedTime
                     let result = object.original;
                     if (!result) {
-                        let date = new Date(object);
+                        const date = new Date(object);
                         date.setMinutes(date.getMinutes() + date.getTimezoneOffset()); // to UTC
                         let ms = tagNumber === 0x18 ? date.getMilliseconds().toString() : ''; // Milliseconds, remove trailing zeros
                         while (ms.length > 0 && ms.charAt(ms.length - 1) === '0') {
@@ -673,10 +657,11 @@ export class BER { // <editor-fold defaultstate="collapsed">
                 case 0x1E: // BMPString
                     k = k || 0;
                     // Split content on 1000 octet len parts
-                    let size = 1000;
+                    const size = 1000;
                     let bytelen = 0;
-                    let ba = [];
+                    const ba = [];
                     let offset = 0;
+                    // tslint:disable-next-line:prefer-const
                     let n;
                     for (let i = k, n = content.length; i < n; i += size - k) {
                         ba[i] = BER.encodeBER({
@@ -711,7 +696,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
 
         // Create header
         // tagNumber
-        let ha = [];
+        const ha = [];
         let first = tagClass === 3 ? 0xC0 : tagClass === 2 ? 0x80 :
             tagClass === 1 ? 0x40 : 0x00;
         if (tagConstructed) {
@@ -724,7 +709,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
             first |= 0x1F;
             ha.push(first);
             let n = tagNumber;
-            let ha1 = [];
+            const ha1 = [];
             do {
                 ha1.push(n & 0x7F);
                 n = n >>> 7;
@@ -738,10 +723,10 @@ export class BER { // <editor-fold defaultstate="collapsed">
         if (tagConstructed && format === 'CER') {
             ha.push(0x80);
         } else {
-            let len = content.length;
+            const len = content.length;
             if (len > 0x7F) {
                 let l2 = len;
-                let ha2 = [];
+                const ha2 = [];
                 do {
                     ha2.push(l2 & 0xff);
                     l2 = l2 >>> 8;
@@ -755,16 +740,14 @@ export class BER { // <editor-fold defaultstate="collapsed">
                 ha.push(len);
             }
         }
-        let header = source.header = new Uint8Array(ha);
+        const header = source.header = new Uint8Array(ha);
 
         // Result - complete buffer
-        let block = new Uint8Array(header.length + content.length);
+        const block = new Uint8Array(header.length + content.length);
         block.set(header, 0);
         block.set(content, header.length);
         return block;
     }
-
-
 
 
     public static decodeBER(source, offset) {
@@ -794,7 +777,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
             len = buffer && buffer.length || null;
         } else {
             // Decode header
-            let d = source;
+            const d = source;
 
             // Read tag
             let buf = d[pos++];
@@ -838,9 +821,9 @@ export class BER { // <editor-fold defaultstate="collapsed">
                 sub = [];
                 if (len !== null) {
                     // definite length
-                    let end = start + len;
+                    const end = start + len;
                     while (pos < end) {
-                        let s = BER.decodeBER(d, pos);
+                        const s = BER.decodeBER(d, pos);
                         sub.push(s);
                         pos += s.header.length + s.content.length;
                     }
@@ -850,8 +833,8 @@ export class BER { // <editor-fold defaultstate="collapsed">
                 } else {
                     // undefined length
                     try {
-                        for (; ; ) {
-                            let s = BER.decodeBER(d, pos);
+                        for (; ;) {
+                            const s = BER.decodeBER(d, pos);
                             pos += s.header.length + s.content.length;
                             if (s.tagClass === 0x00 && s.tagNumber === 0x00) {
                                 break;
@@ -897,7 +880,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
                     }
                     len = k;
                     for (let i = 0, n = sub.length; i < n; i++) {
-                        let s = sub[i];
+                        const s = sub[i];
                         if (s.tagClass !== tagClass || s.tagNumber !== tagNumber || s.tagConstructed) {
                             throw new Error('Invalid constructed encoding of string type at offset ' + start);
                         }
@@ -905,7 +888,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
                     }
                     buffer = new Uint8Array(len);
                     for (let i = 0, n = sub.length, j = k; i < n; i++) {
-                        let s = sub[i];
+                        const s = sub[i];
                         if (k > 0) {
                             buffer.set(s.content.subarray(1), j);
                         } else {
@@ -949,11 +932,11 @@ export class BER { // <editor-fold defaultstate="collapsed">
                         if (len > 5) { // Content buffer
                             object = new Uint8Array(buffer.subarray(1)).buffer;
                         } else { // Max bit mask only for 32 bit
-                            let unusedBit = buffer[0];
+                            const unusedBit = buffer[0];
                             let skip = unusedBit;
-                            let s = [];
+                            const s = [];
                             for (let i = len - 1; i >= 1; --i) {
-                                let b = buffer[i];
+                                const b = buffer[i];
                                 for (let j = skip; j < 8; ++j) {
                                     s.push((b >> j) & 1 ? '1' : '0');
                                 }
@@ -971,12 +954,12 @@ export class BER { // <editor-fold defaultstate="collapsed">
                         let n = 0;
                         let bits = 0;
                         for (let i = 0; i < len; ++i) {
-                            let v = buffer[i];
+                            const v = buffer[i];
                             n = (n << 7) + (v & 0x7F);
                             bits += 7;
                             if (!(v & 0x80)) { // finished
                                 if (ss === '') {
-                                    let m = n < 80 ? n < 40 ? 0 : 1 : 2;
+                                    const m = n < 80 ? n < 40 ? 0 : 1 : 2;
                                     ss = m + '.' + (n - m * 40);
                                 } else {
                                     ss += '.' + n.toString();
@@ -1020,9 +1003,9 @@ export class BER { // <editor-fold defaultstate="collapsed">
                         break;
                     case 0x17: // UTCTime
                     case 0x18: // GeneralizedTime
-                        let shortYear = tagNumber === 0x17;
-                        let sss = Chars.encode(buffer, 'ascii');
-                        let m = (shortYear ?
+                        const shortYear = tagNumber === 0x17;
+                        const sss = Chars.encode(buffer, 'ascii');
+                        const m = (shortYear ?
                             // tslint:disable-next-line:max-line-length
                             /^(\d\d)(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])([01]\d|2[0-3])(?:([0-5]\d)(?:([0-5]\d)(?:[.,](\d{1,3}))?)?)?(Z|[-+](?:[0]\d|1[0-2])([0-5]\d)?)?$/ :
                             // tslint:disable-next-line:max-line-length
@@ -1039,7 +1022,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
                             m[1] += (m[1] < 50) ? 2000 : 1900;
                         }
                         // @ts-ignore
-                        let dt = new Date(m[1], +m[2] - 1, +m[3], +(m[4] || '0'), +(m[5] || '0'), +(m[6] || '0'), +(m[7] || '0'));
+                        const dt = new Date(m[1], +m[2] - 1, +m[3], +(m[4] || '0'), +(m[5] || '0'), +(m[6] || '0'), +(m[7] || '0'));
                         let tz = dt.getTimezoneOffset();
                         if (m[8] || tagNumber === 0x17) {
                             if (m[8].toUpperCase() !== 'Z' && m[9]) {
