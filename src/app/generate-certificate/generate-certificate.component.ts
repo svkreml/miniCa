@@ -4,7 +4,7 @@ import {Alg} from '../dto/algs.enum';
 
 
 import {CertDto} from '../dto/cert-dto';
-import {GostRandom} from '../gost-crypto/gost-random';
+import {GostRandom} from '../gost-crypto/gost-random/gost-random';
 
 @Component({
   selector: 'app-generate-certificate',
@@ -26,7 +26,6 @@ export class GenerateCertificateComponent implements OnInit {
   onSubmit() {
     const a = new Uint8Array(10);
 
-    GostRandom.getRandomValues(a);
 
     console.log(a);
   }

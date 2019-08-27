@@ -1,7 +1,7 @@
-import {GostCipher} from './gost-cipher';
-import {GostRandom} from './gost-random';
-import {GostCoding} from './gost-coding';
-import {AlgorithmIndentifier} from '../dto/algorithm-indentifier';
+import {GostCipher} from '../gost-cipher/gost-cipher';
+import {GostRandom} from '../gost-random/gost-random';
+import {GostCoding} from '../gost-coding/gost-coding';
+import {AlgorithmIndentifier} from '../../dto/algorithm-indentifier';
 
 export class GostDigest {
     gostCipher: GostCipher;

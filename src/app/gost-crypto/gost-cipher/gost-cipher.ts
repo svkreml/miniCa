@@ -1,6 +1,6 @@
-import {GostRandom} from './gost-random';
-import {AlgorithmIndentifier} from '../dto/algorithm-indentifier';
-import {GostCoding} from './gost-coding';
+import {GostRandom} from '../gost-random/gost-random';
+import {AlgorithmIndentifier} from '../../dto/algorithm-indentifier';
+import {GostCoding} from '../gost-coding/gost-coding';
 
 
 export class GostCipher {
