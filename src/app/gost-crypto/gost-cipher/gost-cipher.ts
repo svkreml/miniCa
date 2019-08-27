@@ -540,9 +540,9 @@ export class GostCipher {
 
     private static processKeyMAC15(s) {
         let t = 0;
-        let n = s.length;
+        const n = s.length;
         for (let i = n - 1; i >= 0; --i) {
-            let t1 = s[i] >>> 7;
+            const t1 = s[i] >>> 7;
             s[i] = (s[i] << 1) & 0xff | t;
             t = t1;
         }
@@ -556,10 +556,10 @@ export class GostCipher {
     }
 
     private static maskKey(mask, key, inverse, keySize) {
-        let k = keySize / 4;
-        let m32 = new Int32Array(GostCoding.buffer(mask));
-        let k32 = new Int32Array(GostCoding.buffer(key));
-        let r32 = new Int32Array(k);
+        const k = keySize / 4;
+        const m32 = new Int32Array(GostCoding.buffer(mask));
+        const k32 = new Int32Array(GostCoding.buffer(key));
+        const r32 = new Int32Array(k);
         if (inverse) {
             for (let i = 0; i < k; i++) {
                 r32[i] = (k32[i] + m32[i]) & 0xffffffff;
@@ -581,7 +581,7 @@ export class GostCipher {
     }
 
     private static bitUnpad(d: Uint8Array): Uint8Array {
-        let m = d.byteLength;
+        const m = d.byteLength;
         let n = m;
         while (n > 1 && d[n - 1] === 0) {
             n--;
@@ -590,7 +590,7 @@ export class GostCipher {
             throw Error('Invalid padding');
         }
         n--;
-        let r = new Uint8Array(n);
+        const r = new Uint8Array(n);
         if (n > 0) {
             r.set(new Uint8Array(d.buffer, 0, n));
         }
@@ -897,13 +897,13 @@ export class GostCipher {
 
     private encryptCFB(k, d, iv) {
         const s = new Uint8Array(iv || this.iv);
-        let c = GostCipher.cloneArray(d);
-        let m = s.length;
-        let t = new Uint8Array(m);
-        let b = this.shiftBits >> 3;
-        let cb = c.length;
-        let r = cb % b;
-        let q = (cb - r) / b;
+        const c = GostCipher.cloneArray(d);
+        const m = s.length;
+        const t = new Uint8Array(m);
+        const b = this.shiftBits >> 3;
+        const cb = c.length;
+        const r = cb % b;
+        const q = (cb - r) / b;
 
         const key = this.keySchedule(k, undefined);
 
@@ -941,15 +941,15 @@ export class GostCipher {
     }
 
     private decryptCFB(k, d, iv) {
-        let s = new Uint8Array(iv || this.iv);
-        let c = GostCipher.cloneArray(d);
-        let m = s.length;
-        let t = new Uint8Array(m);
-        let b = this.shiftBits >> 3;
-        let cb = c.length;
-        let r = cb % b;
-        let q = (cb - r) / b;
-        let key = this.keySchedule(k, undefined);
+        const s = new Uint8Array(iv || this.iv);
+        const c = GostCipher.cloneArray(d);
+        const m = s.length;
+        const t = new Uint8Array(m);
+        const b = this.shiftBits >> 3;
+        const cb = c.length;
+        const r = cb % b;
+        const q = (cb - r) / b;
+        const key = this.keySchedule(k, undefined);
 
         for (let i = 0; i < q; i++) {
 
@@ -986,16 +986,16 @@ export class GostCipher {
     }
 
     private processOFB(k, d, iv): ArrayBuffer {
-        let s = new Uint8Array(iv || this.iv);
-        let c = GostCipher.cloneArray(d);
-        let m = s.length;
-        let t = new Uint8Array(m);
-        let b = this.shiftBits >> 3;
-        let p = new Uint8Array(b);
-        let cb = c.length;
-        let r = cb % b;
-        let q = (cb - r) / b;
-        let key = this.keySchedule(k, undefined);
+        const s = new Uint8Array(iv || this.iv);
+        const c = GostCipher.cloneArray(d);
+        const m = s.length;
+        const t = new Uint8Array(m);
+        const b = this.shiftBits >> 3;
+        const p = new Uint8Array(b);
+        const cb = c.length;
+        const r = cb % b;
+        const q = (cb - r) / b;
+        const key = this.keySchedule(k, undefined);
 
         for (let i = 0; i < q; i++) {
 
@@ -1035,22 +1035,22 @@ export class GostCipher {
     }
 
     private processCTR89(k, d, iv): ArrayBuffer {
-        let s = new Uint8Array(iv || this.iv);
-        let c = GostCipher.cloneArray(d);
-        let b = this.blockSize;
-        let t = new Int8Array(b);
-        let cb = c.length;
-        let r = cb % b;
-        let q = (cb - r) / b;
-        let key = this.keySchedule(k, undefined);
-        let syn = new Int32Array(s.buffer);
+        const s = new Uint8Array(iv || this.iv);
+        const c = GostCipher.cloneArray(d);
+        const b = this.blockSize;
+        const t = new Int8Array(b);
+        const cb = c.length;
+        const r = cb % b;
+        const q = (cb - r) / b;
+        const key = this.keySchedule(k, undefined);
+        const syn = new Int32Array(s.buffer);
 
         this.process(key, s, undefined, undefined);
 
         for (let i = 0; i < q; i++) {
             syn[0] = (syn[0] + 0x1010101) & 0xffffffff;
             // syn[1] = signed(unsigned((syn[1] + 0x1010104) & 0xffffffff) % 0xffffffff);
-            let tmp = GostCipher.unsigned(syn[1]) + 0x1010104; // Special thanks to Ilya Matveychikov
+            const tmp = GostCipher.unsigned(syn[1]) + 0x1010104; // Special thanks to Ilya Matveychikov
             syn[1] = GostCipher.signed(tmp < 0x100000000 ? tmp : tmp - 0xffffffff);
 
             for (let j = 0; j < b; j++) {
@@ -1072,7 +1072,7 @@ export class GostCipher {
         if (r > 0) {
             syn[0] = (syn[0] + 0x1010101) & 0xffffffff;
             // syn[1] = signed(unsigned((syn[1] + 0x1010104) & 0xffffffff) % 0xffffffff);
-            let tmp = GostCipher.unsigned(syn[1]) + 0x1010104; // Special thanks to Ilya Matveychikov
+            const tmp = GostCipher.unsigned(syn[1]) + 0x1010104; // Special thanks to Ilya Matveychikov
             syn[1] = GostCipher.signed(tmp < 0x100000000 ? tmp : tmp - 0xffffffff);
 
             this.process(key, syn, undefined, undefined);
@@ -1085,15 +1085,15 @@ export class GostCipher {
     }
 
     private processCTR15(k, d, iv): ArrayBuffer {
-        let c = GostCipher.cloneArray(d);
-        let n = this.blockSize;
-        let b = this.shiftBits >> 3;
-        let cb = c.length;
-        let r = cb % b;
-        let q = (cb - r) / b;
-        let s = new Uint8Array(n);
-        let t = new Int32Array(n);
-        let key = this.keySchedule(k, undefined);
+        const c = GostCipher.cloneArray(d);
+        const n = this.blockSize;
+        const b = this.shiftBits >> 3;
+        const cb = c.length;
+        const r = cb % b;
+        const q = (cb - r) / b;
+        const s = new Uint8Array(n);
+        const t = new Int32Array(n);
+        const key = this.keySchedule(k, undefined);
 
         s.set(iv || this.iv);
         for (let i = 0; i < q; i++) {
@@ -1112,7 +1112,7 @@ export class GostCipher {
                 s[j] = t[j];
             }
 
-            for (let j = n - 1; i >= 0; --i) {
+            for (const j = n - 1; i >= 0; --i) {
                 if (s[j] > 0xfe) {
                     s[j] -= 0xfe;
                 } else {
@@ -1133,11 +1133,11 @@ export class GostCipher {
     }
 
     private encryptCBC(k, d, iv): ArrayBuffer {
-        let s = new Uint8Array(iv || this.iv);
-        let n = this.blockSize;
-        let m = s.length;
-        let c = this.pad(GostCipher.byteArray(d));
-        let key = this.keySchedule(k, undefined);
+        const s = new Uint8Array(iv || this.iv);
+        const n = this.blockSize;
+        const m = s.length;
+        const c = this.pad(GostCipher.byteArray(d));
+        const key = this.keySchedule(k, undefined);
 
         for (let i = 0, b = c.length / n; i < b; i++) {
 
@@ -1168,12 +1168,12 @@ export class GostCipher {
     }
 
     private decryptCBC(k, d, iv): ArrayBuffer {
-        let s = new Uint8Array(iv || this.iv);
-        let n = this.blockSize;
-        let m = s.length;
-        let c = GostCipher.cloneArray(d);
-        let next = new Uint8Array(n);
-        let key = this.keySchedule(k, true);
+        const s = new Uint8Array(iv || this.iv);
+        const n = this.blockSize;
+        const m = s.length;
+        const c = GostCipher.cloneArray(d);
+        const next = new Uint8Array(n);
+        const key = this.keySchedule(k, true);
 
         for (let i = 0, b = c.length / n; i < b; i++) {
 
@@ -1211,11 +1211,11 @@ export class GostCipher {
     }
 
     private processMAC89(key, s, d) {
-        let c = this.zeroPad( GostCipher.byteArray(d));
-        let n = this.blockSize;
-        let q = c.length / n;
-        let sBox = this.sBox;
-        let sum = new Int32Array(s.buffer);
+        const c = this.zeroPad( GostCipher.byteArray(d));
+        const n = this.blockSize;
+        const q = c.length / n;
+        const sBox = this.sBox;
+        const sum = new Int32Array(s.buffer);
 
         for (let i = 0; i < q; i++) {
 
@@ -1230,10 +1230,10 @@ export class GostCipher {
     }
 
     private processMAC15(key, s, d) {
-        let n = this.blockSize;
-        let sBox = this.sBox;
+        const n = this.blockSize;
+        const sBox = this.sBox;
         let c = GostCipher.byteArray(d);
-        let r = new Uint8Array(n);
+        const r = new Uint8Array(n);
         // R
         this.process(key, r, undefined, undefined);
         // K1
@@ -1261,20 +1261,20 @@ export class GostCipher {
     }
 
     private signMAC(k, d, iv) {
-        let key = this.keySchedule(k, undefined);
-        let s = new Uint8Array(iv || this.iv);
-        let m = Math.ceil(this.macLength >> 3) || this.blockSize >> 1;
+        const key = this.keySchedule(k, undefined);
+        const s = new Uint8Array(iv || this.iv);
+        const m = Math.ceil(this.macLength >> 3) || this.blockSize >> 1;
 
         this.processMAC(key, s, d);
 
-        let mac = new Uint8Array(m); // mac size
+        const mac = new Uint8Array(m); // mac size
         mac.set(new Uint8Array(s.buffer, 0, m));
         return mac.buffer;
     }
 
     private verifyMAC(k, m, d, iv): boolean {
-        let mac = new Uint8Array(this.signMAC(k, d, iv));
-        let test = GostCipher.byteArray(m);
+        const mac = new Uint8Array(this.signMAC(k, d, iv));
+        const test = GostCipher.byteArray(m);
         if (mac.length !== test.length) {
             return false;
         }
@@ -1287,34 +1287,34 @@ export class GostCipher {
     }
 
     private wrapKeyGOST(kek, cek) {
-        let n = this.blockSize;
-        let k = this.keySize;
-        let len = k + (n >> 1);
+        const n = this.blockSize;
+        const k = this.keySize;
+        const len = k + (n >> 1);
         // 1) For a unique symmetric KEK, generate 8 octets at random and call
         // the result UKM.  For a KEK, produced by VKO GOST R 34.10-2001, use
         // the UKM that was used for key derivation.
         if (!this.ukm) {
             throw new Error('UKM must be defined');
         }
-        let ukm = new Uint8Array(this.ukm);
+        const ukm = new Uint8Array(this.ukm);
         // 2) Compute a 4-byte checksum value, GOST 28147IMIT (UKM, KEK, CEK).
         // Call the result CEK_MAC.
-        let mac = this.signMAC(kek, cek, ukm);
+        const mac = this.signMAC(kek, cek, ukm);
         // 3) Encrypt the CEK in ECB mode using the KEK.  Call the ciphertext CEK_ENC.
-        let enc = this.encryptECB(kek, cek);
+        const enc = this.encryptECB(kek, cek);
         // 4) The wrapped content-encryption key is (UKM | CEK_ENC | CEK_MAC).
-        let r = new Uint8Array(len);
+        const r = new Uint8Array(len);
         r.set(new Uint8Array(enc), 0);
         r.set(new Uint8Array(mac), k);
         return r.buffer;
     }
 
     private unwrapKeyGOST(kek, data) {
-        let n = this.blockSize;
-        let k = this.keySize;
-        let len = k + (n >> 1);
+        const n = this.blockSize;
+        const k = this.keySize;
+        const len = k + (n >> 1);
         // 1) If the wrapped content-encryption key is not 44 octets, then error.
-        let d = GostCoding.buffer(data);
+        const d = GostCoding.buffer(data);
         if (d.byteLength !== len) {
             throw new Error('Wrapping key size must be ' + len + ' bytes');
         }
@@ -1324,14 +1324,14 @@ export class GostCipher {
         if (!this.ukm) {
             throw new Error('UKM must be defined');
         }
-        let ukm = new Uint8Array(this.ukm);
-        let enc = new Uint8Array(d, 0, k);
-        let mac = new Uint8Array(d, k, n >> 1);
+        const ukm = new Uint8Array(this.ukm);
+        const enc = new Uint8Array(d, 0, k);
+        const mac = new Uint8Array(d, k, n >> 1);
         // 3) Decrypt CEK_ENC in ECB mode using the KEK.  Call the output CEK.
-        let cek = this.decryptECB(kek, enc);
+        const cek = this.decryptECB(kek, enc);
         // 4) Compute a 4-byte checksum value, GOST 28147IMIT (UKM, KEK, CEK),
         // compare the result with CEK_MAC.  If they are not equal, then error.
-        let check = this.verifyMAC( kek, mac, cek, ukm);
+        const check = this.verifyMAC( kek, mac, cek, ukm);
         if (!check) {
             throw new Error('Error verify MAC of wrapping key');
         }
@@ -1339,13 +1339,13 @@ export class GostCipher {
     }
 
     private diversifyKEK(kek: Uint8Array, ukm: Uint8Array): ArrayBuffer {
-        let n = this.blockSize;
+        const n = this.blockSize;
 
         // 1) Let K[0] = K;
         let k = GostCipher.intArray(kek);
         // 2) UKM is split into components a[i,j]:
         //    UKM = a[0]|..|a[7] (a[i] - byte, a[i,0]..a[i,7] - it’s bits)
-        let a = [];
+        const a = [];
         for (let i = 0; i < n; i++) {
             a[i] = [];
             for (let j = 0; j < 8; j++) {
@@ -1361,7 +1361,7 @@ export class GostCipher {
             //     B) Vector S[i] is calculated:
             //        S[i] = ((a[i,0]*k[i,0] + ... + a[i,7]*k[i,7]) mod 2^32) |
             //         (((~a[i,0])*k[i,0] + ... + (~a[i,7])*k[i,7]) mod 2^32);
-            let s = new Int32Array(2);
+            const s = new Int32Array(2);
             for (let j = 0; j < 8; j++) {
                 if (a[i][j]) {
                     s[0] = (s[0] + k[j]) & 0xffffffff;
@@ -1370,7 +1370,7 @@ export class GostCipher {
                 }
             }
             //     C) K[i+1] = encryptCFB (S[i], K[i], K[i])
-            let iv = new Uint8Array(s.buffer);
+            const iv = new Uint8Array(s.buffer);
             k = new Int32Array(this.encryptCFB( k, k, iv));
             //     D) i = i + 1
         }
@@ -1379,9 +1379,9 @@ export class GostCipher {
     }
 
     private wrapKeyCP(kek, cek) {
-        let n = this.blockSize;
-        let k = this.keySize;
-        let len = k + (n >> 1);
+        const n = this.blockSize;
+        const k = this.keySize;
+        const len = k + (n >> 1);
         // 1) For a unique symmetric KEK or a KEK produced by VKO GOST R
         // 34.10-94, generate 8 octets at random.  Call the result UKM.  For
         // a KEK, produced by VKO GOST R 34.10-2001, use the UKM that was
@@ -1389,29 +1389,29 @@ export class GostCipher {
         if (!this.ukm) {
             throw new Error('UKM must be defined');
         }
-        let ukm = new Uint8Array(this.ukm);
+        const ukm = new Uint8Array(this.ukm);
         // 2) Diversify KEK, using the CryptoPro KEK Diversification Algorithm,
         // described in Section 6.5.  Call the result KEK(UKM).
-        let dek = this.diversifyKEK( kek, ukm);
+        const dek = this.diversifyKEK( kek, ukm);
         // 3) Compute a 4-byte checksum value, GOST 28147IMIT (UKM, KEK(UKM),
         // CEK).  Call the result CEK_MAC.
-        let mac = this.signMAC(dek, cek, ukm);
+        const mac = this.signMAC(dek, cek, ukm);
         // 4) Encrypt CEK in ECB mode using KEK(UKM).  Call the ciphertext
         // CEK_ENC.
-        let enc = this.encryptECB(dek, cek);
+        const enc = this.encryptECB(dek, cek);
         // 5) The wrapped content-encryption key is (UKM | CEK_ENC | CEK_MAC).
-        let r = new Uint8Array(len);
+        const r = new Uint8Array(len);
         r.set(new Uint8Array(enc), 0);
         r.set(new Uint8Array(mac), k);
         return r.buffer;
     }
 
     private unwrapKeyCP(kek, data) {
-        let n = this.blockSize;
-        let k = this.keySize;
-        let len = k + (n >> 1);
+        const n = this.blockSize;
+        const k = this.keySize;
+        const len = k + (n >> 1);
         // 1) If the wrapped content-encryption key is not 44 octets, then error.
-        let d = GostCoding.buffer(data);
+        const d = GostCoding.buffer(data);
         if (d.byteLength !== len) {
             throw new Error('Wrapping key size must be ' + len + ' bytes');
         }
@@ -1422,18 +1422,18 @@ export class GostCipher {
         if (!this.ukm) {
             throw new Error('UKM must be defined');
         }
-        let ukm = new Uint8Array(this.ukm);
-        let enc = new Uint8Array(d, 0, k);
-        let mac = new Uint8Array(d, k, n >> 1);
+        const ukm = new Uint8Array(this.ukm);
+        const enc = new Uint8Array(d, 0, k);
+        const mac = new Uint8Array(d, k, n >> 1);
         // 3) Diversify KEK using the CryptoPro KEK Diversification Algorithm,
         // described in section 6.5.  Call the result KEK(UKM).
-        let dek = this.diversifyKEK( kek, ukm);
+        const dek = this.diversifyKEK( kek, ukm);
         // 4) Decrypt CEK_ENC in ECB mode using KEK(UKM).  Call the output CEK.
-        let cek = this.decryptECB(dek, enc);
+        const cek = this.decryptECB(dek, enc);
         // 5) Compute a 4-byte checksum value, GOST 28147IMIT (UKM, KEK(UKM),
         // CEK), compare the result with CEK_MAC.  If they are not equal,
         // then it is an error.
-        let check = this.verifyMAC( dek, mac, cek, ukm);
+        const check = this.verifyMAC( dek, mac, cek, ukm);
         if (!check) {
             throw new Error('Error verify MAC of wrapping key');
         }
@@ -1441,10 +1441,10 @@ export class GostCipher {
     }
 
     private packKeySC(unpacked, ukm) {
-        let m = this.blockSize >> 1;
-        let k = this.keySize;
+        const m = this.blockSize >> 1;
+        const k = this.keySize;
         let mcount = 8;
-        let key = new Uint8Array(GostCoding.buffer(unpacked));
+        const key = new Uint8Array(GostCoding.buffer(unpacked));
         if (key.byteLength !== k) {
             throw new Error('Wrong cleartext size ' + key.byteLength + ' bytes');
         }
@@ -1461,17 +1461,17 @@ export class GostCipher {
             this.randomSeed(ukm = new Uint8Array((mcount - 1) * k));
         }
         // Output array
-        let d = new Uint8Array(mcount * k + m + 2);
-        let b = d.buffer;
+        const d = new Uint8Array(mcount * k + m + 2);
+        const b = d.buffer;
         // Calculate MAC
-        let zero32 = new Uint8Array(k);
-        let mac = this.signMAC(key, zero32, undefined);
+        const zero32 = new Uint8Array(k);
+        const mac = this.signMAC(key, zero32, undefined);
         d[0] = 0x22; // Magic code
         d[1] = mcount; // Count of masks
         d.set(new Uint8Array(mac), 2);
         d.set(ukm, k + m + 2);
         for (let i = 1; i < mcount; i++) {
-            let mask = new Uint8Array(b, 2 + m + k * i);
+            const mask = new Uint8Array(b, 2 + m + k * i);
             for (let j = 0; j < k; j++) {
                 key[j] ^= mask[j];
             }
@@ -1481,26 +1481,26 @@ export class GostCipher {
     }
 
     private unpackKeySC(packed) {
-        let m = this.blockSize >> 1;
-        let k = this.keySize;
-        let b = GostCoding.buffer(packed);
+        const m = this.blockSize >> 1;
+        const k = this.keySize;
+        const b = GostCoding.buffer(packed);
         // Unpack master key
-        let magic = new Uint8Array(b, 0, 1)[0];
+        const magic = new Uint8Array(b, 0, 1)[0];
         if (magic !== 0x22) {
             throw new Error('Invalid magic number');
         }
-        let mcount = new Uint8Array(b, 1, 1)[0];
-        let mac = new Uint8Array(b, 2, m); // MAC for summarized mask
+        const mcount = new Uint8Array(b, 1, 1)[0];
+        const mac = new Uint8Array(b, 2, m); // MAC for summarized mask
         // Compute packKey xor summing for all masks
-        let key = new Uint8Array(k);
+        const key = new Uint8Array(k);
         for (let i = 0; i < mcount; i++) {
-            let mask = new Uint8Array(b, 2 + m + k * i, k);
+            const mask = new Uint8Array(b, 2 + m + k * i, k);
             for (let j = 0; j < k; j++) {
                 key[j] ^= mask[j];
             }
         }
         // Test MAC for packKey with default sBox on zero 32 bytes array
-        let test = this.verifyMACSC( key, mac, () => new Uint8Array(k));
+        const test = this.verifyMACSC( key, mac, () => new Uint8Array(k));
         if (!test) {
             throw new Error('Invalid main key MAC');
         }
@@ -1509,7 +1509,7 @@ export class GostCipher {
 
     private verifyMACSC(key, mac, dataCallable) {
         // Use default and then try to use different sBoxes
-        let names = ['default', 'E-A', 'E-B', 'E-C', 'E-D', 'E-SC'];
+        const names = ['default', 'E-A', 'E-B', 'E-C', 'E-D', 'E-SC'];
         for (let i = 0, n = names.length; i < n; i++) {
             if (typeof this.sBoxes[names[i]] !== 'undefined') {
                 this.sBox = this.sBoxes[names[i]];
@@ -1523,34 +1523,34 @@ export class GostCipher {
     }
 
     private wrapKeySC(kek, cek) {
-        let m = this.blockSize >> 1;
-        let n = this.keySize;
+        const m = this.blockSize >> 1;
+        const n = this.keySize;
         let k = GostCoding.buffer(kek);
-        let c = GostCoding.buffer(cek);
+        const c = GostCoding.buffer(cek);
         if (k.byteLength !== n) {
             k = this.unpackKeySC( k);
         }
-        let enc = this.encryptECB(k, c);
-        let mac = this.signMAC(k, c, undefined);
-        let d = new Uint8Array(m + n);
+        const enc = this.encryptECB(k, c);
+        const mac = this.signMAC(k, c, undefined);
+        const d = new Uint8Array(m + n);
         d.set(new Uint8Array(enc), 0);
         d.set(new Uint8Array(mac), n);
         return d.buffer;
     }
 
     private unwrapKeySC(kek, cek) {
-        let m = this.blockSize >> 1;
-        let n = new Uint8Array(cek).length - m;
+        const m = this.blockSize >> 1;
+        const n = new Uint8Array(cek).length - m;
         let k = GostCoding.buffer(kek);
-        let c = GostCoding.buffer(cek);
+        const c = GostCoding.buffer(cek);
         if (k.byteLength !== this.keySize) {
             k = this.unpackKeySC( k);
         }
-        let enc = new Uint8Array(c, 0, n); // Encrypted kek
-        let mac = new Uint8Array(c, n, m); // MAC for clear kek
+        const enc = new Uint8Array(c, 0, n); // Encrypted kek
+        const mac = new Uint8Array(c, n, m); // MAC for clear kek
 
         let d;
-        let test = this.verifyMACSC( k, mac, function() {
+        const test = this.verifyMACSC( k, mac, function() {
             d = this.decryptECB(k, enc);
             return d;
         });
@@ -1586,11 +1586,11 @@ export class GostCipher {
     }
 
     private pkcs5Pad(d: Uint8Array): Uint8Array {
-        let n = d.byteLength;
-        let nb = this.blockSize;
-        let q = nb - n % nb;
-        let m = Math.ceil((n + 1) / nb) * nb;
-        let r = new Uint8Array(m);
+        const n = d.byteLength;
+        const nb = this.blockSize;
+        const q = nb - n % nb;
+        const m = Math.ceil((n + 1) / nb) * nb;
+        const r = new Uint8Array(m);
         r.set(d);
         for (let i = n; i < m; i++) {
             r[i] = q;
@@ -1599,14 +1599,14 @@ export class GostCipher {
     }
 
     private pkcs5Unpad(d: Uint8Array): Uint8Array {
-        let m = d.byteLength;
-        let nb = this.blockSize;
-        let q = d[m - 1];
-        let n = m - q;
+        const m = d.byteLength;
+        const nb = this.blockSize;
+        const q = d[m - 1];
+        const n = m - q;
         if (q > nb) {
             throw Error('Invalid padding');
         }
-        let r = new Uint8Array(n);
+        const r = new Uint8Array(n);
         if (n > 0) {
             r.set(new Uint8Array(d.buffer, 0, n));
         }
@@ -1614,10 +1614,10 @@ export class GostCipher {
     }
 
     private zeroPad(d: Uint8Array): Uint8Array {
-        let n = d.byteLength;
-        let nb = this.blockSize;
-        let m = Math.ceil(n / nb) * nb;
-        let r = new Uint8Array(m);
+        const n = d.byteLength;
+        const nb = this.blockSize;
+        const m = Math.ceil(n / nb) * nb;
+        const r = new Uint8Array(m);
         r.set(d);
         for (let i = n; i < m; i++) {
             r[i] = 0;
@@ -1626,10 +1626,10 @@ export class GostCipher {
     }
 
     private bitPad(d: Uint8Array): Uint8Array {
-        let n = d.byteLength;
-        let nb = this.blockSize;
-        let m = Math.ceil((n + 1) / nb) * nb;
-        let r = new Uint8Array(m);
+        const n = d.byteLength;
+        const nb = this.blockSize;
+        const m = Math.ceil((n + 1) / nb) * nb;
+        const r = new Uint8Array(m);
         r.set(d);
         r[n] = 1;
         for (let i = n + 1; i < m; i++) {
@@ -1639,12 +1639,12 @@ export class GostCipher {
     }
 
     private randomPad(d: Uint8Array): Uint8Array {
-        let n = d.byteLength;
-        let nb = this.blockSize;
-        let q = nb - n % nb;
-        let m = Math.ceil(n / nb) * nb;
-        let r = new Uint8Array(m);
-        let e = new Uint8Array(r.buffer, n, q);
+        const n = d.byteLength;
+        const nb = this.blockSize;
+        const q = nb - n % nb;
+        const m = Math.ceil(n / nb) * nb;
+        const r = new Uint8Array(m);
+        const e = new Uint8Array(r.buffer, n, q);
         r.set(d);
         this.randomSeed(e);
         return r;

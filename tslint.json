@@ -16,7 +16,7 @@
         "array-type": false,
         "arrow-parens": false,
         "no-bitwise": false,
-        "prefer-const": false,
+        "prefer-const": true,
         "no-trailing-whitespace": false,
         "deprecation": {
             "severity": "warning"
