@@ -5,7 +5,7 @@ import {Hex} from '../gost-coding/gost-coding';
 
 
 describe('GostCipher', () => {
-    let testSBox = new Uint8Array([
+    const testSBox = new Uint8Array([
         0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF,
         0xF, 0xE, 0xD, 0xC, 0xB, 0xA, 0x9, 0x8, 0x7, 0x6, 0x5, 0x4, 0x3, 0x2, 0x1, 0x0,
         0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF,
@@ -15,126 +15,126 @@ describe('GostCipher', () => {
         0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF,
         0xF, 0xE, 0xD, 0xC, 0xB, 0xA, 0x9, 0x8, 0x7, 0x6, 0x5, 0x4, 0x3, 0x2, 0x1, 0x0
     ]);
-    let input1 = '0000000000000000';
-    let output1 = '1b0bbc32cebcab42';
-    let input2 = 'bc350e71aac5f5c2';
-    let output2 = 'd35ab653493b49f5';
-    let input3 = 'bc350e71aa11345709acde';
-    let output3 = '8824c124c4fd14301fb1e8';
-    let input4 = '000102030405060708090a0b0c0d0e0fff0102030405060708090a0b0c0d0e0f';
-    let output4 = '29b7083e0a6d955ca0ec5b04fdb4ea41949f1dd2efdf17baffc1780b031f3934';
+    const input1 = '0000000000000000';
+    const output1 = '1b0bbc32cebcab42';
+    const input2 = 'bc350e71aac5f5c2';
+    const output2 = 'd35ab653493b49f5';
+    const input3 = 'bc350e71aa11345709acde';
+    const output3 = '8824c124c4fd14301fb1e8';
+    const input4 = '000102030405060708090a0b0c0d0e0fff0102030405060708090a0b0c0d0e0f';
+    const output4 = '29b7083e0a6d955ca0ec5b04fdb4ea41949f1dd2efdf17baffc1780b031f3934';
 
 
-    let gkeyBytes5 = '6d145dc993f4019e104280df6fcd8cd8e01e101e4c113d7ec4f469ce6dcd9e49';
-    let gkeyBytes6 = '6d145dc993f4019e104280df6fcd8cd8e01e101e4c113d7ec4f469ce6dcd9e49';
+    const gkeyBytes5 = '6d145dc993f4019e104280df6fcd8cd8e01e101e4c113d7ec4f469ce6dcd9e49';
+    const gkeyBytes6 = '6d145dc993f4019e104280df6fcd8cd8e01e101e4c113d7ec4f469ce6dcd9e49';
 
-    let input5 = '7768617420646f2079612077616e7420666f72206e6f7468696e673f';
-    let input6 = '7768617420646f2079612077616e7420666f72206e6f7468696e673f';
+    const input5 = '7768617420646f2079612077616e7420666f72206e6f7468696e673f';
+    const input6 = '7768617420646f2079612077616e7420666f72206e6f7468696e673f';
 
-    let output5 = '93468a46';
-    let output6 = '93468a46';
+    const output5 = '93468a46';
+    const output6 = '93468a46';
 
     it('1 GOST 28147-89', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'D-TEST';
-        let key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
+        const key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
 
-        let result = perform(algorithm, key, input1, output1);
+        const result = perform(algorithm, key, input1, output1);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
     it('2 GOST 28147-89', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.block = 'CBC';
         algorithm.sBox = 'D-TEST';
         algorithm.iv = '1234567890abcdef';
 
-        let key = '00112233445566778899AABBCCDDEEFF00112233445566778899AABBCCDDEEFF';
+        const key = '00112233445566778899AABBCCDDEEFF00112233445566778899AABBCCDDEEFF';
 
-        let result = perform(algorithm, key, input2, output2);
+        const result = perform(algorithm, key, input2, output2);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
     it('3 GOST 28147-89', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.block = 'CTR';
         algorithm.sBox = 'D-TEST';
         algorithm.iv = '1234567890abcdef';
 
-        let key = '0011223344556677889900112233445566778899001122334455667788990011';
+        const key = '0011223344556677889900112233445566778899001122334455667788990011';
 
-        let result = perform(algorithm, key, input3, output3);
+        const result = perform(algorithm, key, input3, output3);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
     it('4 GOST 28147-89', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
         algorithm.block = 'CFB';
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'D-TEST';
         algorithm.iv = 'aafd12f659cae634';
-        let key = 'aafd12f659cae63489b479e5076ddec2f06cb58faafd12f659cae63489b479e5';
+        const key = 'aafd12f659cae63489b479e5076ddec2f06cb58faafd12f659cae63489b479e5';
 
-        let result = perform(algorithm, key, input4, output4);
+        const result = perform(algorithm, key, input4, output4);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
     it('5 GOST 28147-89', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'D-TEST';
 
-        let key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
+        const key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
 
-        let result = perform(algorithm, key, input1, output1);
+        const result = perform(algorithm, key, input1, output1);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
 
     it('6 GOST 28147-89', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'D-TEST';
         algorithm.block = 'CFB';
         algorithm.iv = '1234567890abcdef';
 
-        let key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
+        const key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
 
-        let result = perform(algorithm, key, '0000000000000000', 'b587f7a0814c911d');
+        const result = perform(algorithm, key, '0000000000000000', 'b587f7a0814c911d');
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
 
     it('7 GOST 28147-89', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-TEST';
         algorithm.block = 'CFB';
         algorithm.iv = '1234567890abcdef';
 
-        let key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
+        const key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
 
-        let result = perform(algorithm, key, '0000000000000000', 'e8287f53f991d52b');
+        const result = perform(algorithm, key, '0000000000000000', 'e8287f53f991d52b');
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
 
     it('8 GOST 28147-89', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-A';
@@ -142,9 +142,9 @@ describe('GostCipher', () => {
         algorithm.block = 'CFB';
         algorithm.iv = '1234567890abcdef';
 
-        let key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
+        const key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
 
-        let result = perform(algorithm, key, '0000000000000000', 'c41009dba22ebe35');
+        const result = perform(algorithm, key, '0000000000000000', 'c41009dba22ebe35');
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
@@ -155,7 +155,7 @@ describe('GostCipher', () => {
         '546d203368656c326973652073736e62206167796967747473656865202c3d73', '0000000000000000', '80d8723fcd3aba28');
         * */
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-B';
@@ -163,9 +163,9 @@ describe('GostCipher', () => {
         algorithm.block = 'CFB';
         algorithm.iv = '1234567890abcdef';
 
-        let key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
+        const key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
 
-        let result = perform(algorithm, key, '0000000000000000', '80d8723fcd3aba28');
+        const result = perform(algorithm, key, '0000000000000000', '80d8723fcd3aba28');
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
@@ -177,7 +177,7 @@ describe('GostCipher', () => {
         '546d203368656c326973652073736e62206167796967747473656865202c3d73', '0000000000000000', '739f6f95068499b5');
         * */
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-C';
@@ -185,9 +185,9 @@ describe('GostCipher', () => {
         algorithm.block = 'CFB';
         algorithm.iv = '1234567890abcdef';
 
-        let key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
+        const key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
 
-        let result = perform(algorithm, key, '0000000000000000', '739f6f95068499b5');
+        const result = perform(algorithm, key, '0000000000000000', '739f6f95068499b5');
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
@@ -199,7 +199,7 @@ describe('GostCipher', () => {
         '546d203368656c326973652073736e62206167796967747473656865202c3d73', '0000000000000000', '4663f720f4340f57');
         * */
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-D';
@@ -207,9 +207,9 @@ describe('GostCipher', () => {
         algorithm.block = 'CFB';
         algorithm.iv = '1234567890abcdef';
 
-        let key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
+        const key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
 
-        let result = perform(algorithm, key, '0000000000000000', '4663f720f4340f57');
+        const result = perform(algorithm, key, '0000000000000000', '4663f720f4340f57');
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
@@ -221,7 +221,7 @@ describe('GostCipher', () => {
         '546d203368656c326973652073736e62206167796967747473656865202c3d73', '0000000000000000', '5bb0a31d218ed564');
         * */
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'D-A';
@@ -229,9 +229,9 @@ describe('GostCipher', () => {
         algorithm.block = 'CFB';
         algorithm.iv = '1234567890abcdef';
 
-        let key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
+        const key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
 
-        let result = perform(algorithm, key, '0000000000000000', '5bb0a31d218ed564');
+        const result = perform(algorithm, key, '0000000000000000', '5bb0a31d218ed564');
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
@@ -242,7 +242,7 @@ describe('GostCipher', () => {
         '546d203368656c326973652073736e62206167796967747473656865202c3d73', '0000000000000000', 'c3af96ef788667c5');
         * */
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = testSBox;
@@ -250,9 +250,9 @@ describe('GostCipher', () => {
         algorithm.block = 'CFB';
         algorithm.iv = '1234567890abcdef';
 
-        let key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
+        const key = '546d203368656c326973652073736e62206167796967747473656865202c3d73';
 
-        let result = perform(algorithm, key, '0000000000000000', 'c3af96ef788667c5');
+        const result = perform(algorithm, key, '0000000000000000', 'c3af96ef788667c5');
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
@@ -263,7 +263,7 @@ describe('GostCipher', () => {
         '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', 'bc350e71aa11345709acde', '1bcc2282707c676fb656dc');
         * */
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-A';
@@ -271,9 +271,9 @@ describe('GostCipher', () => {
         algorithm.block = 'CTR';
         algorithm.iv = '1234567890abcdef';
 
-        let key = '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d';
+        const key = '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d';
 
-        let result = perform(algorithm, key, 'bc350e71aa11345709acde', '1bcc2282707c676fb656dc');
+        const result = perform(algorithm, key, 'bc350e71aa11345709acde', '1bcc2282707c676fb656dc');
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
@@ -284,7 +284,7 @@ describe('GostCipher', () => {
         '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', 'bc350e71aa11345709acde', '1bcc2282707c676fb656dc');
         * */
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.sBox = 'E-Z';
@@ -292,9 +292,9 @@ describe('GostCipher', () => {
         algorithm.block = 'ECB';
         //  algorithm.iv = '1234567890abcdef';
 
-        let key = '8182838485868788898a8b8c8d8e8f80d1d2d3d4d5d6d7d8d9dadbdcdddedfd0';
+        const key = '8182838485868788898a8b8c8d8e8f80d1d2d3d4d5d6d7d8d9dadbdcdddedfd0';
 
-        let result = perform(algorithm, key, '0102030405060708f1f2f3f4f5f6f7f8', 'ce5a5ed7e0577a5fd0cc85ce31635b8b');
+        const result = perform(algorithm, key, '0102030405060708f1f2f3f4f5f6f7f8', 'ce5a5ed7e0577a5fd0cc85ce31635b8b');
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
@@ -302,7 +302,7 @@ describe('GostCipher', () => {
     it('1 MAC sing/verify', () => {
 
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.mode = 'MAC';
@@ -311,14 +311,14 @@ describe('GostCipher', () => {
         // algorithm.block = 'ECB';
         //  algorithm.iv = '1234567890abcdef';
 
-        let result = performMac(algorithm, gkeyBytes5, input5, output5);
+        const result = performMac(algorithm, gkeyBytes5, input5, output5);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
 
     it('2 MAC sing/verify', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.mode = 'MAC';
@@ -327,14 +327,14 @@ describe('GostCipher', () => {
         // algorithm.block = 'ECB';
         //  algorithm.iv = '1234567890abcdef';
 
-        let result = performMac(algorithm, gkeyBytes6, input6, output6);
+        const result = performMac(algorithm, gkeyBytes6, input6, output6);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
 
     it('1 Padding', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.name = 'BIT';
@@ -344,13 +344,13 @@ describe('GostCipher', () => {
         // algorithm.block = 'ECB';
         //  algorithm.iv = '1234567890abcdef';
 
-        let result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba98765432', undefined);
+        const result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba98765432', undefined);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
     it('2 Padding', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.name = 'BIT';
@@ -360,14 +360,14 @@ describe('GostCipher', () => {
         // algorithm.block = 'ECB';
         //  algorithm.iv = '1234567890abcdef';
 
-        let result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba9876543210', undefined);
+        const result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba9876543210', undefined);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
 
     it('3 Padding', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.name = 'PKCS5P';
@@ -377,13 +377,13 @@ describe('GostCipher', () => {
         // algorithm.block = 'ECB';
         //  algorithm.iv = '1234567890abcdef';
 
-        let result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba98765432', undefined);
+        const result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba98765432', undefined);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
     it('4 Padding', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.name = 'PKCS5P';
@@ -393,13 +393,13 @@ describe('GostCipher', () => {
         // algorithm.block = 'ECB';
         //  algorithm.iv = '1234567890abcdef';
 
-        let result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba9876543210', undefined);
+        const result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba9876543210', undefined);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
     it('5 Padding', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         algorithm.name = 'ZERO';
@@ -409,15 +409,15 @@ describe('GostCipher', () => {
         // algorithm.block = 'ECB';
         //  algorithm.iv = '1234567890abcdef';
 
-        let result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba9876543210', undefined);
+        const result = perform(algorithm, '546d203368656c326973652073736e62206167796967747473656865202c3d73', 'fedcba9876543210', undefined);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
-    let input = new Array(10001).join('61');
+    const input = new Array(10001).join('61');
 
     it('1 Key meshing', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -428,14 +428,14 @@ describe('GostCipher', () => {
         algorithm.keyMeshing = 'CP';
         algorithm.iv = '1234567890abcdef';
 
-        let result = perform(algorithm, '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', input, undefined);
+        const result = perform(algorithm, '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', input, undefined);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
 
     it('2 Key meshing', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -446,13 +446,13 @@ describe('GostCipher', () => {
         algorithm.keyMeshing = 'CP';
         algorithm.iv = '1234567890abcdef';
 
-        let result = perform(algorithm, '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', input, undefined);
+        const result = perform(algorithm, '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', input, undefined);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
     it('3 Key meshing', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -463,14 +463,14 @@ describe('GostCipher', () => {
         algorithm.keyMeshing = 'CP';
         algorithm.iv = '1234567890abcdef';
 
-        let result = perform(algorithm, '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', input, undefined);
+        const result = perform(algorithm, '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', input, undefined);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
 
     it('4 Key meshing', () => {
 
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -481,13 +481,13 @@ describe('GostCipher', () => {
         algorithm.keyMeshing = 'CP';
         algorithm.iv = '1234567890abcdef';
 
-        let result = performMac(algorithm, '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', input, undefined);
+        const result = performMac(algorithm, '4ef72b778f0b0bebeef4f077551cb74a927b470ad7d7f2513454569a247e989d', input, undefined);
         expect(result.includes('PASSED')).toBeTruthy();
     });
 
 
     it('1 Key wrapping', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -499,7 +499,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcdef';
         algorithm.ukm = '1234567890abcdef';
 
-        let result = performWrap(
+        const result = performWrap(
             algorithm,
             'aafd12f659cae63489b479e5076ddec2f06cb58faafd12f659cae63489b479e5',
             '6d145dc993f4019e104280df6fcd8cd8e01e101e4c113d7ec4f469ce6dcd9e49',
@@ -509,7 +509,7 @@ describe('GostCipher', () => {
 
 
     it('2 Key wrapping', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -521,7 +521,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcdef';
         algorithm.ukm = '1234567890abcdef';
 
-        let result = performWrap(
+        const result = performWrap(
             algorithm,
             'aafd12f659cae63489b479e5076ddec2f06cb58faafd12f659cae63489b479e5',
             '6d145dc993f4019e104280df6fcd8cd8e01e101e4c113d7ec4f469ce6dcd9e49',
@@ -531,7 +531,7 @@ describe('GostCipher', () => {
 
 
     it('3 Key wrapping', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -544,7 +544,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcdef';
         algorithm.ukm = '1234567890abcdef';
 
-        let result = performWrap(
+        const result = performWrap(
             algorithm,
             'aafd12f659cae63489b479e5076ddec2f06cb58faafd12f659cae63489b479e5',
             '6d145dc993f4019e104280df6fcd8cd8e01e101e4c113d7ec4f469ce6dcd9e49',
@@ -554,7 +554,7 @@ describe('GostCipher', () => {
 
 
     it('4 Key wrapping', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -567,7 +567,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcdef';
         algorithm.ukm = '1234567890abcdef';
 
-        let result = performWrap(
+        const result = performWrap(
             algorithm,
             'aafd12f659cae63489b479e5076ddec2f06cb58faafd12f659cae63489b479e5',
             '6d145dc993f4019e104280df6fcd8cd8e01e101e4c113d7ec4f469ce6dcd9e49',
@@ -577,7 +577,7 @@ describe('GostCipher', () => {
 
 
     it('5 Key wrapping', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST 28147';
         // algorithm.name = 'ZERO';
@@ -590,7 +590,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcdef';
         algorithm.ukm = '1234567890abcdef';
 
-        let result = performWrap(
+        const result = performWrap(
             algorithm,
             '2208cd6bc96a' +
             '009f05175f635bee6cc09c78260b9b7eee1e070d346462e6881bbf572f436df5' +
@@ -608,10 +608,10 @@ describe('GostCipher', () => {
 
 
 
-    let key64 = 'ffeeddccbbaa99887766554433221100f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff';
-    let inp64 = '92def06b3c130a59db54c704f8189d204a98fb2e67a8024c8912409b17b57e41';
+    const key64 = 'ffeeddccbbaa99887766554433221100f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff';
+    const inp64 = '92def06b3c130a59db54c704f8189d204a98fb2e67a8024c8912409b17b57e41';
     it('1 GOST R 34.12-2015/64bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -625,7 +625,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcdef';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             key64,
             'fedcba9876543210',
@@ -636,7 +636,7 @@ describe('GostCipher', () => {
 
 
     it('2 GOST R 34.12-2015/64bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -650,7 +650,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcdef';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             key64,
             inp64,
@@ -662,7 +662,7 @@ describe('GostCipher', () => {
 
 
     it('3 GOST R 34.12-2015/64bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -676,7 +676,7 @@ describe('GostCipher', () => {
         algorithm.iv = '12345678';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             key64,
             inp64,
@@ -687,7 +687,7 @@ describe('GostCipher', () => {
 
 
     it('4 GOST R 34.12-2015/64bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -701,7 +701,7 @@ describe('GostCipher', () => {
         algorithm.iv = '1234567890abcdef234567890abcdef134567890abcdef12';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             key64,
             inp64,
@@ -711,7 +711,7 @@ describe('GostCipher', () => {
 
 
     it('5 GOST R 34.12-2015/64bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -725,7 +725,7 @@ describe('GostCipher', () => {
         algorithm.iv = '1234567890abcdef234567890abcdef1';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             key64,
             inp64,
@@ -736,7 +736,7 @@ describe('GostCipher', () => {
 
 
     it('6 GOST R 34.12-2015/64bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -750,7 +750,7 @@ describe('GostCipher', () => {
         algorithm.iv = '1234567890abcdef234567890abcdef1';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             key64,
             inp64,
@@ -762,7 +762,7 @@ describe('GostCipher', () => {
 
 
     it('7 GOST R 34.12-2015/64bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -776,7 +776,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcdef234567890abcdef1';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = performMac(
+        const result = performMac(
             algorithm,
             key64,
             inp64,
@@ -785,12 +785,12 @@ describe('GostCipher', () => {
     });
 
 
-    let key128 = '8899aabbccddeeff0011223344556677fedcba98765432100123456789abcdef';
-    let inp128 = '1122334455667700ffeeddccbbaa998800112233445566778899aabbcceeff0a' +
+    const key128 = '8899aabbccddeeff0011223344556677fedcba98765432100123456789abcdef';
+    const inp128 = '1122334455667700ffeeddccbbaa998800112233445566778899aabbcceeff0a' +
                  '112233445566778899aabbcceeff0a002233445566778899aabbcceeff0a0011';
 
     it('1 GOST R 34.12-2015/128bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -805,7 +805,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcdef234567890abcdef1';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             key128,
             '1122334455667700ffeeddccbbaa9988',
@@ -814,7 +814,7 @@ describe('GostCipher', () => {
     });
 
     it('2 GOST R 34.12-2015/128bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -829,7 +829,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcdef234567890abcdef1';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             key128,
             inp128,
@@ -840,7 +840,7 @@ describe('GostCipher', () => {
 
 
     it('3 GOST R 34.12-2015/128bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -855,7 +855,7 @@ describe('GostCipher', () => {
         algorithm.iv = '1234567890abcef0';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             key128,
             inp128,
@@ -868,7 +868,7 @@ describe('GostCipher', () => {
 
 
     it('4 GOST R 34.12-2015/128bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -883,7 +883,7 @@ describe('GostCipher', () => {
         algorithm.iv = '1234567890abcef0a1b2c3d4e5f0011223344556677889901213141516171819';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             key128,
             inp128,
@@ -894,7 +894,7 @@ describe('GostCipher', () => {
 
 
     it('5 GOST R 34.12-2015/128bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -909,7 +909,7 @@ describe('GostCipher', () => {
         algorithm.iv = '1234567890abcef0a1b2c3d4e5f0011223344556677889901213141516171819';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             key128,
             inp128,
@@ -920,7 +920,7 @@ describe('GostCipher', () => {
 
 
     it('6 GOST R 34.12-2015/128bits', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'GOST R 34.12';
         algorithm.version = 2015;
@@ -935,7 +935,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcef0a1b2c3d4e5f0011223344556677889901213141516171819';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = performMac(
+        const result = performMac(
             algorithm,
             key128,
             inp128,
@@ -945,7 +945,7 @@ describe('GostCipher', () => {
 
 
     it('1 RC2', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -960,7 +960,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcef0a1b2c3d4e5f0011223344556677889901213141516171819';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             '0000000000000000',
             '0000000000000000',
@@ -969,7 +969,7 @@ describe('GostCipher', () => {
     });
 
     it('2 RC2', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -984,7 +984,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcef0a1b2c3d4e5f0011223344556677889901213141516171819';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             'ffffffffffffffff',
             'ffffffffffffffff',
@@ -993,7 +993,7 @@ describe('GostCipher', () => {
     });
 
     it('3 RC2', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1008,7 +1008,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcef0a1b2c3d4e5f0011223344556677889901213141516171819';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             '3000000000000000',
             '1000000000000001',
@@ -1018,7 +1018,7 @@ describe('GostCipher', () => {
 
 
     it('4 RC2', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1033,7 +1033,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcef0a1b2c3d4e5f0011223344556677889901213141516171819';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             '88',
             '0000000000000000',
@@ -1043,7 +1043,7 @@ describe('GostCipher', () => {
 
 
     it('5 RC2', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1058,7 +1058,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcef0a1b2c3d4e5f0011223344556677889901213141516171819';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             '88bca90e90875a',
             '0000000000000000',
@@ -1067,7 +1067,7 @@ describe('GostCipher', () => {
     });
 
     it('6 RC2', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1082,7 +1082,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcef0a1b2c3d4e5f0011223344556677889901213141516171819';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             '88bca90e90875a7f0f79c384627bafb2',
             '0000000000000000',
@@ -1092,7 +1092,7 @@ describe('GostCipher', () => {
 
 
     it('7 RC2', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1107,7 +1107,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcef0a1b2c3d4e5f0011223344556677889901213141516171819';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             '88bca90e90875a7f0f79c384627bafb2',
             '0000000000000000',
@@ -1116,7 +1116,7 @@ describe('GostCipher', () => {
     });
 
     it('8 RC2', () => {
-        let algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
+        const algorithm: AlgorithmIndentifier = new AlgorithmIndentifier();
 
         algorithm.name = 'RC2';
         algorithm.version = 1;
@@ -1131,7 +1131,7 @@ describe('GostCipher', () => {
         // algorithm.iv = '1234567890abcef0a1b2c3d4e5f0011223344556677889901213141516171819';
         // algorithm.ukm = '1234567890abcdef';
 
-        let result = perform(
+        const result = perform(
             algorithm,
             '88bca90e90875a7f0f79c384627bafb216f80a6f85920584c42fceb0be255daf1e',
             '0000000000000000',
@@ -1166,12 +1166,12 @@ function perform(algorithm: AlgorithmIndentifier, key: string, input: string, ou
     if (algorithm.iv) {
         (algorithm.iv = Hex.decode(algorithm.iv));
     }
-    let cipher = new GostCipher(new GostRandom(), algorithm);
+    const cipher = new GostCipher(new GostRandom(), algorithm);
     let result = 'Test ' + ' ' + (cipher.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
 
     try {
         let out = Hex.encode(cipher.encrypt(Hex.decode(key), Hex.decode(input), undefined));
-        let test = (output && out.replace(/[^\-A-Fa-f0-9]/g, '').toLowerCase() !== output.toLowerCase());
+        const test = (output && out.replace(/[^\-A-Fa-f0-9]/g, '').toLowerCase() !== output.toLowerCase());
         // console.log('-----------------');
         // console.log(out);
 
@@ -1199,13 +1199,13 @@ function performMac(algorithm: AlgorithmIndentifier, key: string, input: string,
         (algorithm.iv = Hex.decode(algorithm.iv));
     }
 
-    let cipher = new GostCipher(new GostRandom(), algorithm);
+    const cipher = new GostCipher(new GostRandom(), algorithm);
     let result = 'Test ' + ' ' + (cipher.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
     try {
-        let out = Hex.encode(cipher.sign(Hex.decode(key), Hex.decode(input), undefined));
+        const out = Hex.encode(cipher.sign(Hex.decode(key), Hex.decode(input), undefined));
         let test = (output && out.replace(/[^\-A-Fa-f0-9]/g, '').toLowerCase() !== output.toLowerCase());
         if (!test) {
-            let res = cipher.verify(Hex.decode(key), Hex.decode(out), Hex.decode(input), undefined);
+            const res = cipher.verify(Hex.decode(key), Hex.decode(out), Hex.decode(input), undefined);
             test = (!res);
             if (!test) {
                 result += 'PASSED';
@@ -1228,7 +1228,7 @@ function performWrap(algorithm: AlgorithmIndentifier, key: string, input: string
         (algorithm.ukm = Hex.decode(algorithm.ukm));
     }
 
-    let cipher = new GostCipher(new GostRandom(), algorithm);
+    const cipher = new GostCipher(new GostRandom(), algorithm);
     let result = 'Test ' + ' ' + (cipher.name + ' ' + new Array(61).join('.')).substring(0, 60) + ' ';
     try {
         let out = Hex.encode(cipher.wrapKey(Hex.decode(key), Hex.decode(input)));
