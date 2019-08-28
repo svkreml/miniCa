@@ -1,10 +1,12 @@
 import {GostSign} from '../gost-sign/gost-sign';
 import {GostDigest} from '../gost-digest/gost-digest';
 import {GostCipher} from '../gost-cipher/gost-cipher';
+import {AlgorithmDto} from '../../dto/algorithm-dto';
 
 export class GostEngine {
 
-    defineEngine(method, algorithm) {
+
+    defineEngine(method, algorithm): string {
         if (!algorithm) {
             throw new Error('Algorithm not defined');
         }
@@ -34,11 +36,10 @@ export class GostEngine {
             return 'GostSign';
         } else {
             throw new Error('Algorithm ' + name + '-' + mode + ' is not valid for ' + method);
- }
+        }
     }
 
-
-    execute(algorithm, method, args) {
+    execute(algorithm, method, args): any {
         // Define engine for GOST algorithms
 
         const engine = this.defineEngine(method, algorithm);
@@ -49,20 +50,16 @@ export class GostEngine {
         return cipher[method].apply(cipher, args);
     }
 
-    getGostCipher(algorithm) {
+    getGostCipher(algorithm: AlgorithmDto): GostCipher {
         return new GostCipher(algorithm);
     }
 
-    getGostDigest(algorithm) {
+    getGostDigest(algorithm: AlgorithmDto): GostDigest {
         return new GostDigest(algorithm);
     }
 
-    getGostSign(algorithm) {
+    getGostSign(algorithm: AlgorithmDto): GostSign {
         return new GostSign(algorithm);
-    }
-
-
-    constructor() {
     }
 
 }
