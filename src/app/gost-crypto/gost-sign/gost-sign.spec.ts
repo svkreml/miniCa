@@ -115,6 +115,7 @@ describe('GostSign', () => {
         algorithm.name = 'GOST R 34.10';
         algorithm.namedCurve = 'T-512-TEST';
         algorithm.hash = {
+            version: undefined,
             name: 'GOST R 34.11'
         };
         // algorithm.namedParam = 'S-TEST';
@@ -151,6 +152,7 @@ describe('GostSign', () => {
         // algorithm.namedParam = 'S-TEST';
         algorithm.ukm = '77105C9B20BCD312';
         algorithm.hash = {
+            version: undefined,
             name: 'GOST R 34.11'
         };
         const result = performDerive(algorithm);
@@ -166,7 +168,7 @@ describe('GostSign', () => {
         algorithm.ukm = '77105C9B20BCD312';
         algorithm.hash = {
             name: 'GOST R 34.11',
-                version: 1994
+            version: 1994
         };
         const result = performDerive(algorithm);
         expect(result.includes('PASSED')).toBeTruthy();

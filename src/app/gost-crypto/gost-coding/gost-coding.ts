@@ -1064,7 +1064,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
                         let tz = dt.getTimezoneOffset();
                         if (m[8] || tagNumber === 0x17) {
                             if (m[8].toUpperCase() !== 'Z' && m[9]) {
-                                tz = tz + parseInt(m[9], 10);
+                                tz = tz + parseInt(m[9]);
                             }
                             dt.setMinutes(dt.getMinutes() - tz);
                         }
