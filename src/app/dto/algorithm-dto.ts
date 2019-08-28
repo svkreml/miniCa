@@ -28,11 +28,12 @@ export class AlgorithmDto {
     /*from sign*/
     namedParam: string;
     namedCurve: string;
-    hash: HashDto;
+    hash: HashDto | string;
     public: any;
     param: any;
     modulusLength: number;
     curve: any;
+    id: any;
 }
 export class HashDto {
     name: string = undefined;
