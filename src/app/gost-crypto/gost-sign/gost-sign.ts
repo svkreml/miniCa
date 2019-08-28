@@ -1544,6 +1544,7 @@ export class GostSign {
     private getSeed(length) {
         const d = new Uint8Array(Math.ceil(length / 8));
         GostRandom.getRandomValues(d);
+        return d;
     }
 
 
