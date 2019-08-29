@@ -1,5 +1,5 @@
 import {GostRandom} from '../gost-random/gost-random';
-import {AlgorithmDto} from '../../dto/algorithm-dto';
+import {AlgorithmDto, HashDto} from '../../dto/algorithm-dto';
 import {GostDigest} from '../gost-digest/gost-digest';
 
 export class GostSign {
@@ -270,7 +270,8 @@ export class GostSign {
         let hash = algorithm.hash;
         if (hash) {
             if (typeof hash === 'string' || hash instanceof String) {
-                hash = {name: hash};
+                hash = new AlgorithmDto();
+                hash.name = algorithm.hash as string;
             }
             if (algorithm.version === 1994 || algorithm.version === 2001) {
                 hash.version = 1994;

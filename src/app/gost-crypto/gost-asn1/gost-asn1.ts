@@ -2,10 +2,21 @@ import {BER, Chars, Hex, PEM} from '../gost-coding/gost-coding';
 import {AlgorithmDto} from '../../dto/algorithm-dto';
 import {GostSecurity} from '../gost-security/gost-security';
 import {GostRandom} from '../gost-random/gost-random';
+import {GostSubtleCrypto} from '../gost-subtle/gost-subtle-crypto';
+import {GostEngine} from '../gost-engine/gost-engine';
+import {GostCrypto} from '../gost-crypto/gost-crypto';
+
+
+export class GostAsn1 {
+    GostSignature: any;
+}
+
+
+/*
 
 export class GostAsn1 {
 
-    subtle = new Go
+    subtle = new GostSubtleCrypto(new GostCrypto(), new GostEngine());
 
     gostCrypto: GostSecurity = new GostSecurity();
 
@@ -350,7 +361,7 @@ class GostKeys {
         this.asn1.PrivateKeyInfo(keyInfo);
     }
 
-
+    PrivateKeyInfo;
 }
 
 
@@ -431,3 +442,8 @@ class SIntClass {
         return Hex.decode(this.gostAsn1.lpad(s, len), endian);
     }
 }
+
+class PrivateKeyInfo {
+
+}
+*/

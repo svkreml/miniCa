@@ -97,7 +97,7 @@ describe('GostSign', () => {
         algorithm.hash = {
             name: 'GOST R 34.11',
             version: 1994
-        };
+        } as AlgorithmDto;
         // algorithm.namedParam = 'S-TEST';
         // algorithm.ukm = '359E7F4B1410FEACC570456C6801496946312120B39D019D455986E364F365886748ED7A44B3E794434006011842286212273A6D14CF70EA3AF71BB1AE679F1';
 
@@ -117,7 +117,7 @@ describe('GostSign', () => {
         algorithm.hash = {
             version: undefined,
             name: 'GOST R 34.11'
-        };
+        } as AlgorithmDto;
         // algorithm.namedParam = 'S-TEST';
         // algorithm.ukm = '359E7F4B1410FEACC570456C6801496946312120B39D019D455986E364F365886748ED7A44B3E794434006011842286212273A6D14CF70EA3AF71BB1AE679F1';
 
@@ -154,7 +154,7 @@ describe('GostSign', () => {
         algorithm.hash = {
             version: undefined,
             name: 'GOST R 34.11'
-        };
+        } as AlgorithmDto;
         const result = performDerive(algorithm);
         expect(result.includes('PASSED')).toBeTruthy();
     });
@@ -169,7 +169,7 @@ describe('GostSign', () => {
         algorithm.hash = {
             name: 'GOST R 34.11',
             version: 1994
-        };
+        } as AlgorithmDto;
         const result = performDerive(algorithm);
         expect(result.includes('PASSED')).toBeTruthy();
     });

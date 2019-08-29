@@ -4,6 +4,11 @@ import {GostCrypto} from '../gost-crypto/gost-crypto';
 
 export class GostSubtleCrypto implements SubtleCrypto {
 
+    subtle: SubtleCrypto = new SubtleCrypto();
+
+    constructor(private gostCrypto: GostCrypto, private gostEngine: GostEngine) {
+    }
+
     checkNative(algorithm: AlgorithmDto) {
         if (!this.subtle || !algorithm) {
             return false;
@@ -28,11 +33,6 @@ export class GostSubtleCrypto implements SubtleCrypto {
             name.indexOf('SHA-1') === -1 &&
             name.indexOf('RC2') === -1 &&
             name.indexOf('?DES') === -1;
-    }
-
-
-    subtle: SubtleCrypto = new SubtleCrypto();
-    constructor(private gostCrypto: GostCrypto, private gostEngine: GostEngine) {
     }
 
     deriveBits(algorithm: string | EcdhKeyDeriveParams | DhKeyDeriveParams | ConcatParams | HkdfCtrParams | Pbkdf2Params, baseKey: CryptoKey, length: number): PromiseLike<ArrayBuffer> {

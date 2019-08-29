@@ -28,7 +28,7 @@ export class AlgorithmDto {
     /*from sign*/
     namedParam: string;
     namedCurve: string;
-    hash: HashDto | string;
+    hash: AlgorithmDto | string;
     public: any;
     param: any;
     modulusLength: number;
@@ -38,4 +38,7 @@ export class AlgorithmDto {
 export class HashDto {
     name: string = undefined;
     version: number = undefined;
+    length: number;
+    sBox: any;
+    procreator: string;
 }
