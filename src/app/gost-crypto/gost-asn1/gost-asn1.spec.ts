@@ -3,6 +3,6 @@ import {AlgorithmDto} from '../../dto/algorithm-dto';
 
 describe('GostAsn1', () => {
   it('should create an instance', () => {
-    expect(new GostAsn1(new AlgorithmDto())).toBeTruthy();
+    expect(new GostAsn1()).toBeTruthy();
   });
 });

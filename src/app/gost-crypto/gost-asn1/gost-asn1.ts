@@ -5,6 +5,7 @@ import {GostRandom} from '../gost-random/gost-random';
 
 export class GostAsn1 {
 
+    subtle = new Go
 
     gostCrypto: GostSecurity = new GostSecurity();
 
@@ -15,8 +16,9 @@ export class GostAsn1 {
     attributes = this.gostCrypto.attributes;
     parameters = this.gostCrypto.parameters;
     SInt = new SIntClass(this);
+    GostSignature: any;
 
-    constructor(algorithm: AlgorithmDto) {
+    constructor() {
 
     }
 
