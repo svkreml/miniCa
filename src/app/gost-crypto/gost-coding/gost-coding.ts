@@ -1,3 +1,5 @@
+import {ASN1Object} from '../gost-asn1/structure/ASN1Object';
+
 export class GostCoding {
     public static buffer(d: any): ArrayBufferLike { // FixMe уточнить тип
         if (d instanceof ArrayBuffer) {
@@ -203,15 +205,6 @@ export class Chars {
         0x455: 0xBE,
         0x457: 0xBf
     };
-
-    /*
-        static win1251back = {
-
-        };
-    */
-
-    constructor() {
-    }
 
     public static decode(s, charset) {
         charset = (charset || 'win1251').toLowerCase().replace('-', '');
@@ -451,7 +444,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
     }
 
 
-    public static decode(data): any {
+    public static decode(data): ASN1Object {
         return BER.decodeBER(data.object ? data : new Uint8Array(GostCoding.buffer(data)), 0);
     }
 
@@ -788,7 +781,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
     }
 
 
-    public static decodeBER(source, offset) {
+    public static decodeBER(source, offset): ASN1Object {
 
         // start pos
         let pos = offset || 0;
@@ -1087,7 +1080,7 @@ export class BER { // <editor-fold defaultstate="collapsed">
             header,
             content,
             object
-        };
+        } as ASN1Object;
     }
 
 }
