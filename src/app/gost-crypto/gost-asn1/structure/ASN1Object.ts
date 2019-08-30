@@ -191,34 +191,6 @@ export class CHOICE extends ASN1Object {
 }
 
 
-export class ASN1 {
-    ANY = new ASN1Object();
-    BOOLEAN = new PRIMITIVE(0x01);
-    IA5String = new PRIMITIVE(0x16);
-    NumericString = new PRIMITIVE(0x12);
-    PrintableString = new PRIMITIVE(0x13);
-    TeletexString = new PRIMITIVE(0x14);
-    UTF8String = new PRIMITIVE(0x0c);
-    UTCTime = new PRIMITIVE(0x17);
-    GeneralizedTime = new PRIMITIVE(0x18);
-    UniversalString = new PRIMITIVE(0x1C);
-    BMPString = new PRIMITIVE(0x1e);
-    NULL = new PRIMITIVE(0x05);
-
-
-    INTEGER = new PRIMITIVE_CODE(0x02);
-    ENUMERATED = new PRIMITIVE_CODE(0x0a);
-
-    OCTET_STRING = new OCTET_STRING();
-    BIT_STRING = new BIT_STRING();
-
-
-    SEQUENCE_OF = new ARRAY_OF(0x10);
-    SET_OF = new ARRAY_OF(0x11);
-    SET_OF_SINGLE;
-}
-
-
 /*
     // Call set method for a class property
     _set: function (Class, propName, value) {

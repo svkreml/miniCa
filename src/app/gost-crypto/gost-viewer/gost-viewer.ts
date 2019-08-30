@@ -4,22 +4,15 @@ import {ASN1Object} from '../gost-asn1/structure/ASN1Object';
 import {GostAsn1} from '../gost-asn1/gost-asn1';
 import {BERtypes} from './BERTypes';
 
+
+export class Syntax {
+
+}
+
+
+
 export class GostViewer {
 
-    static syntaxes = {
-        '': 'No Syntax',
-        PrivateKeyInfo: 'PKCS #8: Private-Key Information Syntax',
-        EncryptedPrivateKeyInfo: 'PKCS #8: Encrypted Private-Key Information Syntax',
-        SubjectPublicKeyInfo: 'X.509 Certificate SubjectPublicKeyInfo Syntax',
-        Certificate: 'X.509 Certificate Syntax',
-        CertificationRequest: 'PKCS #10: Certification Request Syntax',
-        CertificateList: 'X.509 Certificate Revocation List Syntax',
-        AttributeCertificate: 'Attribute Certificate Profile Syntax',
-        ContentInfo: 'PKCS #7: Cryptographic Message Syntax',
-        PFX: 'PKCS #12: Personal Information Exchange Syntax',
-        PKIData: 'Certificate Management (CMC) PKIData Syntax',
-        PKIResponse: 'Certificate Management (CMC) PKIResponse Syntax'
-    };
 
     static asn1 = new GostAsn1();
 
