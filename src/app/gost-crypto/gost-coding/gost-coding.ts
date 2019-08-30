@@ -402,7 +402,7 @@ export class Int16 {
 
 export class PEM {
 
-    public static encode(data, name) {
+    public static encode(data, name): any {
         return (name ? '-----BEGIN ' + name.toUpperCase() + '-----\r\n' : '') +
             Base64.encode(data instanceof ArrayBuffer ? data : BER.encode(data, undefined, undefined)) +
             (name ? '\r\n-----END ' + name.toUpperCase() + '-----' : '');
@@ -446,12 +446,12 @@ export class PEM {
 
 export class BER { // <editor-fold defaultstate="collapsed">
 
-    public static encode(object, format, onlyContent) {
+    public static encode(object, format, onlyContent): any {
         return BER.encodeBER(object, format, onlyContent).buffer;
     }
 
 
-    public static decode(data) {
+    public static decode(data): any {
         return BER.decodeBER(data.object ? data : new Uint8Array(GostCoding.buffer(data)), 0);
     }
 

@@ -1,6 +1,7 @@
 import {AlgorithmDto} from '../../dto/algorithm-dto';
 import {GostEngine} from '../gost-engine/gost-engine';
 import {GostCrypto} from '../gost-crypto/gost-crypto';
+import {SInt} from '../gost-asn1/SInt';
 
 export class GostSubtleCrypto implements SubtleCrypto {
 
@@ -122,7 +123,7 @@ export class GostSubtleCrypto implements SubtleCrypto {
             if (this.gostEngine) {
                 resolve(this.gostEngine.execute(algorithm, 'sign', [this.gostCrypto.extractKey('sign', algorithm, key), data]).then((data) => {
                     if (algorithm.procreator === 'SC' && algorithm.mode === 'SIGN') {
-                        data = this.gostCrypto.asn1.GostSignature.encode(data);
+                        data = SInt.encode(data, undefined);
                     }
                     return data;
                 }));

@@ -5,13 +5,344 @@ import {GostRandom} from '../gost-random/gost-random';
 import {GostSubtleCrypto} from '../gost-subtle/gost-subtle-crypto';
 import {GostEngine} from '../gost-engine/gost-engine';
 import {GostCrypto} from '../gost-crypto/gost-crypto';
+import {Asn1ServiceFunctions} from './Asn1ServiceFunctions';
+import {SInt} from './SInt';
 
+/**
+ * ASN.1 syntax definitions
+ *
+ */
 
 export class GostAsn1 {
-    GostSignature: any;
+
+    /**
+     * Gost PrivateKey info encoder
+     *
+     * @memberOf GostASN1
+     */
+    GostPrivateKeyInfo: GostPrivateKeyInfo;
+    /**
+     * Gost subject PublicKey info encoder
+     *
+     * @memberOf GostASN1
+     */
+    GostSubjectPublicKeyInfo: GostSubjectPublicKeyInfo;
+    /**
+     * CryptoPro key container header
+     *
+     * @memberOf GostASN1
+     */
+    GostKeyContainer: GostKeyContainer;
+    /**
+     * CryptoPro key container name
+     *
+     * @memberOf GostASN1
+     */
+    GostKeyContainerName: GostKeyContainerName;
+    /**
+     * CryptoPro encrypted PrivateKey for key containers
+     *
+     * @memberOf GostASN1
+     */
+    GostPrivateKeys: GostPrivateKeys;
+    /**
+     * CryptoPro PrivateKey masks for key containers
+     *
+     * @memberOf GostASN1
+     */
+    GostPrivateMasks: GostPrivateMasks;
+    /**
+     * ViPNet key container
+     *
+     * @memberOf GostASN1
+     */
+    ViPNetInfo: ViPNetInfo;
+    /**
+     * Gost Signature encoders
+     *
+     * @memberOf GostASN1
+     */
+    GostSignature: GostSignature;
+    /**
+     * Gost Encrypted key encoder for CMS
+     *
+     * @memberOf GostASN1
+     */
+    GostEncryptedKey: GostEncryptedKey;
+    /**
+     * SignalCom wrapped PrivateKey
+     *
+     * @memberOf GostASN1
+     */
+    GostWrappedPrivateKey: GostWrappedPrivateKey;
+    /**
+     * PKCS#8 PrivateKey info
+     *
+     * @memberOf GostASN1
+     */
+    PrivateKeyInfo: PrivateKeyInfo;
+    /**
+     * PKCS#8 encrypted PrivateKey info
+     *
+     * @memberOf GostASN1
+     */
+    EncryptedPrivateKeyInfo: EncryptedPrivateKeyInfo;
+    /**
+     * X.509 subject PublicKey info
+     *
+     * @memberOf GostASN1
+     */
+    SubjectPublicKeyInfo: SubjectPublicKeyInfo;
+    /**
+     * X.509 To be signed Certificate
+     *
+     * @memberOf GostASN1
+     */
+    TBSCertificate: TBSCertificate;
+    /**
+     * X.509 Certificate
+     *
+     * @memberOf GostASN1
+     */
+    Certificate: Certificate;
+    /**
+     * PKCS#10 Certification request definition
+     *
+     * @memberOf GostASN1
+     */
+    CertificationRequestInfo: CertificationRequestInfo;
+    /**
+     * PKCS#10 Certification request
+     *
+     * @memberOf GostASN1
+     */
+    CertificationRequest: CertificationRequest;
+    /**
+     * X.509 To be signed CRL
+     *
+     * @memberOf GostASN1
+     */
+    TBSCertList: TBSCertList;
+    /**
+     * X.509 CRL
+     *
+     * @memberOf GostASN1
+     */
+    CertificateList: CertificateList;
+    /**
+     * X.509 Attribute Certificate definition
+     *
+     * @memberOf GostASN1
+     */
+    AttributeCertificateInfo: AttributeCertificateInfo;
+    /**
+     * X.509 Attribute Certificate
+     *
+     * @memberOf GostASN1
+     */
+    AttributeCertificate: AttributeCertificate;
+    /**
+     * CMS Signed Attributes
+     *
+     * @memberOf GostASN1
+     */
+    SignedAttributes: SignedAttributes;
+    /**
+     * CMS Unsigned Attributes
+     *
+     * @memberOf GostASN1
+     */
+    UnsignedAttributes: UnsignedAttributes;
+    /**
+     * CMS Content definition
+     *
+     * @memberOf GostASN1
+     */
+    ContentInfo: ContentInfo;
+    /**
+     * PKCS#12 Safe Contents
+     *
+     * @memberOf GostASN1
+     */
+    SafeContents: SafeContents;
+    /**
+     * PKCS#12 Authenticated Safe
+     *
+     * @memberOf GostASN1
+     */
+    AuthenticatedSafe: AuthenticatedSafe;
+    /**
+     * PKCS#12 Personal Information Exchange (PFX)
+     *
+     * @memberOf GostASN1
+     */
+    PFX: PFX;
+    /**
+     * PKI Request
+     *
+     * @memberOf GostASN1
+     */
+    PKIData: PKIData;
+    /**
+     * PKI Response
+     *
+     * @memberOf GostASN1
+     */
+    PKIResponse: PKIResponse;
+
+
+    /*
+ * Base ASN.1 types and definitions
+ *
+ */ // <editor-fold defaultstate="collapsed">
+
+    // Encode object primitive
+    static encode(format, object, tagNumber, tagClass, tagConstructed, uniformTitle) {
+        Asn1ServiceFunctions.assert(object === undefined);
+        let source = {
+            tagNumber,
+            tagClass: tagClass || 0x00,
+            tagConstructed: tagConstructed || false,
+            object
+        };
+        // Output format
+        format = format || 'DER';
+        if (format === 'DER' || format === 'CER')
+            source = SInt.encode(source, format);
+        if (format === 'PEM')
+            source = SInt.encode(source, uniformTitle);
+        return source;
+    }
+
+    // Decode object primitive
+    static decode(source, tagNumber, tagClass, tagConstructed, uniformTitle) {
+        Asn1ServiceFunctions.assert(source === undefined);
+
+        // Decode PEM
+        if (typeof source === 'string')
+            source = SInt.decode(source, uniformTitle, false);
+        // Decode binary data
+        if (source instanceof ArrayBuffer) {
+            try {
+                source = SInt.decode(SInt.encode(source, undefined), uniformTitle, true);
+            } catch (e) {
+                source = SInt.decode(source, undefined, undefined);
+            }
+        }
+
+        tagClass = tagClass || 0;
+        tagConstructed = tagConstructed || false;
+        // Restore context implicit formats
+        if (source.tagNumber === undefined) {
+            source = this.encode(true, source.object, tagNumber, tagClass,
+                source.object instanceof Array, undefined);
+            source = SInt.decode(source, undefined, undefined);
+        }
+
+        // Check format
+        Asn1ServiceFunctions.assert(source.tagClass !== tagClass ||
+            source.tagNumber !== tagNumber ||
+            source.tagConstructed !== tagConstructed);
+        // Clone value define from redefine original
+        if (tagClass === 0 && tagNumber === 0x05)
+            return null;
+        else
+            return source.object;
+    }
+}
+class GostPrivateKeyInfo {
+}
+
+class GostSubjectPublicKeyInfo {
+}
+
+class GostKeyContainer {
+}
+
+class GostKeyContainerName {
+}
+
+class GostPrivateKeys {
+}
+
+class GostPrivateMasks {
+}
+
+class ViPNetInfo {
+}
+
+class GostSignature {
+}
+
+class GostEncryptedKey {
+}
+
+class GostWrappedPrivateKey {
+}
+
+class PrivateKeyInfo {
+}
+
+class CertificationRequestInfo {
+}
+
+class Certificate {
+}
+
+class EncryptedPrivateKeyInfo {
+}
+
+class SubjectPublicKeyInfo {
+}
+
+class TBSCertificate {
+}
+
+class CertificationRequest {
+}
+
+class TBSCertList {
+}
+
+class CertificateList {
+}
+
+class AttributeCertificateInfo {
+}
+
+class AttributeCertificate {
+}
+
+class SignedAttributes {
+}
+
+class UnsignedAttributes {
+}
+
+class ContentInfo {
+}
+
+class PKIResponse {
+}
+
+class PKIData {
+}
+
+class PFX {
+}
+
+class AuthenticatedSafe {
+}
+
+class SafeContents {
 }
 
 
+
+/*
+export class GostAsn1 {
+    GostSignature: any;
+}*/
 /*
 
 export class GostAsn1 {
@@ -26,7 +357,7 @@ export class GostAsn1 {
     identifiers = this.gostCrypto.identifiers;
     attributes = this.gostCrypto.attributes;
     parameters = this.gostCrypto.parameters;
-    SInt = new SIntClass(this);
+    SInt = new SInt(this);
     GostSignature: any;
 
     constructor() {
@@ -103,8 +434,6 @@ export class GostAsn1 {
     getOwnPropertyDescriptor(object, name) { // TODO to remove
         return Object.getOwnPropertyDescriptor(object, name);
     }
-
-
     encode(format, object, tagNumber, tagClass, tagConstructed, uniformTitle) {
         this.assert(object === undefined);
         let source: { tagNumber: any; tagClass: any; tagConstructed: any; object: any } | string = {
@@ -265,8 +594,6 @@ export class GostAsn1 {
         const r = new Uint8Array(buffer, offset, 4);
         return (r[3] << 24) | (r[2] << 16) | (r[1] << 8) | r[0];
     }
-
-
     set32(buffer, offset, int) {
         const r = new Uint8Array(buffer, offset, 4);
         r[3] = int >>> 24;
@@ -313,11 +640,7 @@ export class GostAsn1 {
             return Chars.decode(password, 'utf8');
         }
     }
-
-
 }
-
-
 class GostKeys {
     private privateKeyAlgorithm: any;
 
@@ -364,8 +687,6 @@ class GostKeys {
     PrivateKeyInfo;
 }
 
-
-
 class ASN1Object {
 
     // Call set method for a class property
@@ -391,8 +712,6 @@ class ASN1Object {
     encode() {
         return this.object;
     }
-
-
     decode(source) {
         return new this(source);
     }
@@ -422,9 +741,7 @@ class ASN1Object {
         }
     }
 }
-
-
-class SIntClass {
+class SInt {
 
     constructor(private gostAsn1: GostAsn1) {
     }
