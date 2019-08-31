@@ -1,3 +1,9 @@
+import {BERtypes} from '../../gost-viewer/BERTypes';
+import {GostAsn1} from '../gost-asn1';
+import {BERElement} from 'asn1-ts';
+import {Asn1ServiceFunctions} from '../Asn1ServiceFunctions';
+
+
 export class ASN1Object {
     public tagNumber;
     public object: ASN1Object[] | any;
@@ -31,7 +37,14 @@ export class PRIMITIVE extends ASN1Object {
         this.tagNumber = tagNumber;
     }
 }
+export class IA5String extends PRIMITIVE{
 
+    constructor(object) {
+        super(0x16);
+        this.object = object;
+    }
+
+}
 // tslint:disable-next-line:class-name
 export class PRIMITIVE_CODE extends PRIMITIVE {
 
@@ -144,14 +157,30 @@ export class BIT_STRING extends PRIMITIVE {
     * */
 }
 
+export class SEQUENCE<T> extends PRIMITIVE {
 
-export class SEQUENCE extends PRIMITIVE {
 
+    constructor(value: T) {
+        super(BERtypes.SEQUENCE);
+
+        for (let name in value) {
+            let name1 = value[name].constructor.name;
+            this.object.push(new GostAsn1[name1](value[name]));
+        }
+    }
+
+    static decode(value) {
+
+
+    }
 }
 
+
+/*
 export class ATTRIBUTE extends SEQUENCE {
 
 }
+*/
 
 // tslint:disable-next-line:class-name
 export class OBJECT_IDENTIFIER extends ASN1Object {
@@ -191,6 +220,18 @@ export class CHOICE extends ASN1Object {
 }
 
 
+
+
+export class OPTIONAL<T> {
+    object: T;
+    constructor(object: T) {
+        this.object = object;
+    }
+
+    static decode(extElem1: any) {
+        return (extElem1) ? new OPTIONAL(extElem1) : undefined;
+    }
+}
 /*
     // Call set method for a class property
     _set: function (Class, propName, value) {

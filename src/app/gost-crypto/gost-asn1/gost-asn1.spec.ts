@@ -1,7 +1,7 @@
 // import { GostAsn1 } from './gost-asn1';
 import {AlgorithmDto} from '../../dto/algorithm-dto';
 
-describe('GostAsn1', () => {
+describe('GostASN1', () => {
   it('should create an instance', () => {
     expect(true).toBeTruthy();
   });

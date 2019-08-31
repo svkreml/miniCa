@@ -14,6 +14,10 @@ export class Syntax {
 export class GostViewer {
 
 
+
+
+
+
     static asn1 = new GostAsn1();
 
     static gostSecurity: GostSecurity = new GostSecurity();
@@ -165,7 +169,7 @@ export class GostViewer {
         return process(BER.decode(value), undefined, undefined);
     }
 
-    printSyntax(value, type) {
+    printSyntax(value, type: string) {
 
         function process(value: ASN1Object, ident) {
             ident = ident || '';
