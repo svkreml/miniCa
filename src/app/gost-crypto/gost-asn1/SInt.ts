@@ -3,7 +3,6 @@ import {Asn1ServiceFunctions} from './Asn1ServiceFunctions';
 
 export class SInt {
 
-
     static encode(value, endian): any {
         return '0x' + Hex.encode(value, endian);
     }

@@ -1,8 +1,8 @@
 import {BER, Chars, Hex, PEM} from '../gost-coding/gost-coding';
 import {GostSecurity} from '../gost-security/gost-security';
-import {ASN1Object} from '../gost-asn1/structure/ASN1Object';
 import {GostAsn1} from '../gost-asn1/gost-asn1';
 import {BERtypes} from './BERTypes';
+import {ASN1Object} from '../gost-asn1/structure/ASN1Object';
 
 
 export class Syntax {

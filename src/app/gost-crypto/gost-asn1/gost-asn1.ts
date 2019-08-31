@@ -1,5 +1,4 @@
-import {BER, Chars, Hex, PEM} from '../gost-coding/gost-coding';
-
+import {PEM} from '../gost-coding/gost-coding';
 import {Asn1ServiceFunctions} from './Asn1ServiceFunctions';
 import {SInt} from './SInt';
 import {BERElement, ObjectIdentifier} from 'asn1-ts';
@@ -9,7 +8,7 @@ import {BERtypes} from '../gost-viewer/BERTypes';
  * ASN.1 syntax definitions
  *
  */
-class GostKeyContainerName {
+export class GostKeyContainerName {
     containerName: string; // ia5string
     extElem1: any; // wtf
     constructor(containerName: string, extElem1: any) {
@@ -17,7 +16,7 @@ class GostKeyContainerName {
         this.extElem1 = extElem1;
     }
 
-    public static decode(value: ArrayBuffer) {
+    public static decode(value: ArrayBuffer): GostKeyContainerName {
         let encodedData: Uint8Array = new Uint8Array(value);
         let berElement: BERElement = new BERElement();
         berElement.fromBytes(encodedData);
@@ -33,17 +32,24 @@ class GostKeyContainerName {
     }
 
     public static encode(value: GostKeyContainerName): ArrayBuffer {
-        let toReturn: BERElement = new BERElement();
+        let toReturn: BERElement[] = [];
+
 
         let containerName: BERElement = new BERElement();
         containerName.ia5String = value.containerName;
-        toReturn.sequence.push(containerName);
+        containerName.tagNumber = BERtypes.IA5String;
+        toReturn.push(containerName);
 
-        let extElem1: BERElement = new BERElement();
-        extElem1.fromBytes(value.extElem1);
-        toReturn.sequence.push(extElem1);
+        if (value.extElem1) {
+            let extElem1: BERElement = new BERElement();
+            extElem1.fromBytes(value.extElem1);
+            toReturn.push(extElem1);
+        }
 
-        return toReturn.toBytes();
+        let constracted = new BERElement();
+        constracted.sequence = toReturn;
+        constracted.tagNumber = BERtypes.SEQUENCE;
+        return constracted.toBytes();
     }
 }
 
@@ -60,7 +66,7 @@ export class PrivateKeyInfo {
         this.privateKey = privateKey;
     }
 
-    public static decode(value: ArrayBuffer) {
+    public static decode(value: ArrayBuffer): PrivateKeyInfo {
         let encodedData: Uint8Array = new Uint8Array(value);
         let berElement: BERElement = new BERElement();
         berElement.fromBytes(encodedData);
@@ -96,20 +102,26 @@ export class PrivateKeyInfo {
 
 
     public static encode(value: PrivateKeyInfo): ArrayBuffer {
-        let toReturn: BERElement = new BERElement();
+      let sequence: BERElement[] = [];
 
         let version: BERElement = new BERElement();
         version.integer = value.version;
-        toReturn.sequence.push(version);
+        version.tagNumber = BERtypes.INTEGER;
+        sequence.push(version);
 
         let privateKeyAlgorithm: BERElement = new BERElement();
-        privateKeyAlgorithm.fromBytes(PrivateKeyAlgorithm.encode(value.privateKeyAlgorithm));
-        toReturn.sequence.push(version);
+        privateKeyAlgorithm.fromBytes(new Uint8Array(PrivateKeyAlgorithm.encode(value.privateKeyAlgorithm)));
+        privateKeyAlgorithm.tagNumber = BERtypes['OCTET STRING'];
+        sequence.push(privateKeyAlgorithm);
 
         let privateKey: BERElement = new BERElement();
         privateKey.fromBytes(value.privateKey);
-        toReturn.sequence.push(privateKey);
+        sequence.push(privateKey);
 
+
+        let toReturn: BERElement = new BERElement();
+        toReturn.sequence = sequence;
+        toReturn.tagNumber = BERtypes.SEQUENCE;
         return toReturn.toBytes();
     }
 }
@@ -142,17 +154,25 @@ export class PrivateKeyAlgorithm {
             return new PrivateKeyAlgorithm(containerName, extElem1);
         }*/
 
-    public static encode(value: PrivateKeyAlgorithm): Uint8Array {
-        let toReturn: BERElement = new BERElement();
+    public static encode(value: PrivateKeyAlgorithm): ArrayBuffer {
+        let sequence: BERElement[] = [];
         let privateKeyAlgorithm: BERElement;
 
         if (value.name === 'RSASSA-PKCS1-v1_5' && value.id === 'rsaEncryption') {
             privateKeyAlgorithm  = new BERElement(); // 1.2.840.113549.1.1.1
             privateKeyAlgorithm.objectIdentifier = new ObjectIdentifier([1, 2, 840, 113549, 1, 1, 1]);
-            toReturn.sequence.push(privateKeyAlgorithm);
-            toReturn.sequence.push(null);
+            privateKeyAlgorithm.tagNumber = BERtypes['OBJECT IDENTIFIER'];
+            sequence.push(privateKeyAlgorithm);
+
+            let n: BERElement = new BERElement();
+            n.tagNumber = BERtypes.NULL;
+            sequence.push(n);
         }
 
+
+        let toReturn: BERElement = new BERElement();
+        toReturn.sequence = sequence;
+        toReturn.tagNumber = BERtypes.SEQUENCE;
         return toReturn.toBytes();
     }
 
