@@ -1,10 +1,11 @@
 import {PEM} from '../gost-coding/gost-coding';
 import {Asn1ServiceFunctions} from './Asn1ServiceFunctions';
 import {SInt} from './SInt';
-import {BERElement, ObjectIdentifier} from 'asn1-ts';
+import {BERElement, DERElement} from 'asn1-ts';
 import {BERtypes} from './structure/BERTypes';
-import {PrivateKeyAlgorithmRSA} from './private-keys-algs/private-key-algorithm';
-import { PrivateKeyInfo } from './private-keys-algs/private-key-info';
+import {PrivateKeyInfo} from './private-keys-algs/private-key-info';
+import {PrivateKeyAlgorithm} from './private-keys-algs/private-key-algorithm';
+import {GostSecurity} from '../gost-security/gost-security';
 
 /**
  * ASN.1 syntax definitions
@@ -54,16 +55,6 @@ export class GostKeyContainerName {
         return constracted.toBytes();
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 export class GostAsn1 {
@@ -211,7 +202,7 @@ export class GostAsn1 {
      *
      * @memberOf GostASN1
      */
-    Certificate: Certificate;
+    Certificate = new Certificate();
     /**
      * PKCS#10 Certification request definition
      *
@@ -394,7 +385,20 @@ class GostWrappedPrivateKey {
 class CertificationRequestInfo {
 }
 
+
+
 class Certificate {
+    tbsCertificate: TBSCertificate;
+    signatureAlgorithm: PrivateKeyAlgorithm;
+    signatureValue: ArrayBuffer; // BitString
+
+    public decode(value: ArrayBuffer) {
+        throw Error('Unsuported \n' + JSON.stringify(value));
+    }
+
+    public encode(value: Certificate): ArrayBuffer {
+        throw Error('Unsuported \n' + JSON.stringify(value));
+    }
 }
 
 class EncryptedPrivateKeyInfo {
@@ -417,9 +421,43 @@ class EncryptedPrivateKeyInfo {
 }
 
 class SubjectPublicKeyInfo {
+
+    public decode(value: ArrayBuffer) {
+        throw Error('Unsuported \n' + JSON.stringify(value));
+    }
+
+    public encode(value: SubjectPublicKeyInfo): ArrayBuffer {
+        throw Error('Unsuported \n' + JSON.stringify(value));
+    }
+}
+
+class Name {
+}
+
+class Validity {
+}
+
+class CertExtensions {
 }
 
 class TBSCertificate {
+    version: number;
+    serialNumber: number;
+    signature: PrivateKeyAlgorithm;
+    issuer: Name;
+    validity: Validity;
+    subject: Name;
+    subjectPublicKeyInfo: SubjectPublicKeyInfo;
+   // issuerUniqueID: OPTIONAL(CTX(1, IMPLICIT(UniqueIdentifier)));
+   // subjectUniqueID: OPTIONAL(CTX(2, IMPLICIT(UniqueIdentifier)));
+    extensions: CertExtensions;
+    public decode(value: ArrayBuffer) {
+        throw Error('Unsuported \n' + JSON.stringify(value));
+    }
+
+    public encode(value: TBSCertificate): ArrayBuffer {
+        throw Error('Unsuported \n' + JSON.stringify(value));
+    }
 }
 
 class CertificationRequest {

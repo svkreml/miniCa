@@ -1,21 +1,184 @@
 export class GostViewerTestData {
     public static certRsa: string =
-        'MIIEdjCCBCOgAwIBAgIBATAKBggqhQMHAQEDAjCB8TELMAkGA1UEBhMCUlUxKjAoBgNVBAgMIdCh0LDQvdC60YLRii3Qn9C1\n' +
-        '0YLQtdGA0LHRg9GA0LPRijEuMCwGA1UECgwl0JbRg9GA0L3QsNC7ICLQodC+0LLRgNC10LzQtdC90L3QuNC6IjEfMB0GA1UE\n' +
-        'CwwW0KDRg9C60L7QstC+0LTRgdGC0LLQvjEoMCYGA1UEDAwf0JPQu9Cw0LLQvdGL0Lkg0YDQtdC00LDQutGC0L7RgDE7MDkG\n' +
-        'A1UEAwwy0JDQu9C10LrRgdCw0L3QtNGAINCh0LXRgNCz0LXQtdCy0LjRhyDQn9GD0YjQutC40L0wHhcNMTQxMjA0MjEwMDAw\n' +
-        'WhcNMzQxMjA0MjEwMDAwWjCB8TELMAkGA1UEBhMCUlUxKjAoBgNVBAgMIdCh0LDQvdC60YLRii3Qn9C10YLQtdGA0LHRg9GA\n' +
-        '0LPRijEuMCwGA1UECgwl0JbRg9GA0L3QsNC7ICLQodC+0LLRgNC10LzQtdC90L3QuNC6IjEfMB0GA1UECwwW0KDRg9C60L7Q\n' +
-        'stC+0LTRgdGC0LLQvjEoMCYGA1UEDAwf0JPQu9Cw0LLQvdGL0Lkg0YDQtdC00LDQutGC0L7RgDE7MDkGA1UEAwwy0JDQu9C1\n' +
-        '0LrRgdCw0L3QtNGAINCh0LXRgNCz0LXQtdCy0LjRhyDQn9GD0YjQutC40L0wZjAfBggqhQMHAQEBATATBgcqhQMCAiQABggq\n' +
-        'hQMHAQECAgNDAARAQUCQNg5eYYIcxtaREQRxu/DjXzHflHl+6V0k62fEOKHFqiPC/zO6lSd5Nm6an8Z28owrasJdYX/B8xBQ\n' +
-        'NDVnG6OCAZswggGXMA4GA1UdDwEBAQQEAwIB/jAxBgNVHSUEKjAoBggrBgEFBQcDAQYIKwYBBQUHAwIGCCsGAQUFBwMDBggr\n' +
-        'BgEFBQcDBDAPBgNVHRMBAQEEBTADAQEBMB0GA1UdDgQWBBSdYVnKqBWdaajYbstN3tOx3IvQszCCASAGA1UdIwSCARcwggET\n' +
-        'gBSdYVnKqBWdaajYbstN3tOx3IvQs6GB96SB9DCB8TELMAkGA1UEBhMCUlUxKjAoBgNVBAgMIdCh0LDQvdC60YLRii3Qn9C1\n' +
-        '0YLQtdGA0LHRg9GA0LPRijEuMCwGA1UECgwl0JbRg9GA0L3QsNC7ICLQodC+0LLRgNC10LzQtdC90L3QuNC6IjEfMB0GA1UE\n' +
-        'CwwW0KDRg9C60L7QstC+0LTRgdGC0LLQvjEoMCYGA1UEDAwf0JPQu9Cw0LLQvdGL0Lkg0YDQtdC00LDQutGC0L7RgDE7MDkG\n' +
-        'A1UEAwwy0JDQu9C10LrRgdCw0L3QtNGAINCh0LXRgNCz0LXQtdCy0LjRhyDQn9GD0YjQutC40L2CAQEwCgYIKoUDBwEBAwID\n' +
-        'QQAEv5zJHKm0mhANAf+AtQ0c73VAvtldxhH2rUBxUBt5BDc2OZBpjsw7uFnK0W6EXRmrEVuVzcspeGIsjYOtTBNa\n';
+        'MIIDgjCCAmqgAwIBAgIUM4sKClfxGWz2+HCkw8KHZqz48mwwDQYJKoZIhvcNAQEL\n' +
+        'BQAwQDELMAkGA1UEBhMCVVMxDzANBgNVBAgMBmFzZGFzZDEPMA0GA1UEBwwGYXNk\n' +
+        'YXNkMQ8wDQYDVQQKDAZhc2Rhc2QwHhcNMTkwOTAxMjEyODA2WhcNMjkwODI5MjEy\n' +
+        'ODA2WjBAMQswCQYDVQQGEwJVUzEPMA0GA1UECAwGYXNkYXNkMQ8wDQYDVQQHDAZh\n' +
+        'c2Rhc2QxDzANBgNVBAoMBmFzZGFzZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC\n' +
+        'AQoCggEBAL2uaAVSr+rLUBrjW9tylvAHj8Hi+tJjP4ZEqqDF3HlwxOoJmfCIocFv\n' +
+        'KPeNkslA9XJo4uSnXuQEJo6h6ZIbLJW21JlOf4BCNT2xBaDFIvZjVG7/hyT1NDnQ\n' +
+        'JGbUKV9E7aBsgqy6Lg9WC7xw8SVwq0rcSPRh6hnqLclbMk/YZ4CpZMPtJpMnTxGX\n' +
+        'wUMo7YpDy257Hld0APijiPfAUzNMUsRQ4daICE+8Z8EeufE6ni7ZZDWkWNjBE1Z/\n' +
+        '6WHX/TSKc9MVJSoAzOBTw3nhoenwKEpSlWB7N6OqbDHOocni/mBEID+T6y6P/q7/\n' +
+        '6Io6dTm87u3fgwTov5P2GraBOovRX+UCAwEAAaN0MHIwHQYDVR0OBBYEFAfRvkdP\n' +
+        '+jJk1e7Minx7bo9fOnXgMB8GA1UdIwQYMBaAFAfRvkdP+jJk1e7Minx7bo9fOnXg\n' +
+        'MA4GA1UdDwEB/wQEAwIFoDAgBgNVHSUBAf8EFjAUBggrBgEFBQcDAQYIKwYBBQUH\n' +
+        'AwIwDQYJKoZIhvcNAQELBQADggEBAKd7OEeU1VsAlZ7ljIXFAeRWXBrItopK+5F8\n' +
+        'nwgViNBOhAf7PTa42X6t3FWrGJ1Q+71wjK35LAYDVYTrWkGDT7WLfQhz/fZjamBK\n' +
+        'xNvYpKIPTFpyMS4rRV8Sc7oTRsTiSo1zTb1s/lEQeU6FhIhrR3aSpmf6NWIQ+zEq\n' +
+        'ZBG6uLEnZyuXU4li2UjOsIQdoIO1qMxEMTiGUR4WTpSDcPqBDhJbPk7/k9o/Mp1K\n' +
+        '+UiV6CroVp/taNS/GpVS+9A8RUbt7Mt7tqr/OvaaSmQt6d6i3m/6xXXDGJisQrPp\n' +
+        'Q3uFeLBQZBiu1BpHV3kGpnP3Ve8+8AGx+TV7u8OZIZySV0Kdisw=';
+    public static certRsaAsn1: string = '    0 30  898: SEQUENCE {\n' +
+        '    4 30  618:  SEQUENCE {\n' +
+        '    8 a0    3:   [0] {\n' +
+        '   10 02    1:    INTEGER 2\n' +
+        '             :   }\n' +
+        '   13 02   20:   INTEGER\n' +
+        '             :    33 8b 0a 0a 57 f1 19 6c f6 f8 70 a4 c3 c2 87 66\n' +
+        '             :    ac f8 f2 6c\n' +
+        '   35 30   13:   SEQUENCE {\n' +
+        '   37 06    9:    OBJECT IDENTIFIER sha256withRSAEncryption (1.2.840.113549.1.1.11)\n' +
+        '   48 05    0:    NULL\n' +
+        '             :   }\n' +
+        '   50 30   64:   SEQUENCE {\n' +
+        '   52 31   11:    SET {\n' +
+        '   54 30    9:     SEQUENCE {\n' +
+        '   56 06    3:      OBJECT IDENTIFIER countryName (2.5.4.6)\n' +
+        '   61 13    2:      PrintableString "US"\n' +
+        '             :     }\n' +
+        '             :    }\n' +
+        '   65 31   15:    SET {\n' +
+        '   67 30   13:     SEQUENCE {\n' +
+        '   69 06    3:      OBJECT IDENTIFIER stateOrProvinceName (2.5.4.8)\n' +
+        '   74 0c    6:      UTF8String "asdasd"\n' +
+        '             :     }\n' +
+        '             :    }\n' +
+        '   82 31   15:    SET {\n' +
+        '   84 30   13:     SEQUENCE {\n' +
+        '   86 06    3:      OBJECT IDENTIFIER localityName (2.5.4.7)\n' +
+        '   91 0c    6:      UTF8String "asdasd"\n' +
+        '             :     }\n' +
+        '             :    }\n' +
+        '   99 31   15:    SET {\n' +
+        '  101 30   13:     SEQUENCE {\n' +
+        '  103 06    3:      OBJECT IDENTIFIER organizationName (2.5.4.10)\n' +
+        '  108 0c    6:      UTF8String "asdasd"\n' +
+        '             :     }\n' +
+        '             :    }\n' +
+        '             :   }\n' +
+        '  116 30   30:   SEQUENCE {\n' +
+        '  118 17   13:    UTCTime Mon Sep 02 2019 00:28:06 GMT+0300 (Москва, стандартное время)\n' +
+        '  133 17   13:    UTCTime Thu Aug 30 2029 00:28:06 GMT+0300 (Москва, стандартное время)\n' +
+        '             :   }\n' +
+        '  148 30   64:   SEQUENCE {\n' +
+        '  150 31   11:    SET {\n' +
+        '  152 30    9:     SEQUENCE {\n' +
+        '  154 06    3:      OBJECT IDENTIFIER countryName (2.5.4.6)\n' +
+        '  159 13    2:      PrintableString "US"\n' +
+        '             :     }\n' +
+        '             :    }\n' +
+        '  163 31   15:    SET {\n' +
+        '  165 30   13:     SEQUENCE {\n' +
+        '  167 06    3:      OBJECT IDENTIFIER stateOrProvinceName (2.5.4.8)\n' +
+        '  172 0c    6:      UTF8String "asdasd"\n' +
+        '             :     }\n' +
+        '             :    }\n' +
+        '  180 31   15:    SET {\n' +
+        '  182 30   13:     SEQUENCE {\n' +
+        '  184 06    3:      OBJECT IDENTIFIER localityName (2.5.4.7)\n' +
+        '  189 0c    6:      UTF8String "asdasd"\n' +
+        '             :     }\n' +
+        '             :    }\n' +
+        '  197 31   15:    SET {\n' +
+        '  199 30   13:     SEQUENCE {\n' +
+        '  201 06    3:      OBJECT IDENTIFIER organizationName (2.5.4.10)\n' +
+        '  206 0c    6:      UTF8String "asdasd"\n' +
+        '             :     }\n' +
+        '             :    }\n' +
+        '             :   }\n' +
+        '  214 30  290:   SEQUENCE {\n' +
+        '  218 30   13:    SEQUENCE {\n' +
+        '  220 06    9:     OBJECT IDENTIFIER rsaEncryption (1.2.840.113549.1.1.1)\n' +
+        '  231 05    0:     NULL\n' +
+        '             :    }\n' +
+        '  233 03  271:    BIT STRING, unused 0 bits, encapsulates {\n' +
+        '  237 30  266:     SEQUENCE {\n' +
+        '  241 02  257:      INTEGER\n' +
+        '             :       00 bd ae 68 05 52 af ea cb 50 1a e3 5b db 72 96\n' +
+        '             :       f0 07 8f c1 e2 fa d2 63 3f 86 44 aa a0 c5 dc 79\n' +
+        '             :       70 c4 ea 09 99 f0 88 a1 c1 6f 28 f7 8d 92 c9 40\n' +
+        '             :       f5 72 68 e2 e4 a7 5e e4 04 26 8e a1 e9 92 1b 2c\n' +
+        '             :       95 b6 d4 99 4e 7f 80 42 35 3d b1 05 a0 c5 22 f6\n' +
+        '             :       63 54 6e ff 87 24 f5 34 39 d0 24 66 d4 29 5f 44\n' +
+        '             :       ed a0 6c 82 ac ba 2e 0f 56 0b bc 70 f1 25 70 ab\n' +
+        '             :       4a dc 48 f4 61 ea 19 ea 2d c9 5b 32 4f d8 67 80\n' +
+        '             :       a9 64 c3 ed 26 93 27 4f 11 97 c1 43 28 ed 8a 43\n' +
+        '             :       cb 6e 7b 1e 57 74 00 f8 a3 88 f7 c0 53 33 4c 52\n' +
+        '             :       c4 50 e1 d6 88 08 4f bc 67 c1 1e b9 f1 3a 9e 2e\n' +
+        '             :       d9 64 35 a4 58 d8 c1 13 56 7f e9 61 d7 fd 34 8a\n' +
+        '             :       73 d3 15 25 2a 00 cc e0 53 c3 79 e1 a1 e9 f0 28\n' +
+        '             :       4a 52 95 60 7b 37 a3 aa 6c 31 ce a1 c9 e2 fe 60\n' +
+        '             :       44 20 3f 93 eb 2e 8f fe ae ff e8 8a 3a 75 39 bc\n' +
+        '             :       ee ed df 83 04 e8 bf 93 f6 1a b6 81 3a 8b d1 5f\n' +
+        '             :       e5\n' +
+        '  502 02    3:      INTEGER 65537\n' +
+        '             :     }\n' +
+        '             :    }\n' +
+        '             :   }\n' +
+        '  508 a3  116:   [3] {\n' +
+        '  510 30  114:    SEQUENCE {\n' +
+        '  512 30   29:     SEQUENCE {\n' +
+        '  514 06    3:      OBJECT IDENTIFIER subjectKeyIdentifier (2.5.29.14)\n' +
+        '  519 04   22:      OCTET STRING, encapsulates {\n' +
+        '  521 04   20:       OCTET STRING\n' +
+        '             :        07 d1 be 47 4f fa 32 64 d5 ee cc 8a 7c 7b 6e 8f\n' +
+        '             :        5f 3a 75 e0\n' +
+        '             :      }\n' +
+        '             :     }\n' +
+        '  543 30   31:     SEQUENCE {\n' +
+        '  545 06    3:      OBJECT IDENTIFIER authorityKeyIdentifier (2.5.29.35)\n' +
+        '  550 04   24:      OCTET STRING, encapsulates {\n' +
+        '  552 30   22:       SEQUENCE {\n' +
+        '  554 80   20:        [0]\n' +
+        '             :         07 d1 be 47 4f fa 32 64 d5 ee cc 8a 7c 7b 6e 8f\n' +
+        '             :         5f 3a 75 e0\n' +
+        '             :       }\n' +
+        '             :      }\n' +
+        '             :     }\n' +
+        '  576 30   14:     SEQUENCE {\n' +
+        '  578 06    3:      OBJECT IDENTIFIER keyUsage (2.5.29.15)\n' +
+        '  583 01    1:      BOOLEAN true\n' +
+        '  586 04    4:      OCTET STRING, encapsulates {\n' +
+        '  588 03    2:       BIT STRING, unused 5 bits\n' +
+        '             :        101B\n' +
+        '             :      }\n' +
+        '             :     }\n' +
+        '  592 30   32:     SEQUENCE {\n' +
+        '  594 06    3:      OBJECT IDENTIFIER extKeyUsage (2.5.29.37)\n' +
+        '  599 01    1:      BOOLEAN true\n' +
+        '  602 04   22:      OCTET STRING, encapsulates {\n' +
+        '  604 30   20:       SEQUENCE {\n' +
+        '  606 06    8:        OBJECT IDENTIFIER serverAuth (1.3.6.1.5.5.7.3.1)\n' +
+        '  616 06    8:        OBJECT IDENTIFIER clientAuth (1.3.6.1.5.5.7.3.2)\n' +
+        '             :       }\n' +
+        '             :      }\n' +
+        '             :     }\n' +
+        '             :    }\n' +
+        '             :   }\n' +
+        '             :  }\n' +
+        '  626 30   13:  SEQUENCE {\n' +
+        '  628 06    9:   OBJECT IDENTIFIER sha256withRSAEncryption (1.2.840.113549.1.1.11)\n' +
+        '  639 05    0:   NULL\n' +
+        '             :  }\n' +
+        '  641 03  257:  BIT STRING, unused 0 bits\n' +
+        '             :   a7 7b 38 47 94 d5 5b 00 95 9e e5 8c 85 c5 01 e4\n' +
+        '             :   56 5c 1a c8 b6 8a 4a fb 91 7c 9f 08 15 88 d0 4e\n' +
+        '             :   84 07 fb 3d 36 b8 d9 7e ad dc 55 ab 18 9d 50 fb\n' +
+        '             :   bd 70 8c ad f9 2c 06 03 55 84 eb 5a 41 83 4f b5\n' +
+        '             :   8b 7d 08 73 fd f6 63 6a 60 4a c4 db d8 a4 a2 0f\n' +
+        '             :   4c 5a 72 31 2e 2b 45 5f 12 73 ba 13 46 c4 e2 4a\n' +
+        '             :   8d 73 4d bd 6c fe 51 10 79 4e 85 84 88 6b 47 76\n' +
+        '             :   92 a6 67 fa 35 62 10 fb 31 2a 64 11 ba b8 b1 27\n' +
+        '             :   67 2b 97 53 89 62 d9 48 ce b0 84 1d a0 83 b5 a8\n' +
+        '             :   cc 44 31 38 86 51 1e 16 4e 94 83 70 fa 81 0e 12\n' +
+        '             :   5b 3e 4e ff 93 da 3f 32 9d 4a f9 48 95 e8 2a e8\n' +
+        '             :   56 9f ed 68 d4 bf 1a 95 52 fb d0 3c 45 46 ed ec\n' +
+        '             :   cb 7b b6 aa ff 3a f6 9a 4a 64 2d e9 de a2 de 6f\n' +
+        '             :   fa c5 75 c3 18 98 ac 42 b3 e9 43 7b 85 78 b0 50\n' +
+        '             :   64 18 ae d4 1a 47 57 79 06 a6 73 f7 55 ef 3e f0\n' +
+        '             :   01 b1 f9 35 7b bb c3 99 21 9c 92 57 42 9d 8a cc\n' +
+        '             : }';
 
     public static certGost256: string =
         '-----BEGIN CERTIFICATE-----\n' +
@@ -120,215 +283,6 @@ export class GostViewerTestData {
         '        0xab, 0x11, 0x5b, 0x95, 0xcd, 0xcb, 0x29, 0x78, 0x62, 0x2c, 0x8d, 0x83, 0xad, 0x4c, 0x13, 0x5a\n' +
         '    ]\n' +
         '}';
-    public static certRsaAsn1: string = '    0 30 1142: SEQUENCE {\n' +
-        '    4 30 1059:  SEQUENCE {\n' +
-        '    8 a0    3:   [0] {\n' +
-        '   10 02    1:    INTEGER 2\n' +
-        '             :   }\n' +
-        '   13 02    1:   INTEGER 1\n' +
-        '   16 30   10:   SEQUENCE {\n' +
-        '   18 06    8:    OBJECT IDENTIFIER id-tc26-signwithdigest-gost3410-12-256 (1.2.643.7.1.1.3.2)\n' +
-        '             :   }\n' +
-        '   28 30  241:   SEQUENCE {\n' +
-        '   31 31   11:    SET {\n' +
-        '   33 30    9:     SEQUENCE {\n' +
-        '   35 06    3:      OBJECT IDENTIFIER countryName (2.5.4.6)\n' +
-        '   40 13    2:      PrintableString "RU"\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '   44 31   42:    SET {\n' +
-        '   46 30   40:     SEQUENCE {\n' +
-        '   48 06    3:      OBJECT IDENTIFIER stateOrProvinceName (2.5.4.8)\n' +
-        '   53 0c   33:      UTF8String "Санктъ-Петербургъ"\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '   88 31   46:    SET {\n' +
-        '   90 30   44:     SEQUENCE {\n' +
-        '   92 06    3:      OBJECT IDENTIFIER organizationName (2.5.4.10)\n' +
-        '   97 0c   37:      UTF8String "Журнал "Современник""\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '  136 31   31:    SET {\n' +
-        '  138 30   29:     SEQUENCE {\n' +
-        '  140 06    3:      OBJECT IDENTIFIER organizationalUnitName (2.5.4.11)\n' +
-        '  145 0c   22:      UTF8String "Руководство"\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '  169 31   40:    SET {\n' +
-        '  171 30   38:     SEQUENCE {\n' +
-        '  173 06    3:      OBJECT IDENTIFIER title (2.5.4.12)\n' +
-        '  178 0c   31:      UTF8String "Главный редактор"\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '  211 31   59:    SET {\n' +
-        '  213 30   57:     SEQUENCE {\n' +
-        '  215 06    3:      OBJECT IDENTIFIER commonName (2.5.4.3)\n' +
-        '  220 0c   50:      UTF8String "Александр Сергеевич Пушкин"\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '             :   }\n' +
-        '  272 30   30:   SEQUENCE {\n' +
-        '  274 17   13:    UTCTime Fri Dec 05 2014 00:00:00 GMT+0300 (Москва, стандартное время)\n' +
-        '  289 17   13:    UTCTime Tue Dec 05 2034 00:00:00 GMT+0300 (Москва, стандартное время)\n' +
-        '             :   }\n' +
-        '  304 30  241:   SEQUENCE {\n' +
-        '  307 31   11:    SET {\n' +
-        '  309 30    9:     SEQUENCE {\n' +
-        '  311 06    3:      OBJECT IDENTIFIER countryName (2.5.4.6)\n' +
-        '  316 13    2:      PrintableString "RU"\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '  320 31   42:    SET {\n' +
-        '  322 30   40:     SEQUENCE {\n' +
-        '  324 06    3:      OBJECT IDENTIFIER stateOrProvinceName (2.5.4.8)\n' +
-        '  329 0c   33:      UTF8String "Санктъ-Петербургъ"\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '  364 31   46:    SET {\n' +
-        '  366 30   44:     SEQUENCE {\n' +
-        '  368 06    3:      OBJECT IDENTIFIER organizationName (2.5.4.10)\n' +
-        '  373 0c   37:      UTF8String "Журнал "Современник""\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '  412 31   31:    SET {\n' +
-        '  414 30   29:     SEQUENCE {\n' +
-        '  416 06    3:      OBJECT IDENTIFIER organizationalUnitName (2.5.4.11)\n' +
-        '  421 0c   22:      UTF8String "Руководство"\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '  445 31   40:    SET {\n' +
-        '  447 30   38:     SEQUENCE {\n' +
-        '  449 06    3:      OBJECT IDENTIFIER title (2.5.4.12)\n' +
-        '  454 0c   31:      UTF8String "Главный редактор"\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '  487 31   59:    SET {\n' +
-        '  489 30   57:     SEQUENCE {\n' +
-        '  491 06    3:      OBJECT IDENTIFIER commonName (2.5.4.3)\n' +
-        '  496 0c   50:      UTF8String "Александр Сергеевич Пушкин"\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '             :   }\n' +
-        '  548 30  102:   SEQUENCE {\n' +
-        '  550 30   31:    SEQUENCE {\n' +
-        '  552 06    8:     OBJECT IDENTIFIER id-tc26-gost3410-12-256 (1.2.643.7.1.1.1.1)\n' +
-        '  562 30   19:     SEQUENCE {\n' +
-        '  564 06    7:      OBJECT IDENTIFIER id-GostR3410-2001-CryptoPro-XchA-ParamSet (1.2.643.2.2.36.0)\n' +
-        '  573 06    8:      OBJECT IDENTIFIER id-tc26-gost3411-12-256 (1.2.643.7.1.1.2.2)\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '  583 03   67:    BIT STRING, unused 0 bits, encapsulates {\n' +
-        '  585 04   64:     OCTET STRING\n' +
-        '             :      41 40 90 36 0e 5e 61 82 1c c6 d6 91 11 04 71 bb\n' +
-        '             :      f0 e3 5f 31 df 94 79 7e e9 5d 24 eb 67 c4 38 a1\n' +
-        '             :      c5 aa 23 c2 ff 33 ba 95 27 79 36 6e 9a 9f c6 76\n' +
-        '             :      f2 8c 2b 6a c2 5d 61 7f c1 f3 10 50 34 35 67 1b\n' +
-        '             :    }\n' +
-        '             :   }\n' +
-        '  652 a3  411:   [3] {\n' +
-        '  656 30  407:    SEQUENCE {\n' +
-        '  660 30   14:     SEQUENCE {\n' +
-        '  662 06    3:      OBJECT IDENTIFIER keyUsage (2.5.29.15)\n' +
-        '  667 01    1:      BOOLEAN true\n' +
-        '  670 04    4:      OCTET STRING, encapsulates {\n' +
-        '  672 03    2:       BIT STRING, unused 1 bits\n' +
-        '             :        1111111B\n' +
-        '             :      }\n' +
-        '             :     }\n' +
-        '  676 30   49:     SEQUENCE {\n' +
-        '  678 06    3:      OBJECT IDENTIFIER extKeyUsage (2.5.29.37)\n' +
-        '  683 04   42:      OCTET STRING, encapsulates {\n' +
-        '  685 30   40:       SEQUENCE {\n' +
-        '  687 06    8:        OBJECT IDENTIFIER serverAuth (1.3.6.1.5.5.7.3.1)\n' +
-        '  697 06    8:        OBJECT IDENTIFIER clientAuth (1.3.6.1.5.5.7.3.2)\n' +
-        '  707 06    8:        OBJECT IDENTIFIER codeSigning (1.3.6.1.5.5.7.3.3)\n' +
-        '  717 06    8:        OBJECT IDENTIFIER emailProtection (1.3.6.1.5.5.7.3.4)\n' +
-        '             :       }\n' +
-        '             :      }\n' +
-        '             :     }\n' +
-        '  727 30   15:     SEQUENCE {\n' +
-        '  729 06    3:      OBJECT IDENTIFIER basicConstraints (2.5.29.19)\n' +
-        '  734 01    1:      BOOLEAN true\n' +
-        '  737 04    5:      OCTET STRING, encapsulates {\n' +
-        '  739 30    3:       SEQUENCE {\n' +
-        '  741 01    1:        BOOLEAN true\n' +
-        '             :       }\n' +
-        '             :      }\n' +
-        '             :     }\n' +
-        '  744 30   29:     SEQUENCE {\n' +
-        '  746 06    3:      OBJECT IDENTIFIER subjectKeyIdentifier (2.5.29.14)\n' +
-        '  751 04   22:      OCTET STRING, encapsulates {\n' +
-        '  753 04   20:       OCTET STRING\n' +
-        '             :        9d 61 59 ca a8 15 9d 69 a8 d8 6e cb 4d de d3 b1\n' +
-        '             :        dc 8b d0 b3\n' +
-        '             :      }\n' +
-        '             :     }\n' +
-        '  775 30  288:     SEQUENCE {\n' +
-        '  779 06    3:      OBJECT IDENTIFIER authorityKeyIdentifier (2.5.29.35)\n' +
-        '  784 04  279:      OCTET STRING, encapsulates {\n' +
-        '  788 30  275:       SEQUENCE {\n' +
-        '  792 80   20:        [0]\n' +
-        '             :         9d 61 59 ca a8 15 9d 69 a8 d8 6e cb 4d de d3 b1\n' +
-        '             :         dc 8b d0 b3\n' +
-        '  814 a1  247:        [1] {\n' +
-        '  817 a4  244:         [4] {\n' +
-        '  820 30  241:          SEQUENCE {\n' +
-        '  823 31   11:           SET {\n' +
-        '  825 30    9:            SEQUENCE {\n' +
-        '  827 06    3:             OBJECT IDENTIFIER countryName (2.5.4.6)\n' +
-        '  832 13    2:             PrintableString "RU"\n' +
-        '             :            }\n' +
-        '             :           }\n' +
-        '  836 31   42:           SET {\n' +
-        '  838 30   40:            SEQUENCE {\n' +
-        '  840 06    3:             OBJECT IDENTIFIER stateOrProvinceName (2.5.4.8)\n' +
-        '  845 0c   33:             UTF8String "Санктъ-Петербургъ"\n' +
-        '             :            }\n' +
-        '             :           }\n' +
-        '  880 31   46:           SET {\n' +
-        '  882 30   44:            SEQUENCE {\n' +
-        '  884 06    3:             OBJECT IDENTIFIER organizationName (2.5.4.10)\n' +
-        '  889 0c   37:             UTF8String "Журнал "Современник""\n' +
-        '             :            }\n' +
-        '             :           }\n' +
-        '  928 31   31:           SET {\n' +
-        '  930 30   29:            SEQUENCE {\n' +
-        '  932 06    3:             OBJECT IDENTIFIER organizationalUnitName (2.5.4.11)\n' +
-        '  937 0c   22:             UTF8String "Руководство"\n' +
-        '             :            }\n' +
-        '             :           }\n' +
-        '  961 31   40:           SET {\n' +
-        '  963 30   38:            SEQUENCE {\n' +
-        '  965 06    3:             OBJECT IDENTIFIER title (2.5.4.12)\n' +
-        '  970 0c   31:             UTF8String "Главный редактор"\n' +
-        '             :            }\n' +
-        '             :           }\n' +
-        ' 1003 31   59:           SET {\n' +
-        ' 1005 30   57:            SEQUENCE {\n' +
-        ' 1007 06    3:             OBJECT IDENTIFIER commonName (2.5.4.3)\n' +
-        ' 1012 0c   50:             UTF8String "Александр Сергеевич Пушкин"\n' +
-        '             :            }\n' +
-        '             :           }\n' +
-        '             :          }\n' +
-        '             :         }\n' +
-        '             :        }\n' +
-        ' 1064 82    1:        [2]\n' +
-        '             :         01\n' +
-        '             :       }\n' +
-        '             :      }\n' +
-        '             :     }\n' +
-        '             :    }\n' +
-        '             :   }\n' +
-        '             :  }\n' +
-        ' 1067 30   10:  SEQUENCE {\n' +
-        ' 1069 06    8:   OBJECT IDENTIFIER id-tc26-signwithdigest-gost3410-12-256 (1.2.643.7.1.1.3.2)\n' +
-        '             :  }\n' +
-        ' 1079 03   65:  BIT STRING, unused 0 bits\n' +
-        '             :   04 bf 9c c9 1c a9 b4 9a 10 0d 01 ff 80 b5 0d 1c\n' +
-        '             :   ef 75 40 be d9 5d c6 11 f6 ad 40 71 50 1b 79 04\n' +
-        '             :   37 36 39 90 69 8e cc 3b b8 59 ca d1 6e 84 5d 19\n' +
-        '             :   ab 11 5b 95 cd cb 29 78 62 2c 8d 83 ad 4c 13 5a\n' +
-        '             : }';
 
     public static pkeyGost2001: string = 'MEUCAQAwHAYGKoUDAgJiMBIGByqFAwICJAAGByqFAwICHgEEIgQgXqTl96Cwno4shElQEdjTOus9ay8aWl50fB8hODqddA0=';
     public static pkeyGost2001Json: string = '{\n' +
