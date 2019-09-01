@@ -2,7 +2,9 @@ import {PEM} from '../gost-coding/gost-coding';
 import {Asn1ServiceFunctions} from './Asn1ServiceFunctions';
 import {SInt} from './SInt';
 import {BERElement, ObjectIdentifier} from 'asn1-ts';
-import {BERtypes} from '../gost-viewer/BERTypes';
+import {BERtypes} from './structure/BERTypes';
+import {PrivateKeyAlgorithmRSA} from './private-keys-algs/private-key-algorithm';
+import { PrivateKeyInfo } from './private-keys-algs/private-key-info';
 
 /**
  * ASN.1 syntax definitions
@@ -54,129 +56,14 @@ export class GostKeyContainerName {
 }
 
 
-export class PrivateKeyInfo {
-    version: number;
-    privateKeyAlgorithm: PrivateKeyAlgorithm;
-    privateKey: Uint8Array;
 
 
-    constructor(version: number, privateKeyAlgorithm: PrivateKeyAlgorithm, privateKey: Uint8Array) {
-        this.version = version;
-        this.privateKeyAlgorithm = privateKeyAlgorithm;
-        this.privateKey = privateKey;
-    }
-
-    public static decode(value: ArrayBuffer): PrivateKeyInfo {
-        let encodedData: Uint8Array = new Uint8Array(value);
-        let berElement: BERElement = new BERElement();
-        berElement.fromBytes(encodedData);
 
 
-        let version;
-        let privateKeyAlgorithm;
-        let privateKey;
-        if (berElement.sequence[0]) {
-            version = berElement.sequence[0].integer;
-        }
-        if (berElement.sequence[1]) {
-            let objectIdentifier = berElement.sequence[1].sequence[0].objectIdentifier;
-            switch (objectIdentifier.dotDelimitedNotation) {
-                case '1.2.840.113549.1.1.1':
-                    privateKeyAlgorithm = new PrivateKeyAlgorithm('RSASSA-PKCS1-v1_5',
-                        {
-                            name: 'SHA-256'
-                        },
-                        'rsaEncryption');
-                    break;
-                default:
-                    throw new Error('Unknown Private Key OID ' + objectIdentifier.dotDelimitedNotation);
-            }
-
-            // berElement.sequence[1].sequence[1].tagNumber = BERtypes.NULL;
-        }
-        if (berElement.sequence[2]) {
-            privateKey = berElement.sequence[2].octetString; // там какая-то фигня, кладём как есть
-        }
-        return new PrivateKeyInfo(version, privateKeyAlgorithm, privateKey);
-    }
 
 
-    public static encode(value: PrivateKeyInfo): ArrayBuffer {
-      let sequence: BERElement[] = [];
-
-        let version: BERElement = new BERElement();
-        version.integer = value.version;
-        version.tagNumber = BERtypes.INTEGER;
-        sequence.push(version);
-
-        let privateKeyAlgorithm: BERElement = new BERElement();
-        privateKeyAlgorithm.fromBytes(new Uint8Array(PrivateKeyAlgorithm.encode(value.privateKeyAlgorithm)));
-        privateKeyAlgorithm.tagNumber = BERtypes['OCTET STRING'];
-        sequence.push(privateKeyAlgorithm);
-
-        let privateKey: BERElement = new BERElement();
-        privateKey.fromBytes(value.privateKey);
-        sequence.push(privateKey);
 
 
-        let toReturn: BERElement = new BERElement();
-        toReturn.sequence = sequence;
-        toReturn.tagNumber = BERtypes.SEQUENCE;
-        return toReturn.toBytes();
-    }
-}
-
-export class PrivateKeyAlgorithm {
-    name: string;
-    hash: any;
-    id: string;
-
-    constructor(name: string, hash: any, id: string) {
-        this.name = name;
-        this.hash = hash;
-        this.id = id;
-    }
-
-    /*    public static decode(value: ArrayBuffer) {
-            let encodedData: Uint8Array = new Uint8Array(value);
-            let berElement: BERElement = new BERElement();
-            berElement.fromBytes(encodedData);
-
-            let name;
-            let hash;
-            let id;
-            if (berElement.sequence[0]) {
-                name = berElement.sequence[0].ia5String;
-            }
-            if (berElement.sequence[1]) {
-                extElem1 = berElement.sequence[0].toBytes();
-            }
-            return new PrivateKeyAlgorithm(containerName, extElem1);
-        }*/
-
-    public static encode(value: PrivateKeyAlgorithm): ArrayBuffer {
-        let sequence: BERElement[] = [];
-        let privateKeyAlgorithm: BERElement;
-
-        if (value.name === 'RSASSA-PKCS1-v1_5' && value.id === 'rsaEncryption') {
-            privateKeyAlgorithm  = new BERElement(); // 1.2.840.113549.1.1.1
-            privateKeyAlgorithm.objectIdentifier = new ObjectIdentifier([1, 2, 840, 113549, 1, 1, 1]);
-            privateKeyAlgorithm.tagNumber = BERtypes['OBJECT IDENTIFIER'];
-            sequence.push(privateKeyAlgorithm);
-
-            let n: BERElement = new BERElement();
-            n.tagNumber = BERtypes.NULL;
-            sequence.push(n);
-        }
-
-
-        let toReturn: BERElement = new BERElement();
-        toReturn.sequence = sequence;
-        toReturn.tagNumber = BERtypes.SEQUENCE;
-        return toReturn.toBytes();
-    }
-
-}
 
 
 export class GostAsn1 {

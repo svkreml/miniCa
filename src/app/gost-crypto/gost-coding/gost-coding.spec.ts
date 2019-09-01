@@ -1,6 +1,4 @@
 import {Base64, Chars, Hex} from './gost-coding';
-import {GostViewer} from '../gost-viewer/gost-viewer';
-import {GostKeyContainerName} from '../gost-asn1/gost-asn1';
 import {GostViewerTestData} from '../gost-viewer/GostViewerTestData';
 
 describe('GostCoding', () => {
@@ -72,17 +70,10 @@ describe('GostCoding', () => {
 
 
     it('base64Test ', () => {
-
-
-
-
         let decoded = Base64.decode(GostViewerTestData.cryptoProName);
         let encoded = Base64.encode(decoded);
-
         console.log(GostViewerTestData.cryptoProName);
         console.log(encoded);
-
-
         expect(encoded === GostViewerTestData.cryptoProName).toBeTruthy();
     });
 });

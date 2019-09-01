@@ -330,9 +330,39 @@ export class GostViewerTestData {
         '             :   ab 11 5b 95 cd cb 29 78 62 2c 8d 83 ad 4c 13 5a\n' +
         '             : }';
 
-    public static pkeyRsa: string = '-----BEGIN PRIVATE KEY-----\n' +
-        'MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDcMqBoUV2ZiqhbpGr0Dfcmeo/B2NpAF43jTzeTCiNCco78WvOVRYU22F9F7r+V+DnALPJ6APhxaS73u8LnQe+gpnReTXXGVG8KZFgQUOyg4jGMx/Y9RjTZE5bQgWSpzf3Bz+ehi7lRjgc8Og6esAUEnv9O0lQad07JLiJelRelweFxvJmH3qNYBk1N8rCiIIhrWyQ0w7asaqypydvWVzUSGRPoPPj3oZjtg4ABlYXLY/y9F7ByDeSkpA2953Sjmdt2JR+u8rSl/5WJTQp7Kxw+Z3QYIn/wju2BmF5kZZYG9xDe99vXIMMNQR0iBQQstnNa4dFaI24UkewJ6MS5ZiY5AgMBAAECggEAE/V8Iq3VXRh7YCshYqkYEOMlFVNcR65FjH1esojwXz0rsWYRFCOutSTxpdDD3t/BZFDuqEO0QUYLyCVlv45zc6Ktg5Vj1Sv2u1YTFrovE094DE8HsSV5ntTZY7bcHU7FmdlddoAdYRi4QSubWE4+IN1vPiwZts2/qhlGFj/6BRUdqisPrTP/WVj2JI0AJWR1gDK9degTuqLP/5nGdy0a7kE4A/BjQX9mn+wPP4+bxRQHdp9RQgSdTMi0lY2KXSrYAcfOQzqzEPsu+FWuS4/0R1Eq7h+L/kGyNjmRvOhvUmJPgQqh4Mo+FF0PapmY7J+jsK7s7OgYzGcYn64Xq0W9DQKBgQD+NyCf+ul9pEFnuGk3gVydWYJundvE75Z7smxjsXjQWvVFnW52mDxo+M1/Vvz0Dvhu0Mtrzjn9k7C0e3Y8+E8vH5Lp3g9Z7MJQnuM36mzH/grr9s1BRmbtx+RgCZTulWOfPpcapkVCk6CCOFxEcfP9bqR5AJvCg1pZ0ZJtqXiF/wKBgQDdvlz57VUjv4Gh/R4MwVrqBX8dXReYNmQ7NIM7dCOr7ALiQLvXNA5nEzxoxabOIDzCJAeM/yqYs7E5h8NCjln6lii2FIjtiLe7ywa/iRrY1/6Ldvir1VYw8YyxPKBoADyrVIZD7G5u93lIdR1e6eyx3mTWUwWJCnLPxQqBlNwDxwKBgDJZUMjetSgBREL6rzwjDujLNZ4a/c//c9qD+Bu2pqr9mN5009ABTtWrkWfLHsZnwKSSDfgIHEww2Cqm2UAyHdzDcCGJrZit375/+Zi1gV4K3rblZrmq6+/kS0MKIskuJVEA4ISSsd0ByCSCbSPRPfXP2BtvF2prAZYQf+PgUNKZAoGBAMbPcb8nWimF/21EaxfWmHOv3+ts1sXDJpSqnWrF02HGZkOC9KebZbpm1ce+RrMS1kbeVOLGuONWYPSK07ett+DjlrbBrI8EAG/gNTmvbKG07uUOEyDFUtTpDVKvX8Y/SCX4z7TAm7bkLRqY3m+F3pEPK2u53gGjm5LLQIMz+xtrAoGAJ77j4Qzt/gmQvsveD9QG2OWmFAcyxjevUUcqBJKt8U1TX2PY3VV0sHdmtvUK0IgDzlY7AWv4i/Ac0Xm0Jp6PZiC2GOSZh9Z3lhOdtcZIeGJFUHlDYK5BGLIZQvG0nCM4UfCuIKGg0hopV0WxEou8qgu0cESe1DxbCtUaaqxJ8t0=\n' +
+    public static pkeyGost2001: string = '-----BEGIN PRIVATE KEY-----\n' +
+        'MEUCAQAwHAYGKoUDAgJiMBIGByqFAwICJAAGByqFAwICHgEEIgQgXqTl96Cwno4shElQEdjTOus9ay8aWl50fB8hODqddA0=\n' +
         '-----END PRIVATE KEY-----';
+    public static pkeyGost2001Json: string = '{\n' +
+        '    version: 0,\n' +
+        '    privateKeyAlgorithm: {\n' +
+        '        name: "GOST R 34.10-2001-DH",\n' +
+        '        id: "id-GostR3410-2001DH",\n' +
+        '        namedCurve: "X-256-A",\n' +
+        '        sBox: "D-A"\n' +
+        '    },\n' +
+        '    privateKey: [\n' +
+        '        0x04, 0x20, 0x5e, 0xa4, 0xe5, 0xf7, 0xa0, 0xb0, 0x9e, 0x8e, 0x2c, 0x84, 0x49, 0x50, 0x11, 0xd8,\n' +
+        '        0xd3, 0x3a, 0xeb, 0x3d, 0x6b, 0x2f, 0x1a, 0x5a, 0x5e, 0x74, 0x7c, 0x1f, 0x21, 0x38, 0x3a, 0x9d,\n' +
+        '        0x74, 0x0d\n' +
+        '    ]\n' +
+        '}';
+    public static pkeyGost2001Asn1: string = '    0 30   69: SEQUENCE {\n' +
+        '    2 02    1:  INTEGER 0\n' +
+        '    5 30   28:  SEQUENCE {\n' +
+        '    7 06    6:   OBJECT IDENTIFIER id-GostR3410-2001DH (1.2.643.2.2.98)\n' +
+        '   15 30   18:   SEQUENCE {\n' +
+        '   17 06    7:    OBJECT IDENTIFIER id-GostR3410-2001-CryptoPro-XchA-ParamSet (1.2.643.2.2.36.0)\n' +
+        '   26 06    7:    OBJECT IDENTIFIER id-GostR3411-94-CryptoProParamSet (1.2.643.2.2.30.1)\n' +
+        '             :   }\n' +
+        '             :  }\n' +
+        '   35 04   34:  OCTET STRING, encapsulates {\n' +
+        '   37 04   32:   OCTET STRING\n' +
+        '             :    5e a4 e5 f7 a0 b0 9e 8e 2c 84 49 50 11 d8 d3 3a\n' +
+        '             :    eb 3d 6b 2f 1a 5a 5e 74 7c 1f 21 38 3a 9d 74 0d\n' +
+        '             :  }\n' +
+        '             : }';
+    public static pkeyRsa: string = 'MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDcMqBoUV2ZiqhbpGr0Dfcmeo/B2NpAF43jTzeTCiNCco78WvOVRYU22F9F7r+V+DnALPJ6APhxaS73u8LnQe+gpnReTXXGVG8KZFgQUOyg4jGMx/Y9RjTZE5bQgWSpzf3Bz+ehi7lRjgc8Og6esAUEnv9O0lQad07JLiJelRelweFxvJmH3qNYBk1N8rCiIIhrWyQ0w7asaqypydvWVzUSGRPoPPj3oZjtg4ABlYXLY/y9F7ByDeSkpA2953Sjmdt2JR+u8rSl/5WJTQp7Kxw+Z3QYIn/wju2BmF5kZZYG9xDe99vXIMMNQR0iBQQstnNa4dFaI24UkewJ6MS5ZiY5AgMBAAECggEAE/V8Iq3VXRh7YCshYqkYEOMlFVNcR65FjH1esojwXz0rsWYRFCOutSTxpdDD3t/BZFDuqEO0QUYLyCVlv45zc6Ktg5Vj1Sv2u1YTFrovE094DE8HsSV5ntTZY7bcHU7FmdlddoAdYRi4QSubWE4+IN1vPiwZts2/qhlGFj/6BRUdqisPrTP/WVj2JI0AJWR1gDK9degTuqLP/5nGdy0a7kE4A/BjQX9mn+wPP4+bxRQHdp9RQgSdTMi0lY2KXSrYAcfOQzqzEPsu+FWuS4/0R1Eq7h+L/kGyNjmRvOhvUmJPgQqh4Mo+FF0PapmY7J+jsK7s7OgYzGcYn64Xq0W9DQKBgQD+NyCf+ul9pEFnuGk3gVydWYJundvE75Z7smxjsXjQWvVFnW52mDxo+M1/Vvz0Dvhu0Mtrzjn9k7C0e3Y8+E8vH5Lp3g9Z7MJQnuM36mzH/grr9s1BRmbtx+RgCZTulWOfPpcapkVCk6CCOFxEcfP9bqR5AJvCg1pZ0ZJtqXiF/wKBgQDdvlz57VUjv4Gh/R4MwVrqBX8dXReYNmQ7NIM7dCOr7ALiQLvXNA5nEzxoxabOIDzCJAeM/yqYs7E5h8NCjln6lii2FIjtiLe7ywa/iRrY1/6Ldvir1VYw8YyxPKBoADyrVIZD7G5u93lIdR1e6eyx3mTWUwWJCnLPxQqBlNwDxwKBgDJZUMjetSgBREL6rzwjDujLNZ4a/c//c9qD+Bu2pqr9mN5009ABTtWrkWfLHsZnwKSSDfgIHEww2Cqm2UAyHdzDcCGJrZit375/+Zi1gV4K3rblZrmq6+/kS0MKIskuJVEA4ISSsd0ByCSCbSPRPfXP2BtvF2prAZYQf+PgUNKZAoGBAMbPcb8nWimF/21EaxfWmHOv3+ts1sXDJpSqnWrF02HGZkOC9KebZbpm1ce+RrMS1kbeVOLGuONWYPSK07ett+DjlrbBrI8EAG/gNTmvbKG07uUOEyDFUtTpDVKvX8Y/SCX4z7TAm7bkLRqY3m+F3pEPK2u53gGjm5LLQIMz+xtrAoGAJ77j4Qzt/gmQvsveD9QG2OWmFAcyxjevUUcqBJKt8U1TX2PY3VV0sHdmtvUK0IgDzlY7AWv4i/Ac0Xm0Jp6PZiC2GOSZh9Z3lhOdtcZIeGJFUHlDYK5BGLIZQvG0nCM4UfCuIKGg0hopV0WxEou8qgu0cESe1DxbCtUaaqxJ8t0=';
     public static pkeyRsaAsn1: string =
         '    0 30 1213: SEQUENCE {\n' +
         '    4 02    1:  INTEGER 0\n' +
