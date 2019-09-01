@@ -14,7 +14,7 @@ export class PrivateKeyInfo {
         this.privateKey = privateKey;
     }
 
-    public static decode(value: ArrayBuffer): PrivateKeyInfo {
+    public decode(value: ArrayBuffer): PrivateKeyInfo {
         let encodedData: Uint8Array = new Uint8Array(value);
         let berElement: BERElement = new BERElement();
         berElement.fromBytes(encodedData);
@@ -55,7 +55,7 @@ export class PrivateKeyInfo {
     }
 
 
-    public static encode(value: PrivateKeyInfo): ArrayBuffer {
+    public encode(value: PrivateKeyInfo): ArrayBuffer {
         let sequence: BERElement[] = [];
 
         let version: BERElement = new BERElement();
@@ -64,13 +64,13 @@ export class PrivateKeyInfo {
         sequence.push(version);
 
         let privateKeyAlgorithm: BERElement = new BERElement();
-        privateKeyAlgorithm.fromBytes(new Uint8Array(PrivateKeyAlgorithmRSA.encode(value.privateKeyAlgorithm)));
+        privateKeyAlgorithm.fromBytes(new Uint8Array(value.privateKeyAlgorithm.encode(value.privateKeyAlgorithm)));
         privateKeyAlgorithm.tagNumber = BERtypes.SEQUENCE; // BERtypes['OCTET STRING'];
         sequence.push(privateKeyAlgorithm);
 
         let privateKey: BERElement = new BERElement();
         privateKey.fromBytes(value.privateKey);
-        privateKey.tagNumber = BERtypes.SEQUENCE;
+      //  privateKey.tagNumber = BERtypes.SEQUENCE;
 
         let privateKeyWrapper: BERElement = new BERElement();
         privateKeyWrapper.octetString = privateKey.toBytes();

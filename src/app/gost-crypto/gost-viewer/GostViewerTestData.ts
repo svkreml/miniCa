@@ -330,9 +330,7 @@ export class GostViewerTestData {
         '             :   ab 11 5b 95 cd cb 29 78 62 2c 8d 83 ad 4c 13 5a\n' +
         '             : }';
 
-    public static pkeyGost2001: string = '-----BEGIN PRIVATE KEY-----\n' +
-        'MEUCAQAwHAYGKoUDAgJiMBIGByqFAwICJAAGByqFAwICHgEEIgQgXqTl96Cwno4shElQEdjTOus9ay8aWl50fB8hODqddA0=\n' +
-        '-----END PRIVATE KEY-----';
+    public static pkeyGost2001: string = 'MEUCAQAwHAYGKoUDAgJiMBIGByqFAwICJAAGByqFAwICHgEEIgQgXqTl96Cwno4shElQEdjTOus9ay8aWl50fB8hODqddA0=';
     public static pkeyGost2001Json: string = '{\n' +
         '    version: 0,\n' +
         '    privateKeyAlgorithm: {\n' +

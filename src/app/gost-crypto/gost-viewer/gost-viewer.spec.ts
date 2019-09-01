@@ -92,13 +92,11 @@ describe('GostViewer', () => {
     it('print pkey gost2001 json Syntax.PrivateKeyInfo recreate', () => {
         let privateKeyInfo: PrivateKeyInfo = GostViewer.asn1.PrivateKeyInfo.decode(
             Base64.decode(GostViewerTestData.pkeyGost2001));
-
-        let arrayBuffer = GostViewer.asn1.PrivateKeyInfo.encode(privateKeyInfo);
-        let encoded = Base64.encode(arrayBuffer);
+        let recreatedPrivateKeyInfo = Base64.encode(GostViewer.asn1.PrivateKeyInfo.encode(privateKeyInfo));
         console.log(GostViewerTestData.pkeyGost2001);
-        console.log(encoded);
+        console.log(recreatedPrivateKeyInfo);
 
-        expect(isSimilar(GostViewerTestData.pkeyGost2001, encoded)).toBeTruthy();
+        expect(isSimilar(GostViewerTestData.pkeyGost2001, recreatedPrivateKeyInfo)).toBeTruthy();
     });
 
 

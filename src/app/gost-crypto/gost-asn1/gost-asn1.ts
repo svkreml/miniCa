@@ -187,7 +187,7 @@ export class GostAsn1 {
      *
      * @memberOf GostASN1
      */
-    PrivateKeyInfo = PrivateKeyInfo;
+    PrivateKeyInfo = new PrivateKeyInfo(undefined, undefined, undefined);
     /**
      * PKCS#8 encrypted PrivateKey info
      *
