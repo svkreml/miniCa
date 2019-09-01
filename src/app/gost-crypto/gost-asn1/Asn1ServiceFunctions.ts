@@ -1,5 +1,5 @@
 import {BER, Chars, PEM} from '../gost-coding/gost-coding';
-import {BERElement, ObjectIdentifier} from 'asn1-ts';
+import {DERElement, ObjectIdentifier} from 'asn1-ts';
 import {toNumbers} from '@angular/compiler-cli/src/diagnostics/typescript_version';
 import {BERtypes} from './structure/BERTypes';
 
@@ -96,14 +96,14 @@ export class Asn1ServiceFunctions {
         }
     }
     public static convertOid(oid: string) {
-        let element = new BERElement();
+        let element = new DERElement();
         element.objectIdentifier = new ObjectIdentifier(toNumbers(oid)); // toNumbers('2.0.1'); // returns [2, 0, 1]
         element.tagNumber = BERtypes['OBJECT IDENTIFIER'];
         return element;
     }
 
-    public static createSequence(elements: BERElement[]) {
-        let sequenceElement: BERElement = new BERElement();
+    public static createSequence(elements: DERElement[]) {
+        let sequenceElement: DERElement = new DERElement();
         sequenceElement.tagNumber = BERtypes.SEQUENCE;
         sequenceElement.sequence = elements;
         return sequenceElement;

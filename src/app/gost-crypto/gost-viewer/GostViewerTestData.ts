@@ -550,4 +550,8 @@ export class GostViewerTestData {
     static cryptoProNameAsn1: string = '    0 30   41: SEQUENCE {\n' +
         '    2 16   39:  IA5String "le-d3bb8023-9b6a-4dc0-9db9-7f6d05516f98"\n' +
         '             : }';
+    static pkeyGost2012: string = 'MEgCAQAwHwYIKoUDBwEBBgEwEwYHKoUDAgIkAAYIKoUDBwEBAgIEIgQgofW3yH7pWCM4QDFqLpIyNS8UzJXUNBKyzcObdicG\n' +
+        'fzI=';
+    static pkeyGost2012str: string = 'MGoCAQAwIQYIKoUDBwEBBgIwFQYJKoUDBwECAQIBBggqhQMHAQECAwRCBEDyvK34QwnokImWenmfDPfs4ZJI6Tt+76cFIKzv\n' +
+        'HcQdGzmz7gAjPPGmjGVTmCaPPSDqFSwobenSLUVJVpR+CVdG\n';
 }

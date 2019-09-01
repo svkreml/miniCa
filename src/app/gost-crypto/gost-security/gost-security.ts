@@ -1,4 +1,5 @@
 export class GostSecurity {
+    public static instance: GostSecurity = new GostSecurity();
     names = {
         // CryptoPro algoritms
         '1.2.643.2.2': 'CryptoPro',

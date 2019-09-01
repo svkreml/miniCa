@@ -1,6 +1,7 @@
 import {PrivateKeyAlgorithmGost, PrivateKeyAlgorithmRSA} from './private-key-algorithm';
-import {BERElement} from 'asn1-ts';
+import {DERElement} from 'asn1-ts';
 import {BERtypes} from '../structure/BERTypes';
+import {GostSecurity} from '../../gost-security/gost-security';
 
 export class PrivateKeyInfo {
     version: number;
@@ -16,7 +17,7 @@ export class PrivateKeyInfo {
 
     public decode(value: ArrayBuffer): PrivateKeyInfo {
         let encodedData: Uint8Array = new Uint8Array(value);
-        let berElement: BERElement = new BERElement();
+        let berElement: DERElement = new DERElement();
         berElement.fromBytes(encodedData);
 
 
@@ -30,17 +31,31 @@ export class PrivateKeyInfo {
             let objectIdentifier = berElement.sequence[1].sequence[0].objectIdentifier;
             switch (objectIdentifier.dotDelimitedNotation) {
                 case '1.2.840.113549.1.1.1': // TODO как минимум надо добаить ГОСТ 2001 и два 2012
-                    privateKeyAlgorithm = new PrivateKeyAlgorithmRSA('RSASSA-PKCS1-v1_5',
+                    privateKeyAlgorithm = new PrivateKeyAlgorithmRSA(
+                        'RSASSA-PKCS1-v1_5',
                         {
                             name: 'SHA-256'
                         },
-                        'rsaEncryption');
-                    break;
+                        GostSecurity.instance.names[objectIdentifier.dotDelimitedNotation]);
+                    break; // berElement.sequence[1].sequence[1].sequence[0].objectIdentifier.toString() 1.2.643.2.2.36.0 // berElement.sequence[1].sequence[1].sequence[1].objectIdentifier.toString() 1.2.643.2.2.30.1
                 case '1.2.643.2.2.98': // ГОСТ 2001
+                    let key = GostSecurity.instance.providers['CP-01'].privateKey;
+                    privateKeyAlgorithm = new PrivateKeyAlgorithmGost(key.name,
+                        key.id,
+                        key.namedCurve,
+                        GostSecurity.instance.parameters[GostSecurity.instance.names[berElement.sequence[1].sequence[1].sequence[1].objectIdentifier.toString()]].sBox);
+                    break;
+                    case '1.2.643.7.1.1.6.1': // ГОСТ 2012 256
                     privateKeyAlgorithm = new PrivateKeyAlgorithmGost('GOST R 34.10-2001-DH',
-                        'id-GostR3410-2001DH',
+                        GostSecurity.instance.names[objectIdentifier.dotDelimitedNotation],
                         'X-256-A',
                         'D-A');
+                    break;
+                    case '1.2.643.7.1.1.6.2': // ГОСТ 2012 512
+                    privateKeyAlgorithm = new PrivateKeyAlgorithmGost('GOST R 34.10-2001-DH',
+                        GostSecurity.instance.names[objectIdentifier.dotDelimitedNotation],
+                        'T-512-A',
+                        undefined);
                     break;
                 default:
                     throw new Error('Unknown Private Key OID ' + objectIdentifier.dotDelimitedNotation);
@@ -56,23 +71,23 @@ export class PrivateKeyInfo {
 
 
     public encode(value: PrivateKeyInfo): ArrayBuffer {
-        let sequence: BERElement[] = [];
+        let sequence: DERElement[] = [];
 
-        let version: BERElement = new BERElement();
+        let version: DERElement = new DERElement();
         version.integer = value.version;
         version.tagNumber = BERtypes.INTEGER;
         sequence.push(version);
 
-        let privateKeyAlgorithm: BERElement = new BERElement();
+        let privateKeyAlgorithm: DERElement = new DERElement();
         privateKeyAlgorithm.fromBytes(new Uint8Array(value.privateKeyAlgorithm.encode(value.privateKeyAlgorithm)));
         privateKeyAlgorithm.tagNumber = BERtypes.SEQUENCE; // BERtypes['OCTET STRING'];
         sequence.push(privateKeyAlgorithm);
 
-        let privateKey: BERElement = new BERElement();
+        let privateKey: DERElement = new DERElement();
         privateKey.fromBytes(value.privateKey);
       //  privateKey.tagNumber = BERtypes.SEQUENCE;
 
-        let privateKeyWrapper: BERElement = new BERElement();
+        let privateKeyWrapper: DERElement = new DERElement();
         privateKeyWrapper.octetString = privateKey.toBytes();
         privateKeyWrapper.tagNumber = BERtypes['OCTET STRING'];
 
@@ -80,7 +95,7 @@ export class PrivateKeyInfo {
 
 
 
-        let toReturn: BERElement = new BERElement();
+        let toReturn: DERElement = new DERElement();
         toReturn.sequence = sequence;
         toReturn.tagNumber = BERtypes.SEQUENCE;
         return toReturn.toBytes();

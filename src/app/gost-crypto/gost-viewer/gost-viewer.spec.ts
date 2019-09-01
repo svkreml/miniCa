@@ -4,6 +4,7 @@ import {Base64} from '../gost-coding/gost-coding';
 import {GostViewerTestData} from './GostViewerTestData';
 import {GostKeyContainerName} from '../gost-asn1/gost-asn1';
 import {PrivateKeyInfo} from '../gost-asn1/private-keys-algs/private-key-info';
+import {GostSecurity} from '../gost-security/gost-security';
 
 describe('GostViewer', () => {
 
@@ -99,6 +100,27 @@ describe('GostViewer', () => {
         expect(isSimilar(GostViewerTestData.pkeyGost2001, recreatedPrivateKeyInfo)).toBeTruthy();
     });
 
+    it('print pkey gost2012 json Syntax.PrivateKeyInfo recreate', () => {
+        let privateKeyInfo: PrivateKeyInfo = GostViewer.asn1.PrivateKeyInfo.decode(
+            Base64.decode(GostViewerTestData.pkeyGost2012));
+        let recreatedPrivateKeyInfo = Base64.encode(GostViewer.asn1.PrivateKeyInfo.encode(privateKeyInfo));
+        console.log(GostViewerTestData.pkeyGost2012);
+        console.log(recreatedPrivateKeyInfo);
+
+        expect(isSimilar(GostViewerTestData.pkeyGost2012, recreatedPrivateKeyInfo)).toBeTruthy();
+    });
+
+
+    it('print pkey gost2012strong json Syntax.PrivateKeyInfo recreate', () => {
+        let privateKeyInfo: PrivateKeyInfo = GostViewer.asn1.PrivateKeyInfo.decode(
+            Base64.decode(GostViewerTestData.pkeyGost2012str));
+        let recreatedPrivateKeyInfo = Base64.encode(GostViewer.asn1.PrivateKeyInfo.encode(privateKeyInfo));
+        console.log(GostViewerTestData.pkeyGost2012str);
+        console.log(recreatedPrivateKeyInfo);
+
+        expect(isSimilar(GostViewerTestData.pkeyGost2012str, recreatedPrivateKeyInfo)).toBeTruthy();
+    });
+
 
     it('print pkey gost2001 asn1', () => {
         let gostViewer: GostViewer = new GostViewer();
@@ -112,6 +134,16 @@ describe('GostViewer', () => {
         let printSyntax = gostViewer.printSyntax(GostViewerTestData.pkeyGost2001, Syntax.PrivateKeyInfo);
         console.log('\n' + printSyntax);
         expect(isSimilar(printSyntax, GostViewerTestData.pkeyGost2001Json)).toBeTruthy();
+    });
+
+
+
+
+    it('GostSecurity test', () => {
+        let gostSecurity: GostSecurity = new GostSecurity();
+
+        console.log(gostSecurity);
+        expect(gostSecurity).toBeTruthy();
     });
 
 
