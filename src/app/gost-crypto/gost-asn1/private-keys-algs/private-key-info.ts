@@ -29,7 +29,9 @@ export class PrivateKeyInfo {
         }
         if (berElement.sequence[1]) {
             let objectIdentifier = berElement.sequence[1].sequence[0].objectIdentifier;
+            let key;
             switch (objectIdentifier.dotDelimitedNotation) {
+
                 case '1.2.840.113549.1.1.1': // TODO как минимум надо добаить ГОСТ 2001 и два 2012
                     privateKeyAlgorithm = new PrivateKeyAlgorithmRSA(
                         'RSASSA-PKCS1-v1_5',
@@ -39,22 +41,24 @@ export class PrivateKeyInfo {
                         GostSecurity.instance.names[objectIdentifier.dotDelimitedNotation]);
                     break; // berElement.sequence[1].sequence[1].sequence[0].objectIdentifier.toString() 1.2.643.2.2.36.0 // berElement.sequence[1].sequence[1].sequence[1].objectIdentifier.toString() 1.2.643.2.2.30.1
                 case '1.2.643.2.2.98': // ГОСТ 2001
-                    let key = GostSecurity.instance.providers['CP-01'].privateKey;
+                    key = GostSecurity.instance.providers['CP-01'].privateKey;
                     privateKeyAlgorithm = new PrivateKeyAlgorithmGost(key.name,
                         key.id,
                         key.namedCurve,
                         GostSecurity.instance.parameters[GostSecurity.instance.names[berElement.sequence[1].sequence[1].sequence[1].objectIdentifier.toString()]].sBox);
                     break;
-                    case '1.2.643.7.1.1.6.1': // ГОСТ 2012 256
-                    privateKeyAlgorithm = new PrivateKeyAlgorithmGost('GOST R 34.10-2001-DH',
-                        GostSecurity.instance.names[objectIdentifier.dotDelimitedNotation],
-                        'X-256-A',
-                        'D-A');
+                case '1.2.643.7.1.1.6.1': // ГОСТ 2012 256
+                    key = GostSecurity.instance.providers['TC-256'].privateKey;
+                    privateKeyAlgorithm = new PrivateKeyAlgorithmGost(key.name,
+                        key.id,
+                        key.namedCurve,
+                        undefined);
                     break;
-                    case '1.2.643.7.1.1.6.2': // ГОСТ 2012 512
-                    privateKeyAlgorithm = new PrivateKeyAlgorithmGost('GOST R 34.10-2001-DH',
-                        GostSecurity.instance.names[objectIdentifier.dotDelimitedNotation],
-                        'T-512-A',
+                case '1.2.643.7.1.1.6.2': // ГОСТ 2012 512
+                    key = GostSecurity.instance.providers['TC-512'].privateKey;
+                    privateKeyAlgorithm = new PrivateKeyAlgorithmGost(key.name,
+                        key.id,
+                        key.namedCurve,
                         undefined);
                     break;
                 default:
@@ -85,14 +89,13 @@ export class PrivateKeyInfo {
 
         let privateKey: DERElement = new DERElement();
         privateKey.fromBytes(value.privateKey);
-      //  privateKey.tagNumber = BERtypes.SEQUENCE;
+        //  privateKey.tagNumber = BERtypes.SEQUENCE;
 
         let privateKeyWrapper: DERElement = new DERElement();
         privateKeyWrapper.octetString = privateKey.toBytes();
         privateKeyWrapper.tagNumber = BERtypes['OCTET STRING'];
 
         sequence.push(privateKeyWrapper);
-
 
 
         let toReturn: DERElement = new DERElement();

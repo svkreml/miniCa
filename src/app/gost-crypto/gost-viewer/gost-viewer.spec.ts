@@ -35,7 +35,7 @@ describe('GostViewer', () => {
         expect(isSimilar(printSyntax, GostViewerTestData.pkeyRsaJson)).toBeTruthy();
     });
 
-    it('print cert GOST json', () => {
+    it('print cert GOST json Syntax.Certificate', () => {
         let gostViewer: GostViewer = new GostViewer();
         let printSyntax = gostViewer.printSyntax(GostViewerTestData.certGost256, Syntax.Certificate);
         console.log('\n' + printSyntax);
