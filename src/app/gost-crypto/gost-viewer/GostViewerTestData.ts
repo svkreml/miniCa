@@ -1,4 +1,6 @@
 export class GostViewerTestData {
+
+
     public static certRsa: string =
         'MIIDgjCCAmqgAwIBAgIUM4sKClfxGWz2+HCkw8KHZqz48mwwDQYJKoZIhvcNAQEL\n' +
         'BQAwQDELMAkGA1UEBhMCVVMxDzANBgNVBAgMBmFzZGFzZDEPMA0GA1UEBwwGYXNk\n' +
@@ -508,4 +510,22 @@ export class GostViewerTestData {
         'fzI=';
     static pkeyGost2012str: string = 'MGoCAQAwIQYIKoUDBwEBBgIwFQYJKoUDBwECAQIBBggqhQMHAQECAwRCBEDyvK34QwnokImWenmfDPfs4ZJI6Tt+76cFIKzv\n' +
         'HcQdGzmz7gAjPPGmjGVTmCaPPSDqFSwobenSLUVJVpR+CVdG\n';
+
+    static cryptoProConteiner = {
+        header: 'MIICnjCCApSgCgYIKoUDAgIlAgEDAgZAMCsDAgKkoCUGBiqFAwICYjAbBgcqhQMCAiQABgcqhQMCAh4BBgcqhQMCAh8BhYIC\n' +
+            'IjCCAh4wggHNoAMCAQICBEyRh2gwCAYGKoUDAgIDMB0xCzAJBgNVBAYTAlJVMQ4wDAYDVQQDEwVBbGlhczAeFw0xOTA5MDIy\n' +
+            'MTAwMDBaFw0zOTA5MDIyMTAwMDBaMB0xCzAJBgNVBAYTAlJVMQ4wDAYDVQQDEwVBbGlhczBjMBwGBiqFAwICEzASBgcqhQMC\n' +
+            'AiQABgcqhQMCAh4BA0MABEDjy4C7edc0SHYkODMXNlX9ZWpDUz124dx2Q6v6New0tzi0ibm6Iz5bW+kKWAkhO2VEEELXk2Z+\n' +
+            'BpZplR9yRDGGo4HyMIHvMA4GA1UdDwEB/wQEAwIB/jBjBgNVHSUEXDBaBggrBgEFBQcDAQYIKwYBBQUHAwIGCCsGAQUFBwMD\n' +
+            'BggrBgEFBQcDBAYIKwYBBQUHAwUGCCsGAQUFBwMGBggrBgEFBQcDBwYIKwYBBQUHAwgGCCsGAQUFBwMJMA8GA1UdEwEB/wQF\n' +
+            'MAMBAf8wHQYDVR0OBBYEFMMMsx+fwBtYcpcvsmUXkQYbLAGKMEgGA1UdIwRBMD+AFMMMsx+fwBtYcpcvsmUXkQYbLAGKoSGk\n' +
+            'HzAdMQswCQYDVQQGEwJSVTEOMAwGA1UEAxMFQWxpYXOCBEyRh2gwCAYGKoUDAgIDA0EAKXSpMowAPQqqnsckFgidECaGZVzA\n' +
+            'MSsLadODDlz5jWISMBqO2l8UdLDQMawmdE6PBOIsMPG+w/kP5XWjy68NTIoI48uAu3nXNEisJTAjBggqhQMCAiUDCgQXMBWB\n' +
+            'EzIwMzkwOTAyMjEwODQ2Ljc2OFoEBBcydtk=',
+        name: 'MAcWBUFsaWFz',
+        primary: 'MCIEIPdNrKa+Ytkvi3HuKo3LOBUUHkQOU5rvCaSkTK2kfk8I',
+        primary2: 'MCIEIE3I0tUWMHINPQKLrXSPhHI7O9V/X7fluPZ+Ie4eL6WD',
+        masks: 'MDYEIB+l+vhuOhfDw3C1d/LQJVF2ndjWFRljzhAJgEfdasV6BAyKRVd9Z8LRu2lL+FgEBB7IIwQ=',
+        masks2: 'MDYEIHha1X7XLNpJFPYgwe/BrNS9hxYE613Cq7WAs1Wx6UXfBAwzaLXcC5MMxnCJMJ8EBLg9P/A='
+    };
 }

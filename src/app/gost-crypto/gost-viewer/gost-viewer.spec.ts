@@ -2,9 +2,9 @@ import {GostViewer} from './gost-viewer';
 import {Syntax} from './syntax';
 import {Base64} from '../gost-coding/gost-coding';
 import {GostViewerTestData} from './GostViewerTestData';
-import {GostKeyContainerName} from '../gost-asn1/gost-asn1';
 import {PrivateKeyInfo} from '../gost-asn1/private-keys-algs/private-key-info';
 import {GostSecurity} from '../gost-security/gost-security';
+import {GostKeyContainerName, GostPrivateKeys, GostPrivateMasks} from '../gost-asn1/cp/CP';
 
 describe('GostViewer', () => {
 
@@ -68,7 +68,7 @@ describe('GostViewer', () => {
 
     it('print nameGost json Syntax.GostKeyContainerName recreate', () => {
         let gostKeyContainerName: GostKeyContainerName = GostViewer.asn1.GostKeyContainerName.decode(
-        Base64.decode(GostViewerTestData.cryptoProName));
+            Base64.decode(GostViewerTestData.cryptoProName));
 
         let arrayBuffer = GostViewer.asn1.GostKeyContainerName.encode(gostKeyContainerName);
         let encoded = Base64.encode(arrayBuffer);
@@ -137,8 +137,6 @@ describe('GostViewer', () => {
     });
 
 
-
-
     it('GostSecurity test', () => {
         let gostSecurity: GostSecurity = new GostSecurity();
 
@@ -147,18 +145,69 @@ describe('GostViewer', () => {
     });
 
 
+    it('recreate Crypto pro 2001 primary', () => {
+        let gostViewer: GostViewer = new GostViewer();
+        let c = GostViewerTestData.cryptoProConteiner;
+        /*
+        header - container header @link GostASN1.GostKeyContainer</li>
+        name - container name @link GostASN1.GostKeyContainerName</li>
+        primary - private keys data @link GostASN1.GostPrivateKeys</li>
+        masks - private key masks @link GostASN1.GostPrivateMasks</li>
+        primary2 - reserve of private keys data @link GostASN1.GostPrivateKeys</li>
+        masks2 - reserve of private key masks @link GostASN1.GostPrivateMasks</li>
+        * */
+       // let header = gostViewer.printSyntax(c.header, 'GostKeyContainer');
+       // let name = gostViewer.printSyntax(c.name, 'GostKeyContainerName');
+        {
+            let primary = gostViewer.printSyntax(c.primary, 'GostPrivateKeys');
+            let primary2 = gostViewer.printSyntax(c.primary2, 'GostPrivateKeys');
+            console.log('\n' + primary);
+            console.log('\n' + primary2);
+        }
+        let primary: GostPrivateKeys = GostViewer.asn1.GostPrivateKeys.decode(
+            Base64.decode(c.primary));
+
+        let recreatedPrimary: string = Base64.encode(GostViewer.asn1.GostPrivateKeys.encode(primary));
+        console.log(c.primary);
+        console.log(recreatedPrimary);
 
 
 
+       // let masks = gostViewer.printSyntax(c.masks, 'GostPrivateMasks');
+       // let masks2 = gostViewer.printSyntax(c.masks2, 'GostPrivateMasks');
+
+
+        //  console.log('\n' + printSyntax);
+        expect(isSimilar(c.primary, recreatedPrimary)).toBeTruthy();
+    });
+
+    it('recreate Crypto pro 2001 masks', () => {
+        let gostViewer: GostViewer = new GostViewer();
+        let c = GostViewerTestData.cryptoProConteiner;
+
+        // let header = gostViewer.printSyntax(c.header, 'GostKeyContainer');
+        {
+            let masks = gostViewer.printSyntax(c.masks, 'GostPrivateMasks');
+            let masks2 = gostViewer.printSyntax(c.masks2, 'GostPrivateMasks');
+            console.log('\n' + masks);
+            console.log('\n' + masks2);
+        }
+        let masks: GostPrivateMasks = GostViewer.asn1.GostPrivateMasks.decode(
+            Base64.decode(c.masks));
+
+        let recreatedMasks: string = Base64.encode(GostViewer.asn1.GostPrivateMasks.encode(masks));
+        console.log(c.masks);
+        console.log(recreatedMasks);
 
 
 
+        // let masks = gostViewer.printSyntax(c.masks, 'GostPrivateMasks');
+        // let masks2 = gostViewer.printSyntax(c.masks2, 'GostPrivateMasks');
 
 
-
-
-
-
+        //  console.log('\n' + printSyntax);
+        expect(isSimilar(c.masks, recreatedMasks)).toBeTruthy();
+    });
 });
 
 

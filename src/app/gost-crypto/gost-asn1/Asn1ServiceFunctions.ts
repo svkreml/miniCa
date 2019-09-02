@@ -101,6 +101,13 @@ export class Asn1ServiceFunctions {
         element.tagNumber = BERtypes['OBJECT IDENTIFIER'];
         return element;
     }
+    public static createOctetString(array: ArrayBuffer): DERElement {
+        let element = new DERElement();
+        element.octetString = new Uint8Array(array);
+        element.tagNumber = BERtypes['OCTET STRING'];
+        return element;
+    }
+
 
     public static createSequence(elements: DERElement[]) {
         let sequenceElement: DERElement = new DERElement();

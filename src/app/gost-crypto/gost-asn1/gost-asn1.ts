@@ -6,55 +6,12 @@ import {BERtypes} from './structure/BERTypes';
 import {PrivateKeyInfo} from './private-keys-algs/private-key-info';
 import {PrivateKeyAlgorithm} from './private-keys-algs/private-key-algorithm';
 import {GostSecurity} from '../gost-security/gost-security';
+import { GostKeyContainerName, GostKeyContainer, GostPrivateKeys, GostPrivateMasks } from './cp/CP';
 
 /**
  * ASN.1 syntax definitions
  *
  */
-export class GostKeyContainerName {
-    containerName: string; // ia5string
-    extElem1: any; // wtf
-    constructor(containerName: string, extElem1: any) {
-        this.containerName = containerName;
-        this.extElem1 = extElem1;
-    }
-
-    public static decode(value: ArrayBuffer): GostKeyContainerName {
-        let encodedData: Uint8Array = new Uint8Array(value);
-        let berElement: BERElement = new BERElement();
-        berElement.fromBytes(encodedData);
-        let containerName;
-        let extElem1;
-        if (berElement.sequence[0]) {
-            containerName = berElement.sequence[0].ia5String;
-        }
-        if (berElement.sequence[1]) {
-            extElem1 = berElement.sequence[0].toBytes();
-        }
-        return new GostKeyContainerName(containerName, extElem1);
-    }
-
-    public static encode(value: GostKeyContainerName): ArrayBuffer {
-        let toReturn: BERElement[] = [];
-
-
-        let containerName: BERElement = new BERElement();
-        containerName.ia5String = value.containerName;
-        containerName.tagNumber = BERtypes.IA5String;
-        toReturn.push(containerName);
-
-        if (value.extElem1) {
-            let extElem1: BERElement = new BERElement();
-            extElem1.fromBytes(value.extElem1);
-            toReturn.push(extElem1);
-        }
-
-        let constracted = new BERElement();
-        constracted.sequence = toReturn;
-        constracted.tagNumber = BERtypes.SEQUENCE;
-        return constracted.toBytes();
-    }
-}
 
 
 export class GostAsn1 {
@@ -113,188 +70,48 @@ export class GostAsn1 {
           'id-tc26-gost3411-12-512': AlgorithmWithNullParam,
           'id-sc-gostR3411-94': AlgorithmWithNoParam});*/
 
-    /**
-     * Gost PrivateKey info encoder
-     *
-     * @memberOf GostASN1
-     */
-    GostPrivateKeyInfo: GostPrivateKeyInfo;
-    /**
-     * Gost subject PublicKey info encoder
-     *
-     * @memberOf GostASN1
-     */
-    GostSubjectPublicKeyInfo: GostSubjectPublicKeyInfo;
-    /**
-     * CryptoPro key container header
-     *
-     * @memberOf GostASN1
-     */
-    GostKeyContainer: GostKeyContainer;
-    /**
-     * CryptoPro key container name
-     *
-     * @memberOf GostASN1
-     */
+    GostPrivateKeyInfo = GostPrivateKeyInfo;
+    GostSubjectPublicKeyInfo = GostSubjectPublicKeyInfo;
+    /*
+    header - container header @link GostASN1.GostKeyContainer</li>
+    name - container name @link GostASN1.GostKeyContainerName</li>
+    primary - private keys data @link GostASN1.GostPrivateKeys</li>
+    masks - private key masks @link GostASN1.GostPrivateMasks</li>
+    primary2 - reserve of private keys data @link GostASN1.GostPrivateKeys</li>
+    masks2 - reserve of private key masks @link GostASN1.GostPrivateMasks</li>
+    * */
+
+    GostKeyContainer = GostKeyContainer;
     GostKeyContainerName = GostKeyContainerName;
-    /**
-     * CryptoPro encrypted PrivateKey for key containers
-     *
-     * @memberOf GostASN1
-     */
-    GostPrivateKeys: GostPrivateKeys;
-    /**
-     * CryptoPro PrivateKey masks for key containers
-     *
-     * @memberOf GostASN1
-     */
-    GostPrivateMasks: GostPrivateMasks;
-    /**
-     * ViPNet key container
-     *
-     * @memberOf GostASN1
-     */
+    GostPrivateKeys = new GostPrivateKeys(undefined);
+    GostPrivateMasks = new GostPrivateMasks(undefined, undefined, undefined);
+
     ViPNetInfo: ViPNetInfo;
-    /**
-     * Gost Signature encoders
-     *
-     * @memberOf GostASN1
-     */
     GostSignature: GostSignature;
-    /**
-     * Gost Encrypted key encoder for CMS
-     *
-     * @memberOf GostASN1
-     */
     GostEncryptedKey: GostEncryptedKey;
-    /**
-     * SignalCom wrapped PrivateKey
-     *
-     * @memberOf GostASN1
-     */
     GostWrappedPrivateKey: GostWrappedPrivateKey;
-    /**
-     * PKCS#8 PrivateKey info
-     *
-     * @memberOf GostASN1
-     */
     PrivateKeyInfo = new PrivateKeyInfo(undefined, undefined, undefined);
-    /**
-     * PKCS#8 encrypted PrivateKey info
-     *
-     * @memberOf GostASN1
-     */
     EncryptedPrivateKeyInfo: EncryptedPrivateKeyInfo;
-    /**
-     * X.509 subject PublicKey info
-     *
-     * @memberOf GostASN1
-     */
     SubjectPublicKeyInfo: SubjectPublicKeyInfo;
-    /**
-     * X.509 To be signed Certificate
-     *
-     * @memberOf GostASN1
-     */
     TBSCertificate: TBSCertificate;
-    /**
-     * X.509 Certificate
-     *
-     * @memberOf GostASN1
-     */
     Certificate = new Certificate();
-    /**
-     * PKCS#10 Certification request definition
-     *
-     * @memberOf GostASN1
-     */
     CertificationRequestInfo: CertificationRequestInfo;
-    /**
-     * PKCS#10 Certification request
-     *
-     * @memberOf GostASN1
-     */
     CertificationRequest: CertificationRequest;
-    /**
-     * X.509 To be signed CRL
-     *
-     * @memberOf GostASN1
-     */
     TBSCertList: TBSCertList;
-    /**
-     * X.509 CRL
-     *
-     * @memberOf GostASN1
-     */
-    CertificateList: CertificateList;
-    /**
-     * X.509 Attribute Certificate definition
-     *
-     * @memberOf GostASN1
-     */
+    CertificateList: CertificateList
     AttributeCertificateInfo: AttributeCertificateInfo;
-    /**
-     * X.509 Attribute Certificate
-     *
-     * @memberOf GostASN1
-     */
     AttributeCertificate: AttributeCertificate;
-    /**
-     * CMS Signed Attributes
-     *
-     * @memberOf GostASN1
-     */
     SignedAttributes: SignedAttributes;
-    /**
-     * CMS Unsigned Attributes
-     *
-     * @memberOf GostASN1
-     */
     UnsignedAttributes: UnsignedAttributes;
-    /**
-     * CMS Content definition
-     *
-     * @memberOf GostASN1
-     */
     ContentInfo: ContentInfo;
-    /**
-     * PKCS#12 Safe Contents
-     *
-     * @memberOf GostASN1
-     */
     SafeContents: SafeContents;
-    /**
-     * PKCS#12 Authenticated Safe
-     *
-     * @memberOf GostASN1
-     */
     AuthenticatedSafe: AuthenticatedSafe;
-    /**
-     * PKCS#12 Personal Information Exchange (PFX)
-     *
-     * @memberOf GostASN1
-     */
     PFX: PFX;
-    /**
-     * PKI Request
-     *
-     * @memberOf GostASN1
-     */
     PKIData: PKIData;
-    /**
-     * PKI Response
-     *
-     * @memberOf GostASN1
-     */
     PKIResponse: PKIResponse;
 
 
-    /*
- * Base ASN.1 types and definitions
- *
- */ // <editor-fold defaultstate="collapsed">
 
-    // Encode object primitive
     static encode(format, object, tagNumber, tagClass, tagConstructed, uniformTitle) {
         Asn1ServiceFunctions.assert(object === undefined);
         let source = {
@@ -313,8 +130,6 @@ export class GostAsn1 {
         }
         return source;
     }
-
-    // Decode object primitive
     static decode(source, tagNumber, tagClass, tagConstructed, uniformTitle) {
         Asn1ServiceFunctions.assert(source === undefined);
 
@@ -353,21 +168,7 @@ export class GostAsn1 {
     }
 }
 
-class GostPrivateKeyInfo {
-}
 
-class GostSubjectPublicKeyInfo {
-}
-
-class GostKeyContainer {
-}
-
-
-class GostPrivateKeys {
-}
-
-class GostPrivateMasks {
-}
 
 class ViPNetInfo {
 }
@@ -497,4 +298,9 @@ class AuthenticatedSafe {
 }
 
 class SafeContents {
+}
+class GostPrivateKeyInfo {
+}
+
+class GostSubjectPublicKeyInfo {
 }
