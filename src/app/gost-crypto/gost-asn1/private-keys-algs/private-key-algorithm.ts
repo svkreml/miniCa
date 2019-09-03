@@ -1,6 +1,6 @@
 import {DERElement} from 'asn1-ts';
 import {BERtypes} from '../structure/BERTypes';
-import {Asn1ServiceFunctions} from '../Asn1ServiceFunctions';
+import {DerFunctions} from '../DerFunctions';
 import {GostSecurity} from '../../gost-security/gost-security';
 
 
@@ -30,7 +30,7 @@ export class PrivateKeyAlgorithmRSA implements PrivateKeyAlgorithm {
         let privateKeyAlgorithm: DERElement;
 
         if (value.name === 'RSASSA-PKCS1-v1_5' && value.id === 'rsaEncryption') {
-            sequence.push(Asn1ServiceFunctions.convertOid(GostSecurity.instance.identifiers[value.id]));
+            sequence.push(DerFunctions.convertOid(GostSecurity.instance.identifiers[value.id]));
 
             let n: DERElement = new DERElement();
             n.tagNumber = BERtypes.NULL;
@@ -70,27 +70,27 @@ export class PrivateKeyAlgorithmGost implements PrivateKeyAlgorithm {
     public encode(value: PrivateKeyAlgorithmGost): ArrayBuffer {
         let toReturn: DERElement = new DERElement();
         if (value.name === 'GOST R 34.10-2001-DH' && value.id === 'id-GostR3410-2001DH') {
-            let innerSeq: DERElement = Asn1ServiceFunctions.createSequence([
-                Asn1ServiceFunctions.convertOid('1.2.643.2.2.36.0'),
-                Asn1ServiceFunctions.convertOid('1.2.643.2.2.30.1')
+            let innerSeq: DERElement = DerFunctions.createSequence([
+                DerFunctions.convertOid('1.2.643.2.2.36.0'),
+                DerFunctions.convertOid('1.2.643.2.2.30.1')
             ]);
-            toReturn = Asn1ServiceFunctions.createSequence([Asn1ServiceFunctions.convertOid('1.2.643.2.2.98'),
+            toReturn = DerFunctions.createSequence([DerFunctions.convertOid('1.2.643.2.2.98'),
                 innerSeq]);
         }
         else if (value.name === 'GOST R 34.10-256-DH/GOST R 34.11-256' && value.id === 'id-tc26-agreement-gost-3410-12-256') {
-            let innerSeq: DERElement = Asn1ServiceFunctions.createSequence([
-                Asn1ServiceFunctions.convertOid(GostSecurity.instance.identifiers['id-GostR3410-2001-CryptoPro-XchA-ParamSet']),
-                Asn1ServiceFunctions.convertOid(GostSecurity.instance.identifiers['id-tc26-gost3411-12-256']),
+            let innerSeq: DERElement = DerFunctions.createSequence([
+                DerFunctions.convertOid(GostSecurity.instance.identifiers['id-GostR3410-2001-CryptoPro-XchA-ParamSet']),
+                DerFunctions.convertOid(GostSecurity.instance.identifiers['id-tc26-gost3411-12-256']),
             ]);
-            toReturn = Asn1ServiceFunctions.createSequence([Asn1ServiceFunctions.convertOid(GostSecurity.instance.identifiers['id-tc26-agreement-gost-3410-12-256']),
+            toReturn = DerFunctions.createSequence([DerFunctions.convertOid(GostSecurity.instance.identifiers['id-tc26-agreement-gost-3410-12-256']),
                 innerSeq]);
         }
         else if (value.name === 'GOST R 34.10-512-DH/GOST R 34.11-256' && value.id === 'id-tc26-agreement-gost-3410-12-512') {
-            let innerSeq: DERElement = Asn1ServiceFunctions.createSequence([
-                Asn1ServiceFunctions.convertOid(GostSecurity.instance.identifiers['id-tc26-gost-3410-12-512-paramSetA']),
-                Asn1ServiceFunctions.convertOid(GostSecurity.instance.identifiers['id-tc26-gost3411-12-512']),
+            let innerSeq: DERElement = DerFunctions.createSequence([
+                DerFunctions.convertOid(GostSecurity.instance.identifiers['id-tc26-gost-3410-12-512-paramSetA']),
+                DerFunctions.convertOid(GostSecurity.instance.identifiers['id-tc26-gost3411-12-512']),
             ]);
-            toReturn = Asn1ServiceFunctions.createSequence([Asn1ServiceFunctions.convertOid(GostSecurity.instance.identifiers['id-tc26-agreement-gost-3410-12-512']),
+            toReturn = DerFunctions.createSequence([DerFunctions.convertOid(GostSecurity.instance.identifiers['id-tc26-agreement-gost-3410-12-512']),
                 innerSeq]);
         } else {
             throw Error('Unsuported \n' + JSON.stringify(value));

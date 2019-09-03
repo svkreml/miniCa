@@ -1,6 +1,6 @@
 import {BERElement, DERElement} from 'asn1-ts';
 import {BERtypes} from '../structure/BERTypes';
-import {Asn1ServiceFunctions} from '../Asn1ServiceFunctions';
+import {DerFunctions} from '../DerFunctions';
 
 export class GostKeyContainer {
     containerAlgoritmIdentifier;
@@ -77,7 +77,7 @@ export class GostPrivateKeys {
     }
 
     public encode(value: GostPrivateKeys): ArrayBuffer {
-        return Asn1ServiceFunctions.createSequence([Asn1ServiceFunctions.createOctetString(value.primaryKey)]).toBytes();
+        return DerFunctions.createSequence([DerFunctions.createOctetString(value.primaryKey)]).toBytes();
     }
 }
 
@@ -105,8 +105,8 @@ export class GostPrivateMasks {
     }
 
     public encode(value: GostPrivateMasks): ArrayBuffer {
-        return Asn1ServiceFunctions.createSequence([Asn1ServiceFunctions.createOctetString(value.mask),
-            Asn1ServiceFunctions.createOctetString(value.randomStatus),
-            Asn1ServiceFunctions.createOctetString(value.hmacRandom)]).toBytes();
+        return DerFunctions.createSequence([DerFunctions.createOctetString(value.mask),
+            DerFunctions.createOctetString(value.randomStatus),
+            DerFunctions.createOctetString(value.hmacRandom)]).toBytes();
     }
 }

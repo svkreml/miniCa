@@ -5,6 +5,7 @@ import {GostViewerTestData} from './GostViewerTestData';
 import {PrivateKeyInfo} from '../gost-asn1/private-keys-algs/private-key-info';
 import {GostSecurity} from '../gost-security/gost-security';
 import {GostKeyContainerName, GostPrivateKeys, GostPrivateMasks} from '../gost-asn1/cp/CP';
+import {Meta, Name} from '../gost-asn1/certificate/Certificate';
 
 describe('GostViewer', () => {
 
@@ -208,6 +209,23 @@ describe('GostViewer', () => {
         //  console.log('\n' + printSyntax);
         expect(isSimilar(c.masks, recreatedMasks)).toBeTruthy();
     });
+
+
+
+
+    it('print create x500Name', () => {
+
+        let subject: Map<string, Meta> = new Map<string, Meta>();
+
+        subject.set('1.1.1', new Meta('123', 0x12));
+        subject.set('1.1.2', new Meta('123', undefined));
+
+        let name: Name = new Name(subject);
+        let x500Name: string = Base64.encode(GostViewer.asn1.Name.encode(name));
+        console.log('\n' + x500Name);
+        expect(isSimilar(x500Name, 'MBoxCzAJBgIpARIDMTIzMQswCQYCKQIMAzEyMw==')).toBeTruthy();
+    });
+
 });
 
 

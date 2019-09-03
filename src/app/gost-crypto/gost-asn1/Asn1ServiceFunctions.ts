@@ -95,24 +95,6 @@ export class Asn1ServiceFunctions {
             return source.object;
         }
     }
-    public static convertOid(oid: string) {
-        let element = new DERElement();
-        element.objectIdentifier = new ObjectIdentifier(toNumbers(oid)); // toNumbers('2.0.1'); // returns [2, 0, 1]
-        element.tagNumber = BERtypes['OBJECT IDENTIFIER'];
-        return element;
-    }
-    public static createOctetString(array: ArrayBuffer): DERElement {
-        let element = new DERElement();
-        element.octetString = new Uint8Array(array);
-        element.tagNumber = BERtypes['OCTET STRING'];
-        return element;
-    }
 
 
-    public static createSequence(elements: DERElement[]) {
-        let sequenceElement: DERElement = new DERElement();
-        sequenceElement.tagNumber = BERtypes.SEQUENCE;
-        sequenceElement.sequence = elements;
-        return sequenceElement;
-    }
 }
