@@ -161,7 +161,7 @@ class TBSCertificate {
                     tbsCertificateElements[encounteredElements].tagNumber === 3
                 )
             )
-        ) endOfTBSCertficateExtensionsIndex++;
+            ) endOfTBSCertficateExtensionsIndex++;
 
         /**
          * The ASN.1 extensions to the TBSCertificate occur in the middle of
@@ -301,6 +301,8 @@ class TBSCertificate {
                 });
                 return rdnElement;
             });
+
+            retSequence.push(issuerElement);
         }
 
         // validity
@@ -327,6 +329,8 @@ class TBSCertificate {
                 });
                 return rdnElement;
             });
+
+            retSequence.push(subjectElement);
         }
 
         // subjectPublicKeyInfo
