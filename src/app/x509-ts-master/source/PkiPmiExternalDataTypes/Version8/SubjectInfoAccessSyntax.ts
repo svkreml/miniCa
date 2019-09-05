@@ -1,4 +1,4 @@
-import AccessDescription from "./AccessDescription";
+import AccessDescription from './AccessDescription';
 
 // SubjectInfoAccessSyntax ::= SEQUENCE SIZE (1..MAX) OF AccessDescription
 

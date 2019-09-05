@@ -1,4 +1,4 @@
-import { DERElement } from "asn1-ts";
+import { DERElement } from 'asn1-ts';
 
 //   DistributionPointName ::= CHOICE {
 //     fullName                 [0]  GeneralNames,

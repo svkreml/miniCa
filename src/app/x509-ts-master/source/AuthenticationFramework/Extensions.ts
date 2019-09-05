@@ -1,4 +1,4 @@
-import Extension from "./Extension";
+import Extension from './Extension';
 
 // Extensions ::= SEQUENCE SIZE (1..MAX) OF Extension
 

@@ -1,4 +1,4 @@
-import KeyIdentifier from "./KeyIdentifier";
+import KeyIdentifier from './KeyIdentifier';
 
 // SubjectKeyIdentifier ::= KeyIdentifier
 

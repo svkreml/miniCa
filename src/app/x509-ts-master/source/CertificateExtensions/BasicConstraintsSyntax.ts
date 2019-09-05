@@ -1,5 +1,5 @@
-import { DERElement, ASN1TagClass, ASN1Construction, ASN1UniversalType } from "asn1-ts";
-import * as errors from "../errors";
+import { DERElement, ASN1TagClass, ASN1Construction, ASN1UniversalType } from 'asn1-ts';
+import * as errors from '../errors';
 
 // BasicConstraintsSyntax ::= SEQUENCE {
 //     cA                 BOOLEAN DEFAULT FALSE,
@@ -11,11 +11,11 @@ export default
 class BasicConstraintsSyntax {
 
     constructor(
-        readonly ca : boolean,
-        readonly pathLenConstraint? : number
+        readonly ca: boolean,
+        readonly pathLenConstraint?: number
     ) {}
 
-    public static fromElement (value : DERElement) : BasicConstraintsSyntax {
+    public static fromElement(value: DERElement): BasicConstraintsSyntax {
 
         switch (value.validateTag(
             [ ASN1TagClass.universal ],
@@ -23,17 +23,17 @@ class BasicConstraintsSyntax {
             [ ASN1UniversalType.sequence ]
         )) {
             case 0: break;
-            case -1: throw new errors.X509Error("Invalid tag class on BasicConstraintsSyntax");
-            case -2: throw new errors.X509Error("Invalid construction on BasicConstraintsSyntax");
-            case -3: throw new errors.X509Error("Invalid tag number on BasicConstraintsSyntax");
-            default: throw new errors.X509Error("Undefined error when validating BasicConstraintsSyntax tag");
+            case -1: throw new errors.X509Error('Invalid tag class on BasicConstraintsSyntax');
+            case -2: throw new errors.X509Error('Invalid construction on BasicConstraintsSyntax');
+            case -3: throw new errors.X509Error('Invalid tag number on BasicConstraintsSyntax');
+            default: throw new errors.X509Error('Undefined error when validating BasicConstraintsSyntax tag');
         }
 
-        let ca : boolean | undefined;
-        let pathLenConstraint : number | undefined;
-        let fixedPositionElementsEncountered : number = 0;
+        let ca: boolean | undefined;
+        let pathLenConstraint: number | undefined;
+        let fixedPositionElementsEncountered = 0;
 
-        const basicConstraintsSyntaxElements : DERElement[] = value.sequence;
+        const basicConstraintsSyntaxElements: DERElement[] = value.sequence;
 
         /*
             Doing the check for unique tags here will prevent us from
@@ -41,7 +41,7 @@ class BasicConstraintsSyntax {
             that follows.
         */
         if (!DERElement.isUniquelyTagged(basicConstraintsSyntaxElements))
-            throw new errors.X509Error("Elements of BasicConstraintsSyntax were not uniquely tagged");
+            throw new errors.X509Error('Elements of BasicConstraintsSyntax were not uniquely tagged');
 
         /*
             The rules for parsing the elements that follow are like so:
@@ -61,20 +61,20 @@ class BasicConstraintsSyntax {
             serve as the index for the start of the extensions, and hence the
             subject of the canonical ordering check.
         */
-        basicConstraintsSyntaxElements.forEach((element : DERElement, index : number) => {
+        basicConstraintsSyntaxElements.forEach((element: DERElement, index: number) => {
             if (element.tagClass === ASN1TagClass.universal) {
                 if (element.tagNumber === ASN1UniversalType.boolean) {
                     if (element.construction !== ASN1Construction.primitive)
-                        throw new errors.X509Error("BasicConstraintsSyntax.ca was not primitively constructed");
+                        throw new errors.X509Error('BasicConstraintsSyntax.ca was not primitively constructed');
                     if (index !== 0)
-                        throw new errors.X509Error("BasicConstraintsSyntax.ca was not the first element");
+                        throw new errors.X509Error('BasicConstraintsSyntax.ca was not the first element');
                     ca = element.boolean;
                     fixedPositionElementsEncountered++;
                 } else if (element.tagNumber === ASN1UniversalType.integer) {
                     if (element.construction !== ASN1Construction.primitive)
-                        throw new errors.X509Error("BasicConstraintsSyntax.pathLenConstraint was not primitively constructed");
+                        throw new errors.X509Error('BasicConstraintsSyntax.pathLenConstraint was not primitively constructed');
                     if (index > 1)
-                        throw new errors.X509Error("BasicConstraintsSyntax.pathLenConstraint was not the first or second element");
+                        throw new errors.X509Error('BasicConstraintsSyntax.pathLenConstraint was not the first or second element');
 
                     /*
                         If we have run into pathLenConstraint, and its the
@@ -90,7 +90,7 @@ class BasicConstraintsSyntax {
                             basicConstraintsSyntaxElements[0].tagNumber !== ASN1UniversalType.boolean
                         )
                     )
-                        throw new errors.X509Error("BasicConstraintsSyntax missing ca element before pathLenConstraint when pathLenConstraint was the second element");
+                        throw new errors.X509Error('BasicConstraintsSyntax missing ca element before pathLenConstraint when pathLenConstraint was the second element');
 
                     pathLenConstraint = element.integer;
                     fixedPositionElementsEncountered++;
@@ -104,7 +104,7 @@ class BasicConstraintsSyntax {
             fixedPositionElementsEncountered.
         */
         if (!DERElement.isInCanonicalOrder(basicConstraintsSyntaxElements.slice(fixedPositionElementsEncountered)))
-            throw new errors.X509Error("Extended elements of BasicConstraintsSyntax were not in canonical order");
+            throw new errors.X509Error('Extended elements of BasicConstraintsSyntax were not in canonical order');
 
         /*
             "The encoding of a set value or sequence value shall not include
@@ -112,17 +112,17 @@ class BasicConstraintsSyntax {
             value" -- ITU X.690 Section 11.5
         */
         if (ca === false)
-            throw new errors.X509Error("BasicConstraintsSyntax.cA was encoded with the default value, which is prohibited by the Distinguished Encoding Rules.");
+            throw new errors.X509Error('BasicConstraintsSyntax.cA was encoded with the default value, which is prohibited by the Distinguished Encoding Rules.');
         if (ca === undefined) ca = false;
 
         return new BasicConstraintsSyntax(ca, pathLenConstraint);
     }
 
-    public toElement () : DERElement {
-        let basicConstraintsSyntaxElements : DERElement[] = [];
+    public toElement(): DERElement {
+        let basicConstraintsSyntaxElements: DERElement[] = [];
 
         if (this.ca === true) {
-            const caElement : DERElement = new DERElement(
+            const caElement: DERElement = new DERElement(
                 ASN1TagClass.universal,
                 ASN1Construction.primitive,
                 ASN1UniversalType.boolean
@@ -132,7 +132,7 @@ class BasicConstraintsSyntax {
         }
 
         if (this.pathLenConstraint) {
-            const pathLenConstraintElement : DERElement = new DERElement(
+            const pathLenConstraintElement: DERElement = new DERElement(
                 ASN1TagClass.universal,
                 ASN1Construction.primitive,
                 ASN1UniversalType.integer
@@ -141,7 +141,7 @@ class BasicConstraintsSyntax {
             basicConstraintsSyntaxElements.push(pathLenConstraintElement);
         }
 
-        const basicConstraintsSyntaxElement : DERElement = new DERElement(
+        const basicConstraintsSyntaxElement: DERElement = new DERElement(
             ASN1TagClass.universal,
             ASN1Construction.constructed,
             ASN1UniversalType.sequence
@@ -150,13 +150,13 @@ class BasicConstraintsSyntax {
         return basicConstraintsSyntaxElement;
     }
 
-    public static fromBytes (value : Uint8Array) : BasicConstraintsSyntax {
-        const el : DERElement = new DERElement();
+    public static fromBytes(value: Uint8Array): BasicConstraintsSyntax {
+        const el: DERElement = new DERElement();
         el.fromBytes(value);
         return BasicConstraintsSyntax.fromElement(el);
     }
 
-    public toBytes () : Uint8Array {
+    public toBytes(): Uint8Array {
         return this.toElement().toBytes();
     }
 

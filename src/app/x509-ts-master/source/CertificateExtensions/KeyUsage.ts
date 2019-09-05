@@ -1,5 +1,5 @@
-import { DERElement, ASN1TagClass, ASN1Construction, ASN1UniversalType } from "asn1-ts";
-import * as errors from "../errors";
+import { DERElement, ASN1TagClass, ASN1Construction, ASN1UniversalType } from 'asn1-ts';
+import * as errors from '../errors';
 
 // KeyUsage ::= BIT STRING {
 //     digitalSignature(0), contentCommitment(1), keyEncipherment(2),
@@ -9,19 +9,19 @@ import * as errors from "../errors";
 export default
 class KeyUsage {
 
-    constructor (
-        readonly digitalSignature : boolean,
-        readonly contentCommitment : boolean,
-        readonly keyEncipherment : boolean,
-        readonly dataEncipherment : boolean,
-        readonly keyAgreement : boolean,
-        readonly keyCertSign : boolean,
-        readonly cRLSign : boolean,
-        readonly encipherOnly : boolean,
-        readonly decipherOnly : boolean
+    constructor(
+        readonly digitalSignature: boolean,
+        readonly contentCommitment: boolean,
+        readonly keyEncipherment: boolean,
+        readonly dataEncipherment: boolean,
+        readonly keyAgreement: boolean,
+        readonly keyCertSign: boolean,
+        readonly cRLSign: boolean,
+        readonly encipherOnly: boolean,
+        readonly decipherOnly: boolean
     ) {}
 
-    public static fromElement (value : DERElement) : KeyUsage {
+    public static fromElement(value: DERElement): KeyUsage {
 
         switch (value.validateTag(
             [ ASN1TagClass.universal ],
@@ -29,13 +29,13 @@ class KeyUsage {
             [ ASN1UniversalType.bitString ]
         )) {
             case 0: break;
-            case -1: throw new errors.X509Error("Invalid tag class on KeyUsage");
-            case -2: throw new errors.X509Error("Invalid construction on KeyUsage");
-            case -3: throw new errors.X509Error("Invalid tag number on KeyUsage");
-            default: throw new errors.X509Error("Undefined error when validating KeyUsage tag");
+            case -1: throw new errors.X509Error('Invalid tag class on KeyUsage');
+            case -2: throw new errors.X509Error('Invalid construction on KeyUsage');
+            case -3: throw new errors.X509Error('Invalid tag number on KeyUsage');
+            default: throw new errors.X509Error('Undefined error when validating KeyUsage tag');
         }
 
-        const bits : boolean[] = value.bitString;
+        const bits: boolean[] = value.bitString;
         return new KeyUsage(
             ((bits.length > 0) ? bits[0] : false),
             ((bits.length > 1) ? bits[1] : false),
@@ -49,8 +49,8 @@ class KeyUsage {
         );
     }
 
-    public toElement () : DERElement {
-        const keyUsageElement : DERElement = new DERElement(
+    public toElement(): DERElement {
+        const keyUsageElement: DERElement = new DERElement(
             ASN1TagClass.universal,
             ASN1Construction.primitive,
             ASN1UniversalType.bitString
@@ -69,13 +69,13 @@ class KeyUsage {
         return keyUsageElement;
     }
 
-    public static fromBytes (value : Uint8Array) : KeyUsage {
-        const el : DERElement = new DERElement();
+    public static fromBytes(value: Uint8Array): KeyUsage {
+        const el: DERElement = new DERElement();
         el.fromBytes(value);
         return KeyUsage.fromElement(el);
     }
 
-    public toBytes () : Uint8Array {
+    public toBytes(): Uint8Array {
         return this.toElement().toBytes();
     }
 

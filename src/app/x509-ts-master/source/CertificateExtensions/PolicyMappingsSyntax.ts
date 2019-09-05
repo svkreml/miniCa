@@ -1,4 +1,4 @@
-import PolicyMapping from "./PolicyMapping";
+import PolicyMapping from './PolicyMapping';
 
 // PolicyMappingsSyntax ::=
 //   SEQUENCE SIZE (1..MAX) OF
