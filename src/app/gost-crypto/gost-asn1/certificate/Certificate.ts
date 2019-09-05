@@ -63,6 +63,11 @@ export class Name extends Map<string, Meta> {
 
     public encode(value: Name): ArrayBuffer {
 
+        return this.toElement(value).toBytes();
+    }
+
+    public toElement(value: Name): DERElement {
+
         let sec: DERElement[] = [];
         value.forEach((v: Meta, k: string) => {
             if (!v.tagNumber) {
@@ -76,15 +81,42 @@ export class Name extends Map<string, Meta> {
         let toReturn = new DERElement();
         toReturn.tagNumber = BERtypes.SEQUENCE;
         toReturn.sequence = sec;
-        return toReturn.toBytes();
+        toReturn.tagClass = 0;
+        return toReturn;
     }
-
 }
 
 export class Validity {
+    notBefore: Date;
+    notAfter: Date;
+
+    constructor(notBefore: Date, notAfter: Date) {
+        this.notBefore = notBefore;
+        this.notAfter = notAfter;
+    }
+
+    public decode(value: ArrayBuffer): Validity {
+        let dERElement: DERElement = new DERElement();
+        dERElement.fromBytes(new Uint8Array(value));
+        return new Validity(dERElement.sequence[0].utcTime, dERElement.sequence[1].utcTime);
+    }
+
+    public encode(value: Validity): ArrayBuffer {
+        return DerFunctions.createSequence([
+            DerFunctions.createByTag(value.notBefore, BERtypes.UTCTime),
+            DerFunctions.createByTag(value.notAfter, BERtypes.UTCTime)
+        ]).toBytes();
+    }
 }
 
 export class CertExtensions {
+    public decode(value: ArrayBuffer): CertExtensions {
+        throw Error('Unsuported \n' + JSON.stringify(value));
+    }
+
+    public encode(value: CertExtensions): ArrayBuffer {
+        throw Error('Unsuported \n' + JSON.stringify(value));
+    }
 }
 
 export class TBSCertificate {
@@ -103,7 +135,16 @@ export class TBSCertificate {
         throw Error('Unsuported \n' + JSON.stringify(value));
     }
 
-    public encode(value: TBSCertificate): ArrayBuffer {
-        throw Error('Unsuported \n' + JSON.stringify(value));
+    public encode(tBSCertificate: TBSCertificate): ArrayBuffer {
+        return DerFunctions.createSequence([
+            DerFunctions.createVersion(tBSCertificate.version),
+            DerFunctions.createInteger(tBSCertificate.serialNumber),
+            DerFunctions.fromBytes(tBSCertificate.signature.encode(tBSCertificate.signature)),
+            DerFunctions.fromBytes(tBSCertificate.issuer.encode(tBSCertificate.issuer)),
+            DerFunctions.fromBytes(tBSCertificate.validity.encode(tBSCertificate.validity)),
+            DerFunctions.fromBytes(tBSCertificate.subject.encode(tBSCertificate.subject)),
+            DerFunctions.fromBytes(tBSCertificate.subjectPublicKeyInfo.encode(tBSCertificate.subjectPublicKeyInfo)),
+            DerFunctions.fromBytes(tBSCertificate.extensions.encode(tBSCertificate.extensions))
+        ]).toBytes();
     }
 }

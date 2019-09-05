@@ -6,6 +6,8 @@ import {GostSecurity} from '../../gost-security/gost-security';
 
 // tslint:disable-next-line:no-empty-interface
 export interface PrivateKeyAlgorithm {
+    decode(value: ArrayBuffer): PrivateKeyAlgorithm;
+    encode(value: PrivateKeyAlgorithm): ArrayBuffer;
 }
 
 
@@ -21,7 +23,7 @@ export class PrivateKeyAlgorithmRSA implements PrivateKeyAlgorithm {
         this.id = id;
     }
 
-    public decode(value: ArrayBuffer) {
+    public decode(value: ArrayBuffer): PrivateKeyAlgorithm {
         throw Error('PrivateKeyAlgorithmRSA decode Not implemented');
     }
 
@@ -63,11 +65,14 @@ export class PrivateKeyAlgorithmGost implements PrivateKeyAlgorithm {
         this.sBox = sBox;
     }
 
-    public decode(value: ArrayBuffer) {
+    public decode(value: ArrayBuffer): PrivateKeyAlgorithm {
         throw Error('PrivateKeyAlgorithmGost decode Not implemented');
     }
 
-    public encode(value: PrivateKeyAlgorithmGost): ArrayBuffer {
+    public encode(value: PrivateKeyAlgorithm): ArrayBuffer {
+        if (!(value instanceof PrivateKeyAlgorithmGost)) {
+            throw Error('Unsuported \n' + JSON.stringify(value));
+        }
         let toReturn: DERElement = new DERElement();
         if (value.name === 'GOST R 34.10-2001-DH' && value.id === 'id-GostR3410-2001DH') {
             let innerSeq: DERElement = DerFunctions.createSequence([

@@ -93,13 +93,13 @@ export class GostAsn1 {
     GostWrappedPrivateKey: GostWrappedPrivateKey;
     PrivateKeyInfo = new PrivateKeyInfo(undefined, undefined, undefined);
     EncryptedPrivateKeyInfo: EncryptedPrivateKeyInfo;
-    SubjectPublicKeyInfo = new  SubjectPublicKeyInfo();
+    SubjectPublicKeyInfo = new SubjectPublicKeyInfo();
     TBSCertificate = new TBSCertificate();
     Certificate = new Certificate();
     CertificationRequestInfo: CertificationRequestInfo;
     CertificationRequest: CertificationRequest;
     TBSCertList: TBSCertList;
-    CertificateList: CertificateList
+    CertificateList: CertificateList;
     AttributeCertificateInfo: AttributeCertificateInfo;
     AttributeCertificate: AttributeCertificate;
     SignedAttributes: SignedAttributes;

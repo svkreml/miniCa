@@ -1,4 +1,4 @@
-import {DERElement, ObjectIdentifier} from 'asn1-ts';
+import {ASN1TagClass, DERElement, ObjectIdentifier} from 'asn1-ts';
 import {toNumbers} from '@angular/compiler-cli/src/diagnostics/typescript_version';
 import {BERtypes} from './structure/BERTypes';
 
@@ -14,6 +14,19 @@ export class DerFunctions {
         let element = new DERElement();
         element.octetString = new Uint8Array(array);
         element.tagNumber = BERtypes['OCTET STRING'];
+        return element;
+    }
+
+    public static createInteger(value: number): DERElement {
+        let element = new DERElement();
+        element.integer = value;
+        element.tagNumber = BERtypes.INTEGER;
+        return element;
+    }
+    public static createUTF8String(value: string): DERElement {
+        let element = new DERElement();
+        element.utf8String = value;
+        element.tagNumber = BERtypes.UTF8String;
         return element;
     }
 
@@ -86,7 +99,10 @@ export class DerFunctions {
             case 0x19:
                 element.graphicString = input;
                 break;
-            case 0x1A:
+            case 0xA0:
+                element.construction = input;
+                break;
+                case 0x1A:
                 element.visibleString = input;
                 break;
             case 0x1B:
@@ -118,5 +134,27 @@ export class DerFunctions {
         sequenceElement.tagNumber = BERtypes.SET;
         sequenceElement.sequence = elements;
         return sequenceElement;
+    }
+
+    static fromBytes(arrayBuffer: ArrayBuffer) {
+        let sequenceElement: DERElement = new DERElement();
+        sequenceElement.fromBytes(new Uint8Array(arrayBuffer));
+        return sequenceElement;
+    }
+
+    static createVersion(version: number) {
+        let element = new DERElement();
+        element.integer = version;
+        element.tagClass = ASN1TagClass.application;
+        element.tagNumber = BERtypes.INTEGER;
+        return element;
+        // EXPLICIT
+    }
+
+    static printableString(value: string) {
+        let element = new DERElement();
+        element.utf8String = value;
+        element.tagNumber = BERtypes.PrintableString;
+        return element;
     }
 }
