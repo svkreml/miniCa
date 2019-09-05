@@ -1,31 +1,27 @@
-import {
-    AlgorithmIdentifier,
-    AttributeTypeAndValue,
-    Certificate,
-    RDNSequence,
-    RelativeDistinguishedName,
-    SubjectPublicKeyInfo,
-    TBSCertificate,
-    Validity,
-    Version
-} from 'x509-ts';
-import {DERElement, ObjectIdentifier} from 'asn1-ts';
-import {DerFunctions} from '../gost-asn1/DerFunctions';
+import {ObjectIdentifier} from 'asn1-ts';
 import {toNumbers} from '@angular/compiler-cli/src/diagnostics/typescript_version';
-import {BERtypes} from '../gost-asn1/structure/BERTypes';
+import {DerFunctions} from '../gost-asn1/DerFunctions';
+import RDNSequence from '../../x509-ts-master/source/InformationFramework/RDNSequence';
+import Version from '../../x509-ts-master/source/AuthenticationFramework/Version';
+import Certificate from '../../x509-ts-master/source/AuthenticationFramework/Certificate';
 import {Base64} from '../gost-coding/gost-coding';
-import {Meta, Name} from '../gost-asn1/certificate/Certificate';
+import {GostViewerTestData} from '../gost-viewer/GostViewerTestData';
+import Name from '../../x509-ts-master/source/InformationFramework/Name';
+import Validity from '../../x509-ts-master/source/AuthenticationFramework/Validity';
+import SubjectPublicKeyInfo from '../../x509-ts-master/source/AuthenticationFramework/SubjectPublicKeyInfo';
+import TBSCertificate from '../../x509-ts-master/source/AuthenticationFramework/TBSCertificate';
+import AlgorithmIdentifier from '../../x509-ts-master/source/AuthenticationFramework/AlgorithmIdentifier';
 
 
 describe('GostSubtle', () => {
     it('should create an instance', () => {
-        let subject: Map<string, Meta> = new Map<string, Meta>();
-        let set = DerFunctions.createSet([DerFunctions.createSequence([DerFunctions.convertOid('2.4.6.2'), DerFunctions.createUTF8String('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')])]);
-        set.construction = 1;
-        subject.set('1.1.1', new Meta('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', BERtypes.UTF8String));
-        subject.set('1.1.2', new Meta('123123123123123123123', BERtypes.NumericString));
 
-        let name: Name = new Name(subject);
+        let c1: Certificate = Certificate.fromBytes(new Uint8Array(Base64.decode(GostViewerTestData.certRsa)));
+      //  console.log(c);
+
+        console.log(Base64.encode(c1.tbsCertificate.issuer.toElement().toBytes()));
+
+
         let c: Certificate = new Certificate(
             new TBSCertificate(
                 Version.v3,
@@ -34,11 +30,9 @@ describe('GostSubtle', () => {
                     new ObjectIdentifier(toNumbers('1.1.1.1.1.1.1.1')),
                     DerFunctions.createInteger(123)
                 ),
-              new RDNSequence(
-                    [RelativeDistinguishedName.fromElement(set)]
-                ),
+                RDNSequence.fromElement(c1.tbsCertificate.issuer.toElement()) as Name,
                 new Validity(new Date(), new Date()),
-                RDNSequence.fromElement(name.toElement(name)),
+                RDNSequence.fromElement(c1.tbsCertificate.issuer.toElement()) as Name,
                 new SubjectPublicKeyInfo(
                     new AlgorithmIdentifier(
                         new ObjectIdentifier(toNumbers('1.4.4.4.4.4.4.4.4')),
@@ -62,6 +56,17 @@ describe('GostSubtle', () => {
         );
         console.log(s);
 
+
+        expect(true).toBeTruthy();
+    });
+
+
+    it('should create gostRsa', () => {
+
+        let c: Certificate = Certificate.fromBytes(new Uint8Array(Base64.decode(GostViewerTestData.certRsa)));
+        console.log(c);
+
+        console.log(Base64.encode(c.tbsCertificate.issuer.toElement().toBytes()));
 
         expect(true).toBeTruthy();
     });

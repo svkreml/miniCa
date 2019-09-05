@@ -229,7 +229,7 @@ describe('GostViewer', () => {
 });
 
 
-function isSimilar(s1: string, s2: string): boolean {
+export function isSimilar(s1: string, s2: string): boolean {
     return (s1.replace(/[ \n\t\r]/g, '')) ===
         (s2.replace(/[ \n\t\r]/g, '')); // своего рода canonicalization
 

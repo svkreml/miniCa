@@ -2,25 +2,34 @@ export class GostViewerTestData {
 
 
     public static certRsa: string =
-        'MIIDgjCCAmqgAwIBAgIUM4sKClfxGWz2+HCkw8KHZqz48mwwDQYJKoZIhvcNAQEL\n' +
-        'BQAwQDELMAkGA1UEBhMCVVMxDzANBgNVBAgMBmFzZGFzZDEPMA0GA1UEBwwGYXNk\n' +
-        'YXNkMQ8wDQYDVQQKDAZhc2Rhc2QwHhcNMTkwOTAxMjEyODA2WhcNMjkwODI5MjEy\n' +
-        'ODA2WjBAMQswCQYDVQQGEwJVUzEPMA0GA1UECAwGYXNkYXNkMQ8wDQYDVQQHDAZh\n' +
-        'c2Rhc2QxDzANBgNVBAoMBmFzZGFzZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC\n' +
-        'AQoCggEBAL2uaAVSr+rLUBrjW9tylvAHj8Hi+tJjP4ZEqqDF3HlwxOoJmfCIocFv\n' +
-        'KPeNkslA9XJo4uSnXuQEJo6h6ZIbLJW21JlOf4BCNT2xBaDFIvZjVG7/hyT1NDnQ\n' +
-        'JGbUKV9E7aBsgqy6Lg9WC7xw8SVwq0rcSPRh6hnqLclbMk/YZ4CpZMPtJpMnTxGX\n' +
-        'wUMo7YpDy257Hld0APijiPfAUzNMUsRQ4daICE+8Z8EeufE6ni7ZZDWkWNjBE1Z/\n' +
-        '6WHX/TSKc9MVJSoAzOBTw3nhoenwKEpSlWB7N6OqbDHOocni/mBEID+T6y6P/q7/\n' +
-        '6Io6dTm87u3fgwTov5P2GraBOovRX+UCAwEAAaN0MHIwHQYDVR0OBBYEFAfRvkdP\n' +
-        '+jJk1e7Minx7bo9fOnXgMB8GA1UdIwQYMBaAFAfRvkdP+jJk1e7Minx7bo9fOnXg\n' +
-        'MA4GA1UdDwEB/wQEAwIFoDAgBgNVHSUBAf8EFjAUBggrBgEFBQcDAQYIKwYBBQUH\n' +
-        'AwIwDQYJKoZIhvcNAQELBQADggEBAKd7OEeU1VsAlZ7ljIXFAeRWXBrItopK+5F8\n' +
-        'nwgViNBOhAf7PTa42X6t3FWrGJ1Q+71wjK35LAYDVYTrWkGDT7WLfQhz/fZjamBK\n' +
-        'xNvYpKIPTFpyMS4rRV8Sc7oTRsTiSo1zTb1s/lEQeU6FhIhrR3aSpmf6NWIQ+zEq\n' +
-        'ZBG6uLEnZyuXU4li2UjOsIQdoIO1qMxEMTiGUR4WTpSDcPqBDhJbPk7/k9o/Mp1K\n' +
-        '+UiV6CroVp/taNS/GpVS+9A8RUbt7Mt7tqr/OvaaSmQt6d6i3m/6xXXDGJisQrPp\n' +
-        'Q3uFeLBQZBiu1BpHV3kGpnP3Ve8+8AGx+TV7u8OZIZySV0Kdisw=';
+        'MIIFEzCCA/ugAwIBAgIQZdNlok7n4TcQW7rCM1gW2DANBgkqhkiG9w0BAQUFADCB\n' +
+        'tDELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDlZlcmlTaWduLCBJbmMuMR8wHQYDVQQL\n' +
+        'ExZWZXJpU2lnbiBUcnVzdCBOZXR3b3JrMTswOQYDVQQLEzJUZXJtcyBvZiB1c2Ug\n' +
+        'YXQgaHR0cHM6Ly93d3cudmVyaXNpZ24uY29tL3JwYSAoYykxMDEuMCwGA1UEAxMl\n' +
+        'VmVyaVNpZ24gQ2xhc3MgMyBDb2RlIFNpZ25pbmcgMjAxMCBDQTAeFw0xNjEyMTQw\n' +
+        'MDAwMDBaFw0xOTAzMTUyMzU5NTlaMHUxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApD\n' +
+        'YWxpZm9ybmlhMRcwFQYDVQQHDA5SZWR3b29kIFNob3JlczEbMBkGA1UECgwST3Jh\n' +
+        'Y2xlIENvcnBvcmF0aW9uMRswGQYDVQQDDBJPcmFjbGUgQ29ycG9yYXRpb24wggEi\n' +
+        'MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCXmhNFlF1Mwg7uf5OA5x7H4e1n\n' +
+        'lwOk/bxTRPXHR0jM3r7RIa7KamN8kxHsaGRaL6+UWPIAIqw/KjwdGLdIOoEI/dDe\n' +
+        'XETOojRm9835WFvDFsa27pE4UoLWVyKyZgH/Q/0xrM2gGxTkq6/vWULWqtCNYv0K\n' +
+        'zNg2F3xMJtqyfYPGoKndSTv3TK79agsahMfuQKpOFjNelJLyPKAj69tF4xbIw2e7\n' +
+        'dtB3ePbVkKJu8AevttaRFmmjS9OPECWjjAWH0YQvQF0xvisFEj94Lq0ioIxSjmOo\n' +
+        'asi7jQbvriQF0y1sWNqcg/05sE3QjaUr3jdE0DSqylXqNYHuowq30wDmrugBAgMB\n' +
+        'AAGjggFdMIIBWTAJBgNVHRMEAjAAMA4GA1UdDwEB/wQEAwIHgDArBgNVHR8EJDAi\n' +
+        'MCCgHqAchhpodHRwOi8vc2Yuc3ltY2IuY29tL3NmLmNybDBhBgNVHSAEWjBYMFYG\n' +
+        'BmeBDAEEATBMMCMGCCsGAQUFBwIBFhdodHRwczovL2Quc3ltY2IuY29tL2NwczAl\n' +
+        'BggrBgEFBQcCAjAZDBdodHRwczovL2Quc3ltY2IuY29tL3JwYTATBgNVHSUEDDAK\n' +
+        'BggrBgEFBQcDAzBXBggrBgEFBQcBAQRLMEkwHwYIKwYBBQUHMAGGE2h0dHA6Ly9z\n' +
+        'Zi5zeW1jZC5jb20wJgYIKwYBBQUHMAKGGmh0dHA6Ly9zZi5zeW1jYi5jb20vc2Yu\n' +
+        'Y3J0MB8GA1UdIwQYMBaAFM+Zqep7JvRLyY6P1/AFJu/j0qedMB0GA1UdDgQWBBTs\n' +
+        'oDv+sxRzSvG4ZABXSsp6O3mvPTANBgkqhkiG9w0BAQUFAAOCAQEA2OkA7+TdN+2b\n' +
+        'I7pz7bk7KkzqTo8CzKnOUHWQZ0L7WwkhMePwJ7hXTqkf3nrDb2gJOG5/ZxhT5WmE\n' +
+        'jEaC5oHi/XkkShE5B+ihDIH7aJI7uFZmycDbc7g/H4peuuzmG+PrXSWukMDY/0ic\n' +
+        'QRyPRf+pe35lnptwFTPsGV3p0lrw5fAwbwvuy4SK5EkoZFgpyAinpQ52XkGBcX0P\n' +
+        '4rK5IgvYKmWy7q6cImF4wCsnLb1tXd03Rv7w50tVJhbaEb0mbthlJY4HTyJNIbYZ\n' +
+        '8NbBpaFKLqmbZe6fG/52UbzJc8rNkOA9qyQjMkPnz9mudRt8EsJeNb+bEYNcNv2m\n' +
+        'oOPrvHZIUA==';
     public static certRsaAsn1: string = '    0 30  898: SEQUENCE {\n' +
         '    4 30  618:  SEQUENCE {\n' +
         '    8 a0    3:   [0] {\n' +

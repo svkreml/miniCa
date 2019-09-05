@@ -1,0 +1,99 @@
+SEQUENCE (3 elem)
+  SEQUENCE (8 elem)
+    [0] (1 elem)
+      INTEGER 2
+    INTEGER (127 bit) 135349663594179804101044162135103903448
+    SEQUENCE (2 elem)
+      OBJECT IDENTIFIER 1.2.840.113549.1.1.5 sha1WithRSAEncryption (PKCS #1)
+      NULL
+    SEQUENCE (5 elem)
+      SET (1 elem)
+        SEQUENCE (2 elem)
+          OBJECT IDENTIFIER 2.5.4.6 countryName (X.520 DN component)
+          PrintableString US
+      SET (1 elem)
+        SEQUENCE (2 elem)
+          OBJECT IDENTIFIER 2.5.4.10 organizationName (X.520 DN component)
+          PrintableString VeriSign, Inc.
+      SET (1 elem)
+        SEQUENCE (2 elem)
+          OBJECT IDENTIFIER 2.5.4.11 organizationalUnitName (X.520 DN component)
+          PrintableString VeriSign Trust Network
+      SET (1 elem)
+        SEQUENCE (2 elem)
+          OBJECT IDENTIFIER 2.5.4.11 organizationalUnitName (X.520 DN component)
+          PrintableString Terms of use at https://www.verisign.com/rpa (c)10
+      SET (1 elem)
+        SEQUENCE (2 elem)
+          OBJECT IDENTIFIER 2.5.4.3 commonName (X.520 DN component)
+          PrintableString VeriSign Class 3 Code Signing 2010 CA
+    SEQUENCE (2 elem)
+      UTCTime 2016-12-14 00:29:43 UTC
+      UTCTime 2019-03-16 00:29:42 UTC
+    SEQUENCE (5 elem)
+      SET (1 elem)
+        SEQUENCE (2 elem)
+          OBJECT IDENTIFIER 2.5.4.6 countryName (X.520 DN component)
+          PrintableString US
+      SET (1 elem)
+        SEQUENCE (2 elem)
+          OBJECT IDENTIFIER 2.5.4.8 stateOrProvinceName (X.520 DN component)
+          UTF8String California
+      SET (1 elem)
+        SEQUENCE (2 elem)
+          OBJECT IDENTIFIER 2.5.4.7 localityName (X.520 DN component)
+          UTF8String Redwood Shores
+      SET (1 elem)
+        SEQUENCE (2 elem)
+          OBJECT IDENTIFIER 2.5.4.10 organizationName (X.520 DN component)
+          UTF8String Oracle Corporation
+      SET (1 elem)
+        SEQUENCE (2 elem)
+          OBJECT IDENTIFIER 2.5.4.3 commonName (X.520 DN component)
+          UTF8String Oracle Corporation
+    SEQUENCE (2 elem)
+      SEQUENCE (2 elem)
+        OBJECT IDENTIFIER 1.2.840.113549.1.1.1 rsaEncryption (PKCS #1)
+        NULL
+      BIT STRING (1 elem)
+        SEQUENCE (2 elem)
+          INTEGER (2048 bit) 191379614023792842232784638942736948562625152248068240441110224851507…
+          INTEGER 65537
+    [3] (1 elem)
+      SEQUENCE (8 elem)
+        SEQUENCE (3 elem)
+          OBJECT IDENTIFIER
+          BOOLEAN true
+          OCTET STRING (0 elem)
+        SEQUENCE (3 elem)
+          OBJECT IDENTIFIER
+          BOOLEAN true
+          OCTET STRING (0 elem)
+        SEQUENCE (3 elem)
+          OBJECT IDENTIFIER
+          BOOLEAN true
+          OCTET STRING (0 elem)
+        SEQUENCE (3 elem)
+          OBJECT IDENTIFIER
+          BOOLEAN true
+          OCTET STRING (0 elem)
+        SEQUENCE (3 elem)
+          OBJECT IDENTIFIER
+          BOOLEAN true
+          OCTET STRING (0 elem)
+        SEQUENCE (3 elem)
+          OBJECT IDENTIFIER
+          BOOLEAN true
+          OCTET STRING (0 elem)
+        SEQUENCE (3 elem)
+          OBJECT IDENTIFIER
+          BOOLEAN true
+          OCTET STRING (0 elem)
+        SEQUENCE (3 elem)
+          OBJECT IDENTIFIER
+          BOOLEAN true
+          OCTET STRING (0 elem)
+  SEQUENCE (2 elem)
+    OBJECT IDENTIFIER 1.2.840.113549.1.1.5 sha1WithRSAEncryption (PKCS #1)
+    NULL
+  BIT STRING (2048 bit) 110110001110100100000000111011111110010011011101001101111110110110011…
