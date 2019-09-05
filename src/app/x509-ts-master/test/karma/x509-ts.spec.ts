@@ -1,5 +1,5 @@
 import {ASN1Construction, ASN1TagClass, ASN1UniversalType, DERElement, ObjectIdentifier} from 'asn1-ts';
-import Certificate from '../../source//AuthenticationFramework/Certificate';
+import Certificate from '../../source/AuthenticationFramework/Certificate';
 import {DerFunctions} from '../../../gost-crypto/gost-asn1/DerFunctions';
 import {Base64} from '../../../gost-crypto/gost-coding/gost-coding';
 import {GostViewerTestData} from '../../../gost-crypto/gost-viewer/GostViewerTestData';
@@ -14,6 +14,12 @@ describe('TS-X509', () => {
         expect(isSimilar(s, GostViewerTestData.certRsa)).toBeTruthy();
     });
 
+    it('should recreate gost cert', () => {
+        let c: Certificate = Certificate.fromBytes(new Uint8Array(Base64.decode(GostViewerTestData.certGost)));
+        let s: string = Base64.encode(c.toBytes());
+        console.log(s);
+        expect(isSimilar(s, GostViewerTestData.certGost)).toBeTruthy();
+    });
 
     it('should create gostRsa', () => {
 

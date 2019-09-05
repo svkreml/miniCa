@@ -38,12 +38,12 @@ class AlgorithmIdentifier {
 
     constructor(
         readonly algorithm: ObjectIdentifier,
-        readonly parameters: DERElement
+        readonly parameters?: DERElement
     ) {}
 
     public static fromElement(value: DERElement): AlgorithmIdentifier {
         const algorithmIdentifierElements: DERElement[] = value.sequence;
-        if (algorithmIdentifierElements.length !== 2)
+        if (algorithmIdentifierElements.length > 2)
             throw new errors.X509Error('Invalid number of elements in AlgorithmIdentifier');
         switch (algorithmIdentifierElements[0].validateTag(
             [ ASN1TagClass.universal ],
@@ -55,6 +55,10 @@ class AlgorithmIdentifier {
             case -2: throw new errors.X509Error('Invalid construction on AlgorithmIdentifier.algorithm');
             case -3: throw new errors.X509Error('Invalid tag number on AlgorithmIdentifier.algorithm');
             default: throw new errors.X509Error('Undefined error when validating AlgorithmIdentifier.algorithm tag');
+        }
+        if (algorithmIdentifierElements.length === 1){
+            return new AlgorithmIdentifier(
+                algorithmIdentifierElements[0].objectIdentifier);
         }
         return new AlgorithmIdentifier(
             algorithmIdentifierElements[0].objectIdentifier,
