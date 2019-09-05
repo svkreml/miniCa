@@ -1,14 +1,5 @@
-import {ObjectIdentifier} from 'asn1-ts';
-import {toNumbers} from '@angular/compiler-cli/src/diagnostics/typescript_version';
-
-import RDNSequence from '../../source//InformationFramework/RDNSequence';
-import Version from '../../source//AuthenticationFramework/Version';
+import {ASN1Construction, ASN1TagClass, ASN1UniversalType, DERElement, ObjectIdentifier} from 'asn1-ts';
 import Certificate from '../../source//AuthenticationFramework/Certificate';
-import Name from '../../source//InformationFramework/Name';
-import Validity from '../../source//AuthenticationFramework/Validity';
-import SubjectPublicKeyInfo from '../../source//AuthenticationFramework/SubjectPublicKeyInfo';
-import TBSCertificate from '../../source//AuthenticationFramework/TBSCertificate';
-import AlgorithmIdentifier from '../../source/AuthenticationFramework/AlgorithmIdentifier';
 import {DerFunctions} from '../../../gost-crypto/gost-asn1/DerFunctions';
 import {Base64} from '../../../gost-crypto/gost-coding/gost-coding';
 import {GostViewerTestData} from '../../../gost-crypto/gost-viewer/GostViewerTestData';
@@ -33,4 +24,22 @@ describe('TS-X509', () => {
 
         expect(true).toBeTruthy();
     });
+
+    it('should create keyUsageOid', () => {
+
+
+        let keyUsageOid: DERElement = DerFunctions.convertOid('2.5.29.15');
+        console.log(Base64.encode(keyUsageOid.toBytes()));
+
+        let extnID: ObjectIdentifier = new ObjectIdentifier([2, 5, 29, 15]);
+        const extnIDElement: DERElement = new DERElement();
+        extnIDElement.tagClass = ASN1TagClass.universal;
+        extnIDElement.construction = ASN1Construction.primitive;
+        extnIDElement.tagNumber = ASN1UniversalType.objectIdentifier;
+        extnIDElement.objectIdentifier = extnID;
+        console.log(Base64.encode(extnIDElement.toBytes()));
+
+        expect(true).toBeTruthy();
+    });
+
 });

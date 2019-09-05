@@ -1,6 +1,7 @@
 import { DERElement, ObjectIdentifier, ASN1TagClass, ASN1Construction, ASN1UniversalType } from 'asn1-ts';
 // import { Byteable,Elementable } from "../interfaces";
 import * as errors from '../errors';
+import {Base64} from '../../../gost-crypto/gost-coding/gost-coding';
 
 // Extension ::= SEQUENCE {
 //   extnId     EXTENSION.&id({ExtensionSet}),
@@ -56,7 +57,7 @@ class Extension { // implements Byteable,Elementable {
             default: throw new errors.X509Error('Undefined error when validating Extension.identifier tag');
         }
 
-        let critical = false;
+        let critical: boolean; // поля может и не быть, если его не было изначально, то и создавать его не надо не надо
         if (extensionElements.length === 3) {
             switch (extensionElements[1].validateTag(
                 [ ASN1TagClass.universal ],
@@ -93,26 +94,39 @@ class Extension { // implements Byteable,Elementable {
     public toElement(): DERElement {
         if (this.extnID === undefined)
             throw new errors.X509Error('extnID is undefined');
+        const ret: DERElement = new DERElement();
+        ret.tagClass = ASN1TagClass.universal;
+        ret.construction = ASN1Construction.constructed;
+        ret.tagNumber = ASN1UniversalType.sequence;
+
         const extnIDElement: DERElement = new DERElement();
         extnIDElement.tagClass = ASN1TagClass.universal;
         extnIDElement.construction = ASN1Construction.primitive;
         extnIDElement.tagNumber = ASN1UniversalType.objectIdentifier;
-
-        const criticalElement: DERElement = new DERElement();
-        criticalElement.tagClass = ASN1TagClass.universal;
-        criticalElement.construction = ASN1Construction.primitive;
-        criticalElement.tagNumber = ASN1UniversalType.boolean;
+        extnIDElement.objectIdentifier = this.extnID;
+        let criticalElement: DERElement;
+        if (this.critical !== undefined && this.critical !== null) {
+            criticalElement = new DERElement();
+            criticalElement.tagClass = ASN1TagClass.universal;
+            criticalElement.construction = ASN1Construction.primitive;
+            criticalElement.tagNumber = ASN1UniversalType.boolean;
+            criticalElement.boolean = this.critical;
+        }
 
         const extnValueElement: DERElement = new DERElement();
         extnValueElement.tagClass = ASN1TagClass.universal;
         extnValueElement.construction = ASN1Construction.primitive;
         extnValueElement.tagNumber = ASN1UniversalType.octetString;
+        let ext: DERElement = new DERElement();
+        ext.fromBytes(this.extnValue);
+        extnValueElement.octetString = ext.toBytes();
 
-        const ret: DERElement = new DERElement();
-        ret.tagClass = ASN1TagClass.universal;
-        ret.construction = ASN1Construction.constructed;
-        ret.tagNumber = ASN1UniversalType.sequence;
-        ret.sequence = [ extnIDElement, criticalElement, extnValueElement ];
+
+        if (this.critical !== undefined && this.critical !== null) {
+            ret.sequence = [extnIDElement, criticalElement, extnValueElement];
+        } else {
+            ret.sequence = [extnIDElement, extnValueElement];
+        }
         return ret;
     }
 
