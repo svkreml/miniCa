@@ -27,7 +27,7 @@ describe('TS-X509', () => {
         expect(isSimilar(s, GostViewerTestData.certGost256)).toBeTruthy();
     });
 
-    it('should create gostRsa', () => {
+    it('should create Rsa', () => {
 
         let c: Certificate = Certificate.fromBytes(new Uint8Array(Base64.decode(GostViewerTestData.certRsa)));
         console.log(c);
