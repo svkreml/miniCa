@@ -61,7 +61,7 @@ describe('GostSubtle', () => {
     });
 
 
-    it('should create gostRsa', () => {
+    it('should create Rsa', () => {
 
         let c: Certificate = Certificate.fromBytes(new Uint8Array(Base64.decode(GostViewerTestData.certRsa)));
         console.log(c);
