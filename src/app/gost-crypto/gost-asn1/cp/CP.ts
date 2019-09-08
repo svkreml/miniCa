@@ -2,13 +2,41 @@ import {BERElement, DERElement} from 'asn1-ts';
 import {BERtypes} from '../structure/BERTypes';
 import {DerFunctions} from '../DerFunctions';
 
+
+export class GostKeyContainerContent {
+    containerAlgoritmIdentifier: any;             // OPTIONAL(CTX(0, IMPLICIT(AlgorithmIdentifier))),
+    containerName: any;                           // OPTIONAL(IA5String),
+    attributes: any;                              // GostKeyContainerContentAttributes,
+    primaryPrivateKeyParameters: any;             // GostPrivateKeyParameters,
+    hmacPassword: any;                            // OPTIONAL(CTX(2, IMPLICIT(Gost2814789MAC))),
+    secondaryEncryptedPrivateKey: any;            // OPTIONAL(CTX(3, IMPLICIT(Gost2814789EncryptedKey))),
+    secondaryPrivateKeyParameters: any;           // OPTIONAL(CTX(4, IMPLICIT(GostPrivateKeyParameters))),
+    primaryCertificate: any;                      // OPTIONAL(CTX(5, IMPLICIT(OCTET_STRING(ENCAPSULATES(Certificate))))),
+    secondaryCertificate: any;                    // OPTIONAL(CTX(6, IMPLICIT(OCTET_STRING(ENCAPSULATES(Certificate))))),
+    encryptionContainerName: any;                 // OPTIONAL(CTX(7, IMPLICIT(IA5String))),
+    primaryCertificateLink: any;                  // OPTIONAL(CTX(8, IMPLICIT(CertificateLink))),
+    secondaryCertificateLink: any;                // OPTIONAL(CTX(9, IMPLICIT(CertificateLink))),
+    primaryFP: any;                               // OPTIONAL(CTX(10, IMPLICIT(OCTET_STRING))),
+    secondaryFP: any;                             // OPTIONAL(CTX(11, IMPLICIT(OCTET_STRING))),
+    passwordPolicy: any;                          // OPTIONAL(PasswordPolicy),
+    containerSecurityLevel: any;                  // OPTIONAL(INTEGER),
+    extensions: any;                              // OPTIONAL(CTX(12, IMPLICIT(Extensions({
+    secondaryEncryptionContainerName: any;        // OPTIONAL(CTX(13, IMPLICIT(IA5String)))
+}
+
+class Gost2814789MAC {
+}
+
+// header
 export class GostKeyContainer {
-    containerAlgoritmIdentifier;
+    keyContainerContent: GostKeyContainerContent;
+    hmacKeyContainerContent: Gost2814789MAC;
+/*    containerAlgoritmIdentifier;
     attributes;
     primaryCertificate;
     primaryFP;
     extensions;
-    hmacKeyContainerContent;
+    hmacKeyContainerContent;*/
 }
 
 export class GostKeyContainerName {
@@ -110,3 +138,5 @@ export class GostPrivateMasks {
             DerFunctions.createOctetString(value.hmacRandom)]).toBytes();
     }
 }
+
+
