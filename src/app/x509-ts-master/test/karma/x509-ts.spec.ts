@@ -27,14 +27,23 @@ describe('TS-X509', () => {
         expect(isSimilar(s, GostViewerTestData.certGost256)).toBeTruthy();
     });
 
-    it('should create Rsa', () => {
+    it('should recreate issuer', () => {
 
         let c: Certificate = Certificate.fromBytes(new Uint8Array(Base64.decode(GostViewerTestData.certRsa)));
         console.log(c);
 
         console.log(Base64.encode(c.tbsCertificate.issuer.toElement().toBytes()));
 
-        expect(true).toBeTruthy();
+        expect(Base64.encode(c.tbsCertificate.issuer.toElement().toBytes()).length > 40).toBeTruthy();
+    });
+
+    it('should recreate certGoogleECDSAP256', () => {
+        let c: Certificate = Certificate.fromBytes(new Uint8Array(Base64.decode(GostViewerTestData.certRsa)));
+        let s: string = Base64.encode(c.toBytes());
+       // console.log('-------------------JSON --------------------------------------');
+       // console.log(JSON.stringify(c, null, 2));
+        console.log(s);
+        expect(isSimilar(s, GostViewerTestData.certRsa)).toBeTruthy();
     });
 
     it('should create keyUsageOid', () => {

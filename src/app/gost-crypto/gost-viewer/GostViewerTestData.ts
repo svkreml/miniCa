@@ -30,6 +30,33 @@ export class GostViewerTestData {
         'KwYBBAGCNxUCBBYEFMjaZsu2l9I+yWcdwltkOqvcu89pMAoGCCqFAwcBAQMCA0EA\n' +
         'PpXN2B+VvQmrc4L1BODyZhIygpsrA8xLwLNz+OcN1r2DyCctAcHs72VdrHf93dqd\n' +
         'BOK/6AJ/hzYbz6x6KJwh/g==';
+    public static certGoogleECDSAP256: string =
+        'MIIEvjCCA6agAwIBAgIQLi/6Fx6+6KICAAAAAECl1jANBgkqhkiG9w0BAQsFADBC\n' +
+        'MQswCQYDVQQGEwJVUzEeMBwGA1UEChMVR29vZ2xlIFRydXN0IFNlcnZpY2VzMRMw\n' +
+        'EQYDVQQDEwpHVFMgQ0EgMU8xMB4XDTE5MDgxMzE2MjAyNVoXDTE5MTExMTE2MjAy\n' +
+        'NVowaDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcT\n' +
+        'DU1vdW50YWluIFZpZXcxEzARBgNVBAoTCkdvb2dsZSBMTEMxFzAVBgNVBAMTDnd3\n' +
+        'dy5nb29nbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAErDSfErsJHyjZ\n' +
+        'wkccquFwr0sCUwPX7TrMBRY5P4u1mXVm7QRabPXQebHrdom7ZM+hwHu7eHXjrKNO\n' +
+        'HQ/zwmp1uqOCAlMwggJPMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggrBgEF\n' +
+        'BQcDATAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBTkwLyGwlGyeq7XqFjXFJIU5GVe\n' +
+        'STAfBgNVHSMEGDAWgBSY0fhuEOvPm+xgnxiQG6DrfQn9KzBkBggrBgEFBQcBAQRY\n' +
+        'MFYwJwYIKwYBBQUHMAGGG2h0dHA6Ly9vY3NwLnBraS5nb29nL2d0czFvMTArBggr\n' +
+        'BgEFBQcwAoYfaHR0cDovL3BraS5nb29nL2dzcjIvR1RTMU8xLmNydDAZBgNVHREE\n' +
+        'EjAQgg53d3cuZ29vZ2xlLmNvbTAhBgNVHSAEGjAYMAgGBmeBDAECAjAMBgorBgEE\n' +
+        'AdZ5AgUDMC8GA1UdHwQoMCYwJKAioCCGHmh0dHA6Ly9jcmwucGtpLmdvb2cvR1RT\n' +
+        'MU8xLmNybDCCAQMGCisGAQQB1nkCBAIEgfQEgfEA7wB2AGPy283oO8wszwtyhCdX\n' +
+        'azOkjWF3j711pjixx2hUS9iNAAABbIv+x7oAAAQDAEcwRQIgdVGP/bUKdYykhLh9\n' +
+        '9zUUYxteaPGfppx9r/yknsVTjI8CIQDTHVM8i98rp8gk9mX5kKEON/TDtc9i+XfO\n' +
+        '9qckKSRvwQB1AHR+2oMxrTMQkSGcziVPQnDCv/1eQiAIxjc1eeYQe8xWAAABbIv+\n' +
+        'x8MAAAQDAEYwRAIgG9hbzgW+Yp8spYgkBAWNNZ381bYjN6TfpcxhM0GsOhgCIDMn\n' +
+        'NTVxPC0Umgh9gRtFmM5pvjX71Sd/59iNR4jFtLjOMA0GCSqGSIb3DQEBCwUAA4IB\n' +
+        'AQCTzUJExrNYCuRGRTXXqaHefaRdc1n30HZBUgUFTH3WqOBdbd0L1r1Vc2uYq7xO\n' +
+        'fA95tKjflgXW74fwSZ6UZeQa0X0jBbtJs2aykCeh9PqQtGqlmVfOVUVhxtD0qSUG\n' +
+        'Gy9HoX2V/mPC+rOMZfaCzvSqd5yUz7TxwlMFH8GlAxd0s2Gqyq2OdWFMfpfZpvyD\n' +
+        'AEJG3VFzPWAH5jCPLD8hX/J/xPCsA/sdt6vBlFPvSXqoAgYaUkrkQ7SZv/pkQ0Cn\n' +
+        '3GZL+Ofa0btisJ4XLOP5YWW1f+oERZ3JqwIgXdpzFfCvVIpunGwCbb3mxd7/2DZ6\n' +
+        '4PnmK3SOQ3dsM8QLcoBa3ASe';
     public static certRsa: string =
         'MIIFEzCCA/ugAwIBAgIQZdNlok7n4TcQW7rCM1gW2DANBgkqhkiG9w0BAQUFADCB\n' +
         'tDELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDlZlcmlTaWduLCBJbmMuMR8wHQYDVQQL\n' +
