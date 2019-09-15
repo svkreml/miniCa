@@ -8,10 +8,12 @@ import { AboutComponent } from './about/about.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import {FormsModule} from '@angular/forms';
 import { GostCryptoComponent } from './gost-crypto/gost-crypto.component';
+import { GenerateKeyPairComponent } from './generate-key-pair/generate-key-pair.component';
 
 const appRoutes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'generate-certificate',      component: GenerateCertificateComponent },
+  { path: 'generate-key-pair',      component: GenerateKeyPairComponent },
   { path: '',
     redirectTo: '/about',
     pathMatch: 'full'
@@ -26,7 +28,8 @@ const appRoutes: Routes = [
     GenerateCertificateComponent,
     AboutComponent,
     PageNotFoundComponent,
-    GostCryptoComponent
+    GostCryptoComponent,
+    GenerateKeyPairComponent
   ],
   imports: [
     BrowserModule,

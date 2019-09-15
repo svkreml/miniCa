@@ -1,27 +1,46 @@
 import {BERElement, DERElement} from 'asn1-ts';
 import {BERtypes} from '../structure/BERTypes';
 import {DerFunctions} from '../DerFunctions';
+import {Certificate} from '../certificate/Certificate';
+import Extensions from '../../../x509-ts-master/source/AuthenticationFramework/Extensions';
 
+
+
+
+export class GostKeyContainerContentAttributes {
+
+}
+export class GostPrivateKeyParameters {
+
+}
+
+export class  CertificateLink {
+    path: string;
+    hmac: Gost2814789MAC;
+}
+
+class Gost2814789EncryptedKey {
+}
 
 export class GostKeyContainerContent {
-    containerAlgoritmIdentifier: any;             // OPTIONAL(CTX(0, IMPLICIT(AlgorithmIdentifier))),
-    containerName: any;                           // OPTIONAL(IA5String),
-    attributes: any;                              // GostKeyContainerContentAttributes,
-    primaryPrivateKeyParameters: any;             // GostPrivateKeyParameters,
-    hmacPassword: any;                            // OPTIONAL(CTX(2, IMPLICIT(Gost2814789MAC))),
-    secondaryEncryptedPrivateKey: any;            // OPTIONAL(CTX(3, IMPLICIT(Gost2814789EncryptedKey))),
-    secondaryPrivateKeyParameters: any;           // OPTIONAL(CTX(4, IMPLICIT(GostPrivateKeyParameters))),
-    primaryCertificate: any;                      // OPTIONAL(CTX(5, IMPLICIT(OCTET_STRING(ENCAPSULATES(Certificate))))),
-    secondaryCertificate: any;                    // OPTIONAL(CTX(6, IMPLICIT(OCTET_STRING(ENCAPSULATES(Certificate))))),
-    encryptionContainerName: any;                 // OPTIONAL(CTX(7, IMPLICIT(IA5String))),
-    primaryCertificateLink: any;                  // OPTIONAL(CTX(8, IMPLICIT(CertificateLink))),
-    secondaryCertificateLink: any;                // OPTIONAL(CTX(9, IMPLICIT(CertificateLink))),
-    primaryFP: any;                               // OPTIONAL(CTX(10, IMPLICIT(OCTET_STRING))),
-    secondaryFP: any;                             // OPTIONAL(CTX(11, IMPLICIT(OCTET_STRING))),
-    passwordPolicy: any;                          // OPTIONAL(PasswordPolicy),
-    containerSecurityLevel: any;                  // OPTIONAL(INTEGER),
-    extensions: any;                              // OPTIONAL(CTX(12, IMPLICIT(Extensions({
-    secondaryEncryptionContainerName: any;        // OPTIONAL(CTX(13, IMPLICIT(IA5String)))
+    containerAlgoritmIdentifier: AlgorithmIdentifier;             // OPTIONAL(CTX(0, IMPLICIT(AlgorithmIdentifier))),
+    containerName: string;                           // OPTIONAL(IA5String),
+    attributes: GostKeyContainerContentAttributes;
+    primaryPrivateKeyParameters: GostPrivateKeyParameters;
+    hmacPassword: Gost2814789MAC;                            // OPTIONAL(CTX(2, IMPLICIT(Gost2814789MAC))),
+    secondaryEncryptedPrivateKey: Gost2814789EncryptedKey;            // OPTIONAL(CTX(3, IMPLICIT(Gost2814789EncryptedKey))),
+    secondaryPrivateKeyParameters: GostPrivateKeyParameters;           // OPTIONAL(CTX(4, IMPLICIT(GostPrivateKeyParameters))),
+    primaryCertificate: Certificate;                      // OPTIONAL(CTX(5, IMPLICIT(OCTET_STRING(ENCAPSULATES(Certificate))))),
+    secondaryCertificate: Certificate;                    // OPTIONAL(CTX(6, IMPLICIT(OCTET_STRING(ENCAPSULATES(Certificate))))),
+    encryptionContainerName: string;                 // OPTIONAL(CTX(7, IMPLICIT(IA5String))),
+    primaryCertificateLink: CertificateLink;                  // OPTIONAL(CTX(8, IMPLICIT(CertificateLink))),
+    secondaryCertificateLink: CertificateLink;                // OPTIONAL(CTX(9, IMPLICIT(CertificateLink))),
+    primaryFP: ArrayBuffer;                               // OPTIONAL(CTX(10, IMPLICIT(OCTET_STRING))),
+    secondaryFP: ArrayBuffer;                             // OPTIONAL(CTX(11, IMPLICIT(OCTET_STRING))),
+    passwordPolicy: AlgorithmIdentifier;                          // OPTIONAL(PasswordPolicy),
+    containerSecurityLevel: number;                  // OPTIONAL(INTEGER),
+    extensions: Extensions[];                              // OPTIONAL(CTX(12, IMPLICIT(Extensions({
+    secondaryEncryptionContainerName: string;        // OPTIONAL(CTX(13, IMPLICIT(IA5String)))
 }
 
 class Gost2814789MAC {
@@ -31,12 +50,6 @@ class Gost2814789MAC {
 export class GostKeyContainer {
     keyContainerContent: GostKeyContainerContent;
     hmacKeyContainerContent: Gost2814789MAC;
-/*    containerAlgoritmIdentifier;
-    attributes;
-    primaryCertificate;
-    primaryFP;
-    extensions;
-    hmacKeyContainerContent;*/
 }
 
 export class GostKeyContainerName {

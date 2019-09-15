@@ -11,7 +11,7 @@ export class CryptoProKeyContainer {
     primary2: GostPrivateKeys;
     masks2: GostPrivateMasks;
 
-
+/*
     public verify(keyPassword: string) // <editor-fold defaultstate="collapsed">
     {
 
@@ -45,5 +45,5 @@ export class CryptoProKeyContainer {
         }
         return self;
 
-    }
+    }*/
 }

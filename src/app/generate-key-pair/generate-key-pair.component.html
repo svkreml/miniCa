@@ -1,0 +1,49 @@
+<div class="container-fluid  form-group">
+
+    <div class="row m-1">
+        <div class="col-3">
+            Создание новой ключевой пары
+        </div>
+        <div class="col-9 ">
+            <button (click)="generateKeyPair()">Generate</button>
+        </div>
+    </div>
+    <div class="row m-1">
+        <div class="col-3">
+            <button (click)="sign()">Sign</button>
+        </div>
+        <div class="col-9">
+            <textarea class="form-control" rows="7" [(ngModel)]="input"></textarea>
+        </div>
+    </div>
+    <div class="row m-1">
+        <div class="col-3">
+            Signature
+        </div>
+        <div class="col-9">
+            <textarea class="form-control" rows="7" [(ngModel)]="signature"></textarea>
+        </div>
+    </div>
+    <div class="row m-1">
+        <div class="col-3">
+            <button (click)="verify()">Verify</button>
+        </div>
+        <div class="col-9">
+
+            <textarea class="form-control" rows="7" [(ngModel)]="verifyResult"></textarea>
+
+        </div>
+    </div>
+    <div class="row m-1">
+        <div class="col-3">
+            <button (click)="exportKeyPair()">export KeyPair</button>
+            <button (click)="importKeyPair()">import KeyPair</button>
+        </div>
+        <div class="col-9">
+
+            <textarea class="form-control" rows="7" [(ngModel)]="exportedKeyPair"></textarea>
+
+        </div>
+    </div>
+
+</div>

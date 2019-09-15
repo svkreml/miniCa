@@ -8,6 +8,7 @@ import {Chars} from '../../gost-coding/gost-coding';
 export class GostKeys {
     subtle: GostSubtleCrypto = new GostSubtleCrypto(new GostCrypto(), new GostEngine());
 
+/*
     public computeContainerMAC(algorithm, content) {
         let mac = expand({name: 'GOST 28147-MAC'}, algorithm.encParams);
 
@@ -28,6 +29,7 @@ export class GostKeys {
             return this.subtle.sign(mac, macKey, content.encode());
         });
     }
+*/
 
     public getSeed(length): ArrayBuffer {
         let seed = new Uint8Array(length);
@@ -47,7 +49,7 @@ export class GostKeys {
     }
 
 
-    public computePasswordMAC(algorithm, password, salt) {
+/*    public computePasswordMAC(algorithm, password, salt) {
         let mac = expand({name: 'GOST 28147-MAC'}, algorithm.encParams);
 
         // Derive password
@@ -56,7 +58,7 @@ export class GostKeys {
             return this.subtle.sign(mac, macKey,
                 new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
         });
-    }
+    }*/
 
 
     // Derive password key
