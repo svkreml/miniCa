@@ -30,7 +30,7 @@ export class GenerateKeyPairComponent implements OnInit {
     generateKeyPair() {
         console.log('Generate button clicked!');
 
-        window.crypto.subtle.generateKey(
+        crypto.subtle.generateKey(
             {
                 name: 'RSASSA-PKCS1-v1_5',
                 modulusLength: 4096,
@@ -62,7 +62,7 @@ export class GenerateKeyPairComponent implements OnInit {
     async verify() {
         this.verifyResult = 'calculating...';
 
-        let result: boolean = await window.crypto.subtle.verify(
+        let result: boolean = await crypto.subtle.verify(
             this.keyPair.publicKey.algorithm.name,
             this.keyPair.publicKey,
             Base64.decode(this.signature),
@@ -72,7 +72,7 @@ export class GenerateKeyPairComponent implements OnInit {
     }
 
     sign() {
-        window.crypto.subtle.sign(
+        crypto.subtle.sign(
             this.keyPair.privateKey.algorithm.name,
             this.keyPair.privateKey,
             this.encodeMessage(this.input)
@@ -96,7 +96,7 @@ export class GenerateKeyPairComponent implements OnInit {
         this.exportedKeyPair = '';
 
 
-        const wrapped: ArrayBuffer = await window.crypto.subtle.exportKey(
+        const wrapped: ArrayBuffer = await crypto.subtle.exportKey(
             'spki',
             this.keyPair.publicKey,
         );
@@ -106,7 +106,7 @@ export class GenerateKeyPairComponent implements OnInit {
         this.exportedKeyPair += '\n' + this.pemPublicKeyFooter + '\n';
 
 
-        const wrapped2: ArrayBuffer = await window.crypto.subtle.exportKey(
+        const wrapped2: ArrayBuffer = await crypto.subtle.exportKey(
             'pkcs8',
             this.keyPair.privateKey,
         );
@@ -120,7 +120,7 @@ export class GenerateKeyPairComponent implements OnInit {
         // this.keyPair = new CryptoKeyPair();
 
 
-        this.keyPair.publicKey = await window.crypto.subtle.importKey(
+        this.keyPair.publicKey = await crypto.subtle.importKey(
             'spki',
             Base64.decode(this.exportedKeyPair.substring(this.exportedKeyPair.indexOf(this.pemPublicKeyHeader) + this.pemPublicKeyHeader.length,
                 this.exportedKeyPair.indexOf(this.pemPublicKeyFooter))),
@@ -135,7 +135,7 @@ export class GenerateKeyPairComponent implements OnInit {
         );
 
 
-        this.keyPair.privateKey = await window.crypto.subtle.importKey(
+        this.keyPair.privateKey = await crypto.subtle.importKey(
             'pkcs8',
             Base64.decode(this.exportedKeyPair.substring(this.exportedKeyPair.indexOf(this.pemPrivateKeyHeader) + this.pemPrivateKeyHeader.length,
                 this.exportedKeyPair.indexOf(this.pemPrivateKeyFooter))),
