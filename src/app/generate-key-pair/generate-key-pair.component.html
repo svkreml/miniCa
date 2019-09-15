@@ -5,12 +5,12 @@
             Создание новой ключевой пары
         </div>
         <div class="col-9 ">
-            <button (click)="generateKeyPair()">Generate</button>
+            <button class="btn btn-primary m-1" (click)="generateKeyPair()">Generate</button>
         </div>
     </div>
     <div class="row m-1">
         <div class="col-3">
-            <button (click)="sign()">Sign</button>
+            <button class="btn btn-primary m-1" (click)="sign()">Sign</button>
         </div>
         <div class="col-9">
             <textarea class="form-control" rows="7" [(ngModel)]="input"></textarea>
@@ -26,7 +26,7 @@
     </div>
     <div class="row m-1">
         <div class="col-3">
-            <button (click)="verify()">Verify</button>
+            <button class="btn btn-primary m-1" (click)="verify()">Verify</button>
         </div>
         <div class="col-9">
 
@@ -36,8 +36,8 @@
     </div>
     <div class="row m-1">
         <div class="col-3">
-            <button (click)="exportKeyPair()">export KeyPair</button>
-            <button (click)="importKeyPair()">import KeyPair</button>
+            <button class="btn btn-primary m-1" (click)="exportKeyPair()">export KeyPair</button>
+            <button class="btn btn-primary m-1" (click)="importKeyPair()">import KeyPair</button>
         </div>
         <div class="col-9">
 
