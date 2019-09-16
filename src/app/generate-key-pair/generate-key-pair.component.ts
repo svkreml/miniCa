@@ -48,7 +48,7 @@ export class GenerateKeyPairComponent implements OnInit {
                 // 'wrapKey',
                 // 'unwrapKey'
             ]
-        ).then((keyPair) => {
+        ).then((keyPair: CryptoKeyPair) => {
             this.keyPair = keyPair;
             console.log('generated keyPair:');
             console.log('this.keyPair.publicKey:');
