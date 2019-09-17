@@ -49,7 +49,7 @@ export class GenerateCertificateComponent implements OnInit {
         for (let i = 0; i < inputBytes.byteLength; i++) {
             let b = inputBytes[i].toString(2);
             while (b.length < 8)
-               b = '0' + b;
+                b = '0' + b;
             output.push(
                 b.charAt(0) === '1',
                 b.charAt(1) === '1',
