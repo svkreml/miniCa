@@ -158,8 +158,15 @@ export class GenerateCertificateComponent implements OnInit {
         this.output.certificate = Base64.encode(certificate.toBytes());
 
 
-        let result: boolean = await ValidateCertificateComponent.validateCert(this.output.certificate);
-        if (!result)
+        const privateKey: ArrayBuffer = await CryptoModule.gCrypto.subtle.exportKey(
+            'pkcs8',
+            keyPair.privateKey,
+        );
+        this.output.privateKey = Base64.encode(privateKey);
+
+
+        let result = await ValidateCertificateComponent.validateCert(this.output.certificate);
+        if (!result.isSignValid)
             alert('Созданный сертификат не валиден');
 
     }

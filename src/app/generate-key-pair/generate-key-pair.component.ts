@@ -97,22 +97,22 @@ export class GenerateKeyPairComponent implements OnInit {
         this.exportedKeyPair = '';
 
 
-        const wrapped: ArrayBuffer = await CryptoModule.gCrypto.subtle.exportKey(
+        const publicKey: ArrayBuffer = await CryptoModule.gCrypto.subtle.exportKey(
             'spki',
             this.keyPair.publicKey,
         );
 
         this.exportedKeyPair += this.pemPublicKeyHeader + '\n';
-        this.exportedKeyPair += Base64.encode(wrapped);
+        this.exportedKeyPair += Base64.encode(publicKey);
         this.exportedKeyPair += '\n' + this.pemPublicKeyFooter + '\n';
 
 
-        const wrapped2: ArrayBuffer = await CryptoModule.gCrypto.subtle.exportKey(
+        const privateKey: ArrayBuffer = await CryptoModule.gCrypto.subtle.exportKey(
             'pkcs8',
             this.keyPair.privateKey,
         );
         this.exportedKeyPair += this.pemPrivateKeyHeader + '\n';
-        this.exportedKeyPair += Base64.encode(wrapped2);
+        this.exportedKeyPair += Base64.encode(privateKey);
         this.exportedKeyPair += '\n' + this.pemPrivateKeyFooter;
     }
 

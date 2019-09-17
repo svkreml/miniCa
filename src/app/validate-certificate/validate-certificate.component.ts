@@ -1,10 +1,24 @@
 import {Component, OnInit} from '@angular/core';
-import {Certificate, SubjectPublicKeyInfo} from '../x509-ts-master/source/AuthenticationFramework';
+import {Certificate, Validity} from '../x509-ts-master/source/AuthenticationFramework';
 import {Base64} from '../gost-crypto/gost-coding/gost-coding';
 import TBSCertificate from '../x509-ts-master/source/AuthenticationFramework/TBSCertificate';
 import {CryptoModule} from '../crypto-module';
 import AlgorithmIdentifier from '../x509-ts-master/source/AuthenticationFramework/AlgorithmIdentifier';
 
+
+class V3ValidationResult {
+}
+
+class ValidationResult {
+    isSignValid: boolean;
+    isNotInCrl: boolean;
+    isDateValid: boolean;
+    v3Validation: V3ValidationResult;
+
+    get isValid(): boolean {
+        return this.isSignValid && this.isDateValid;
+    }
+}
 
 @Component({
     selector: 'app-validate-certificate',
@@ -54,12 +68,12 @@ export class ValidateCertificateComponent implements OnInit {
                     name: 'RSASSA-PKCS1-v1_5',
                     hash: 'SHA-1',
                 } as RsaHashedImportParams;
-                case '1.2.840.113549.1.1.12':
+            case '1.2.840.113549.1.1.12':
                 return {
                     name: 'RSASSA-PKCS1-v1_5',
                     hash: 'SHA-384',
                 } as RsaHashedImportParams;
-                case '1.2.840.113549.1.1.13':
+            case '1.2.840.113549.1.1.13':
                 return {
                     name: 'RSASSA-PKCS1-v1_5',
                     hash: 'SHA-512',
@@ -74,7 +88,7 @@ export class ValidateCertificateComponent implements OnInit {
                     name: 'ECDSA',
                     namedCurve: 'P-384',
                 } as EcKeyImportParams;
-                case '1.2.840.10045.4.3.4':
+            case '1.2.840.10045.4.3.4':
                 return {
                     name: 'ECDSA',
                     namedCurve: 'P-521',
@@ -90,7 +104,33 @@ export class ValidateCertificateComponent implements OnInit {
         }
     }
 
-    static async validateCert(inputCert: string): Promise<boolean> {
+    static validateCertDate(validity: Validity): boolean {
+        const now: Date = new Date();
+        return validity.notBefore < now && validity.notAfter > now;
+    }
+
+    static async validateCertSign(certificate: Certificate): Promise<boolean> { // TODO Если это не самоподписанный сертификат, то самое время найти всю цепочку, иначе ничего не выйдет
+        let isSignValid;
+        let signatureValue: boolean[] = certificate.signatureValue;
+        let publicKey = await CryptoModule.gCrypto.subtle.importKey(
+            'spki',
+            certificate.tbsCertificate.subjectPublicKeyInfo.toBytes(),
+            ValidateCertificateComponent.algorithmToCryptoSubtleMapper(certificate.signatureAlgorithm),
+            true,
+            ['verify']
+        );
+
+        isSignValid = await CryptoModule.gCrypto.subtle.verify(
+            publicKey.algorithm.name,
+            publicKey,
+            ValidateCertificateComponent.fromBitString(signatureValue),
+            certificate.tbsCertificate.toBytes(),
+        );
+        return isSignValid;
+    }
+
+    static async validateCert(inputCert: string): Promise<ValidationResult> {
+        let result: ValidationResult = new ValidationResult();
         let certificate: Certificate = Certificate.fromBytes(
             new Uint8Array(
                 Base64.decode(
@@ -100,31 +140,16 @@ export class ValidateCertificateComponent implements OnInit {
         );
 
         let tbsCertificate: TBSCertificate = certificate.tbsCertificate;
-        let signatureValue: boolean[] = certificate.signatureValue;
-        let subjectPublicKeyInfo: SubjectPublicKeyInfo = certificate.tbsCertificate.subjectPublicKeyInfo;
 
-
-        let publicKey = await CryptoModule.gCrypto.subtle.importKey(
-            'spki',
-            subjectPublicKeyInfo.toBytes(),
-            ValidateCertificateComponent.algorithmToCryptoSubtleMapper(certificate.signatureAlgorithm),
-            true,
-            ['verify']
-        );
-
-        return CryptoModule.gCrypto.subtle.verify(
-            publicKey.algorithm.name,
-            publicKey,
-            ValidateCertificateComponent.fromBitString(signatureValue),
-            tbsCertificate.toBytes(),
-        );
+        result.isDateValid = ValidateCertificateComponent.validateCertDate(tbsCertificate.validity);
+        result.isSignValid = await ValidateCertificateComponent.validateCertSign(certificate);
+        return result;
     }
 
     async onSubmit() {
         let inputCert = this.inputCert;
-
-        let result: boolean = await ValidateCertificateComponent.validateCert(inputCert);
-        this.output = result ? 'valid' : 'invalid';
+        let result: ValidationResult = await ValidateCertificateComponent.validateCert(inputCert);
+        this.output = JSON.stringify(result);
     }
 
     ngOnInit(): void {
