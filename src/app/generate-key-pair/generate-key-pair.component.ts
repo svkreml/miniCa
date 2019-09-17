@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Base64} from '../gost-crypto/gost-coding/gost-coding';
+import {CryptoModule} from '../crypto-module';
 
 @Component({
     selector: 'app-generate-key-pair',
@@ -30,7 +31,7 @@ export class GenerateKeyPairComponent implements OnInit {
     generateKeyPair() {
         console.log('Generate button clicked!');
 
-        crypto.subtle.generateKey(
+        CryptoModule.gCrypto.subtle.generateKey(
             {
                 name: 'RSASSA-PKCS1-v1_5',
                 modulusLength: 4096,
@@ -62,7 +63,7 @@ export class GenerateKeyPairComponent implements OnInit {
     async verify() {
         this.verifyResult = 'calculating...';
 
-        let result: boolean = await crypto.subtle.verify(
+        let result: boolean = await CryptoModule.gCrypto.subtle.verify(
             this.keyPair.publicKey.algorithm.name,
             this.keyPair.publicKey,
             Base64.decode(this.signature),
@@ -72,7 +73,7 @@ export class GenerateKeyPairComponent implements OnInit {
     }
 
     sign() {
-        crypto.subtle.sign(
+        CryptoModule.gCrypto.subtle.sign(
             this.keyPair.privateKey.algorithm.name,
             this.keyPair.privateKey,
             this.encodeMessage(this.input)
@@ -96,7 +97,7 @@ export class GenerateKeyPairComponent implements OnInit {
         this.exportedKeyPair = '';
 
 
-        const wrapped: ArrayBuffer = await crypto.subtle.exportKey(
+        const wrapped: ArrayBuffer = await CryptoModule.gCrypto.subtle.exportKey(
             'spki',
             this.keyPair.publicKey,
         );
@@ -106,7 +107,7 @@ export class GenerateKeyPairComponent implements OnInit {
         this.exportedKeyPair += '\n' + this.pemPublicKeyFooter + '\n';
 
 
-        const wrapped2: ArrayBuffer = await crypto.subtle.exportKey(
+        const wrapped2: ArrayBuffer = await CryptoModule.gCrypto.subtle.exportKey(
             'pkcs8',
             this.keyPair.privateKey,
         );
@@ -120,7 +121,7 @@ export class GenerateKeyPairComponent implements OnInit {
         // this.keyPair = new CryptoKeyPair();
 
 
-        this.keyPair.publicKey = await crypto.subtle.importKey(
+        this.keyPair.publicKey = await CryptoModule.gCrypto.subtle.importKey(
             'spki',
             Base64.decode(this.exportedKeyPair.substring(this.exportedKeyPair.indexOf(this.pemPublicKeyHeader) + this.pemPublicKeyHeader.length,
                 this.exportedKeyPair.indexOf(this.pemPublicKeyFooter))),
@@ -135,7 +136,7 @@ export class GenerateKeyPairComponent implements OnInit {
         );
 
 
-        this.keyPair.privateKey = await crypto.subtle.importKey(
+        this.keyPair.privateKey = await CryptoModule.gCrypto.subtle.importKey(
             'pkcs8',
             Base64.decode(this.exportedKeyPair.substring(this.exportedKeyPair.indexOf(this.pemPrivateKeyHeader) + this.pemPrivateKeyHeader.length,
                 this.exportedKeyPair.indexOf(this.pemPrivateKeyFooter))),

@@ -1,11 +1,10 @@
 import {ASN1TagClass, DERElement, ObjectIdentifier} from 'asn1-ts';
-import {toNumbers} from '@angular/compiler-cli/src/diagnostics/typescript_version';
 import {BERtypes} from './structure/BERTypes';
 
 export class DerFunctions {
     public static convertOid(oid: string): DERElement {
         let element = new DERElement();
-        element.objectIdentifier = new ObjectIdentifier(toNumbers(oid)); // toNumbers('2.0.1'); // returns [2, 0, 1]
+        element.objectIdentifier = new ObjectIdentifier(oid.split('.').map(Number)); // toNumbers('2.0.1'); // returns [2, 0, 1]
         element.tagNumber = BERtypes['OBJECT IDENTIFIER'];
         return element;
     }

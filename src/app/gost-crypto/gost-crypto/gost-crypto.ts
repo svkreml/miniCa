@@ -57,7 +57,7 @@ export class GostCrypto {
         modes = modes[0].split('-').concat(modes.slice(1));
         // Normalize the name with default modes
         let na: AlgorithmDto = new AlgorithmDto(); // TODO заменить на класс дто
-        name = modes[0].replace(/[\.\s]/g, ''), modes = modes.slice(1);
+        name = modes[0].replace(/[.\s]/g, ''), modes = modes.slice(1);
         if (name.indexOf('28147') >= 0) {
             na = {
                 name: 'GOST 28147',

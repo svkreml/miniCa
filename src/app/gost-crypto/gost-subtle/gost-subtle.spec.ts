@@ -1,5 +1,4 @@
 import {ObjectIdentifier} from 'asn1-ts';
-import {toNumbers} from '@angular/compiler-cli/src/diagnostics/typescript_version';
 import {DerFunctions} from '../gost-asn1/DerFunctions';
 import RDNSequence from '../../x509-ts-master/source/InformationFramework/RDNSequence';
 import Version from '../../x509-ts-master/source/AuthenticationFramework/Version';
@@ -27,7 +26,7 @@ describe('GostSubtle', () => {
                 Version.v3,
                 new Uint8Array([12, 12, 12, 12, 12, 12, 12]),
                 new AlgorithmIdentifier(
-                    new ObjectIdentifier(toNumbers('1.1.1.1.1.1.1.1')),
+                    new ObjectIdentifier('1.1.1.1.1.1.1.1'.split('.').map(Number)),
                     DerFunctions.createInteger(123)
                 ),
                 RDNSequence.fromElement(c1.tbsCertificate.issuer.toElement()) as Name,
@@ -35,7 +34,7 @@ describe('GostSubtle', () => {
                 RDNSequence.fromElement(c1.tbsCertificate.issuer.toElement()) as Name,
                 new SubjectPublicKeyInfo(
                     new AlgorithmIdentifier(
-                        new ObjectIdentifier(toNumbers('1.4.4.4.4.4.4.4.4')),
+                        new ObjectIdentifier('1.4.4.4.4.4.4.4.4'.split('.').map(Number)),
                         DerFunctions.createInteger(456)
                     ),
                     []
@@ -45,7 +44,7 @@ describe('GostSubtle', () => {
                 []
             ),
             new AlgorithmIdentifier(
-                new ObjectIdentifier(toNumbers('1.5.5.5.5.5.5.5.5')),
+                new ObjectIdentifier('1.5.5.5.5.5.5.5.5'.split('.').map(Number)),
                 undefined
             ),
             [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]

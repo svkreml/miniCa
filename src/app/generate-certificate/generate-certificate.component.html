@@ -1,47 +1,28 @@
-<div>
-    <div class="col-6">
+<div class="container-fluid form-group">
 
 
-        <h1>Генерация сертификата</h1>
-        <form (ngSubmit)="onSubmit()" #certForm="ngForm">
-<!--            <div class="form-group">
-                <label for="cn">Common Name</label>
-                <input type="text" class="form-control" id="cn"
-                       required
-                       [(ngModel)]="model.cn" name="cn"
-                       #name="ngModel">
-                <div [hidden]="name.valid || name.pristine"
-                     class="alert alert-danger">
-                    Common Name - обязательное поле
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="alg">Алгоритм</label>
-                <select class="form-control" id="alg"
-                        required
-                        [(ngModel)]="model.alg" name="alg"
-                        #power="ngModel">
-                    <option *ngFor="let alg of algs" [value]="alg">{{alg.title}}</option>
-                </select>
-                <div [hidden]="power.valid || power.pristine" class="alert alert-danger">
-                    Алгоритм - обязательное поле
-                </div>
-            </div>-->
-
-            <button type="submit" class="btn btn-success" [disabled]="!certForm.form.valid">Генерация</button>
-            <button type="button" class="btn btn-default" (click)="certForm.reset()">Сброс</button>
-        </form>
+    <div class="row">
+        <div class="col-6">
+            <h1>Генерация сертификата</h1>
+            <form #certForm="ngForm" (ngSubmit)="onSubmit()">
+                <button [disabled]="!certForm.form.valid" class="btn btn-success" type="submit">Генерация</button>
+                <button (click)="certForm.reset()" class="btn btn-default" type="button">Сброс</button>
+            </form>
+        </div>
     </div>
+    <div class="row mb-4"></div>
 
-    <div class="mb-4"></div>
 
-    <div *ngIf="output">
-        <div>---------------</div>
-        <div>{{output.certificate}}</div>
-        <div>---------------</div>
-        <div>{{output.privateKey}}</div>
-        <div>---------------</div>
+    <div *ngIf="output" class="row">
+        <div class="col-12">
+            <textarea class="form-control" [rows]="output.certificate.split('\n').length">{{output.certificate}}</textarea>
+        </div>
     </div>
-
+    <div class="row">
+        <div class="col-12">
+            <textarea class="form-control" [rows]="output.privateKey.split('\n').length">{{output.privateKey}}</textarea>
+        </div>
+    </div>
 </div>
+
+

@@ -1,7 +1,4 @@
 import {BER, Chars, PEM} from '../gost-coding/gost-coding';
-import {DERElement, ObjectIdentifier} from 'asn1-ts';
-import {toNumbers} from '@angular/compiler-cli/src/diagnostics/typescript_version';
-import {BERtypes} from './structure/BERTypes';
 
 export class Asn1ServiceFunctions {
     // Swap bytes in buffer
