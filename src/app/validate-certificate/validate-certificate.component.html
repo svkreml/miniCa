@@ -6,16 +6,11 @@
         <form (ngSubmit)="onSubmit()" #certForm="ngForm">
                         <div class="form-group">
                             <label for="inputCert">Сертификат для проверки</label>
-                            <textarea rows="10" type="text" class="form-control" id="inputCert"
+                            <textarea [rows]="1 + ((inputCert?.split('\n')?.length < 11) ? inputCert?.split('\n')?.length : 10)" type="text" class="form-control" id="inputCert"
                                    required
                                    [(ngModel)]="inputCert" name="inputCert"
                                    #name="ngModel">
                             </textarea>
-                            <div [hidden]="name.valid || name.pristine"
-                                 class="alert alert-danger">
-
-                                Обязательное поле
-                            </div>
                         </div>
             <button type="submit" class="btn btn-success" [disabled]="!certForm.form.valid">Проверить</button>
             <button type="button" class="btn btn-default" (click)="certForm.reset()">Сброс</button>
