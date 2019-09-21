@@ -2,7 +2,7 @@ import {BERElement, DERElement} from 'asn1-ts';
 import {BERtypes} from '../structure/BERTypes';
 import {DerFunctions} from '../DerFunctions';
 import {Certificate} from '../certificate/Certificate';
-import Extensions from '../../../x509-ts-master/source/AuthenticationFramework/Extensions';
+import {Extensions} from 'x509-ts';
 
 
 

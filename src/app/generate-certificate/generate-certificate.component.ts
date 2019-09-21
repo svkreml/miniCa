@@ -12,16 +12,16 @@ import {
     TBSCertificate,
     Validity,
     Version
-} from '../x509-ts-master/source/AuthenticationFramework';
+} from 'x509-ts';
 import {DERElement, ObjectIdentifier} from 'asn1-ts';
 import {
     AttributeTypeAndValue,
     Name,
     RDNSequence,
     RelativeDistinguishedName
-} from '../x509-ts-master/source/InformationFramework';
-import {UniqueIdentifier} from '../x509-ts-master/source/SelectedAttributeTypes/Version8';
-import Extensions from '../x509-ts-master/source/AuthenticationFramework/Extensions';
+} from 'x509-ts';
+import {UniqueIdentifier} from 'x509-ts';
+import {Extensions} from 'x509-ts';
 import {ValidateCertificateComponent} from '../validate-certificate/validate-certificate.component';
 import {CryptoModule} from '../crypto-module';
 import {DerFunctions} from '../gost-crypto/gost-asn1/DerFunctions';

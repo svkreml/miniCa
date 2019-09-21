@@ -1,15 +1,16 @@
 import {ObjectIdentifier} from 'asn1-ts';
 import {DerFunctions} from '../gost-asn1/DerFunctions';
-import RDNSequence from '../../x509-ts-master/source/InformationFramework/RDNSequence';
-import Version from '../../x509-ts-master/source/AuthenticationFramework/Version';
-import Certificate from '../../x509-ts-master/source/AuthenticationFramework/Certificate';
+
+import {Version} from 'x509-ts';
+import {Certificate} from 'x509-ts';
 import {Base64} from '../gost-coding/gost-coding';
 import {GostViewerTestData} from '../gost-viewer/GostViewerTestData';
-import Name from '../../x509-ts-master/source/InformationFramework/Name';
-import Validity from '../../x509-ts-master/source/AuthenticationFramework/Validity';
-import SubjectPublicKeyInfo from '../../x509-ts-master/source/AuthenticationFramework/SubjectPublicKeyInfo';
-import TBSCertificate from '../../x509-ts-master/source/AuthenticationFramework/TBSCertificate';
-import AlgorithmIdentifier from '../../x509-ts-master/source/AuthenticationFramework/AlgorithmIdentifier';
+import {Name} from 'x509-ts';
+import {Validity} from 'x509-ts';
+import {SubjectPublicKeyInfo} from 'x509-ts';
+import {TBSCertificate} from 'x509-ts';
+import {AlgorithmIdentifier} from 'x509-ts';
+import {RDNSequence} from 'x509-ts';
 
 
 describe('GostSubtle', () => {

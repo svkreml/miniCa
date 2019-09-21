@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Certificate, Validity} from '../x509-ts-master/source/AuthenticationFramework';
+import {Certificate, Validity} from 'x509-ts';
 import {Base64} from '../gost-crypto/gost-coding/gost-coding';
-import TBSCertificate from '../x509-ts-master/source/AuthenticationFramework/TBSCertificate';
+import {TBSCertificate} from 'x509-ts';
 import {CryptoModule} from '../crypto-module';
-import AlgorithmIdentifier from '../x509-ts-master/source/AuthenticationFramework/AlgorithmIdentifier';
+import {AlgorithmIdentifier} from 'x509-ts';
 
 
 class V3ValidationResult {
