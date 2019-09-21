@@ -110,7 +110,7 @@ export class GostAsn1 {
     PFX: PFX;
     PKIData: PKIData;
     PKIResponse: PKIResponse;
-    Name = new Name(undefined);
+   // Name = new Name(undefined);
 
 
 
