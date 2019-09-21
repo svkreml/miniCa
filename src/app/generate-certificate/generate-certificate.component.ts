@@ -6,26 +6,25 @@ import {Alg} from '../dto/algs.enum';
 import {CertDto} from '../dto/cert-dto';
 import {
     AlgorithmIdentifier,
+    AttributeTypeAndValue,
     Certificate,
     CertificateSerialNumber,
+    Extensions,
+    Name,
+    RDNSequence,
+    RelativeDistinguishedName,
     SubjectPublicKeyInfo,
     TBSCertificate,
+    UniqueIdentifier,
     Validity,
     Version
 } from 'x509-ts';
 import {DERElement, ObjectIdentifier} from 'asn1-ts';
-import {
-    AttributeTypeAndValue,
-    Name,
-    RDNSequence,
-    RelativeDistinguishedName
-} from 'x509-ts';
-import {UniqueIdentifier} from 'x509-ts';
-import {Extensions} from 'x509-ts';
 import {ValidateCertificateComponent} from '../validate-certificate/validate-certificate.component';
 import {CryptoModule} from '../crypto-module';
 import {DerFunctions} from '../gost-crypto/gost-asn1/DerFunctions';
 import {Base64} from '../gost-crypto/gost-coding/gost-coding';
+import {BitUtils} from '../svkreml-utils/Utils';
 
 @Component({
     selector: 'app-generate-certificate',
@@ -42,27 +41,6 @@ export class GenerateCertificateComponent implements OnInit {
     constructor() {
     }
 
-    static toBitString(input: ArrayBuffer): boolean[] {
-        let inputBytes = new Uint8Array(input);
-        let output: boolean[] = [];
-
-        for (let i = 0; i < inputBytes.byteLength; i++) {
-            let b = inputBytes[i].toString(2);
-            while (b.length < 8)
-                b = '0' + b;
-            output.push(
-                b.charAt(0) === '1',
-                b.charAt(1) === '1',
-                b.charAt(2) === '1',
-                b.charAt(3) === '1',
-                b.charAt(4) === '1',
-                b.charAt(5) === '1',
-                b.charAt(6) === '1',
-                b.charAt(7) === '1'
-            );
-        }
-        return output;
-    }
 
     async onSubmit() {
 
@@ -119,7 +97,7 @@ export class GenerateCertificateComponent implements OnInit {
         //         new ObjectIdentifier([1, 3, 4, 6]),
         //         new DERElement(),
         //     ),
-        //     this.toBitString(wrapped),
+        //     this.toBooleanArray(wrapped),
         // );
 
         let issuerUniqueID: UniqueIdentifier;
@@ -151,7 +129,7 @@ export class GenerateCertificateComponent implements OnInit {
             new ObjectIdentifier([1, 2, 840, 113549, 1, 1, 11]),
             new DERElement(),
         );
-        let signatureValue: boolean[] = GenerateCertificateComponent.toBitString(signature);
+        let signatureValue: boolean[] = BitUtils.toBooleanArray(signature);
 
 
         let certificate: Certificate = new Certificate(tbsCertificate, signatureAlgorithm, signatureValue);
@@ -166,8 +144,9 @@ export class GenerateCertificateComponent implements OnInit {
 
 
         let result = await ValidateCertificateComponent.validateCert(this.output.certificate);
-        if (!result.isSignValid)
+        if (!result.isSignValid) {
             alert('Созданный сертификат не валиден');
+        }
 
     }
 

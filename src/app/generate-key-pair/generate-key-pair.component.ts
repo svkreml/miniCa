@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Base64} from '../gost-crypto/gost-coding/gost-coding';
 import {CryptoModule} from '../crypto-module';
+import {PemConstant} from '../svkreml-utils/Utils';
 
 @Component({
     selector: 'app-generate-key-pair',
@@ -11,12 +12,6 @@ export class GenerateKeyPairComponent implements OnInit {
     input: string;
     signature: string;
     verifyResult: string;
-
-
-    pemPrivateKeyHeader = '-----BEGIN PRIVATE KEY-----';
-    pemPrivateKeyFooter = '-----END PRIVATE KEY-----';
-    pemPublicKeyHeader = '-----BEGIN PUBLIC KEY-----';
-    pemPublicKeyFooter = '-----END PUBLIC KEY-----';
 
 
     keyPair: CryptoKeyPair;
@@ -102,18 +97,18 @@ export class GenerateKeyPairComponent implements OnInit {
             this.keyPair.publicKey,
         );
 
-        this.exportedKeyPair += this.pemPublicKeyHeader + '\n';
+        this.exportedKeyPair += PemConstant.pemPublicKeyHeader + '\n';
         this.exportedKeyPair += Base64.encode(publicKey);
-        this.exportedKeyPair += '\n' + this.pemPublicKeyFooter + '\n';
+        this.exportedKeyPair += '\n' + PemConstant.pemPublicKeyFooter + '\n';
 
 
         const privateKey: ArrayBuffer = await CryptoModule.gCrypto.subtle.exportKey(
             'pkcs8',
             this.keyPair.privateKey,
         );
-        this.exportedKeyPair += this.pemPrivateKeyHeader + '\n';
+        this.exportedKeyPair += PemConstant.pemPrivateKeyHeader + '\n';
         this.exportedKeyPair += Base64.encode(privateKey);
-        this.exportedKeyPair += '\n' + this.pemPrivateKeyFooter;
+        this.exportedKeyPair += '\n' + PemConstant.pemPrivateKeyFooter;
     }
 
 
@@ -123,8 +118,8 @@ export class GenerateKeyPairComponent implements OnInit {
 
         this.keyPair.publicKey = await CryptoModule.gCrypto.subtle.importKey(
             'spki',
-            Base64.decode(this.exportedKeyPair.substring(this.exportedKeyPair.indexOf(this.pemPublicKeyHeader) + this.pemPublicKeyHeader.length,
-                this.exportedKeyPair.indexOf(this.pemPublicKeyFooter))),
+            Base64.decode(this.exportedKeyPair.substring(this.exportedKeyPair.indexOf(PemConstant.pemPublicKeyHeader) + PemConstant.pemPublicKeyHeader.length,
+                this.exportedKeyPair.indexOf(PemConstant.pemPublicKeyFooter))),
             {
                 name: 'RSASSA-PKCS1-v1_5',
                 //  modulusLength: 2048,
@@ -138,8 +133,8 @@ export class GenerateKeyPairComponent implements OnInit {
 
         this.keyPair.privateKey = await CryptoModule.gCrypto.subtle.importKey(
             'pkcs8',
-            Base64.decode(this.exportedKeyPair.substring(this.exportedKeyPair.indexOf(this.pemPrivateKeyHeader) + this.pemPrivateKeyHeader.length,
-                this.exportedKeyPair.indexOf(this.pemPrivateKeyFooter))),
+            Base64.decode(this.exportedKeyPair.substring(this.exportedKeyPair.indexOf(PemConstant.pemPrivateKeyHeader) + PemConstant.pemPrivateKeyHeader.length,
+                this.exportedKeyPair.indexOf(PemConstant.pemPrivateKeyFooter))),
             {
                 name: 'RSASSA-PKCS1-v1_5',
                 hash: 'SHA-256',
