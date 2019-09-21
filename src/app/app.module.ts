@@ -34,13 +34,13 @@ const appRoutes: Routes = [
     GenerateKeyPairComponent,
     ValidateCertificateComponent
   ],
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(
-      appRoutes,
-    ),
-    FormsModule,
-  ],
+    imports: [
+        BrowserModule,
+        RouterModule.forRoot(
+            appRoutes,
+        ),
+        FormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

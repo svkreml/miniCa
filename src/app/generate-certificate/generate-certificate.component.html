@@ -5,6 +5,23 @@
         <div class="col-6">
             <h1>Генерация сертификата</h1>
             <form #certForm="ngForm" (ngSubmit)="onSubmit()">
+                <div *ngFor="let item of name">
+                    <div class="">
+                        <label for="value">{{item.oidInfo.name}}</label>
+                        <input type="text" class="form-control" id="value" [(ngModel)]="item.value" name="{{item.oidInfo.name}}">
+                    </div>
+<!--                    <label for="cn">Common Name</label>
+                    <input type="text" class="form-control" id="cn"
+                           required
+                           [(ngModel)]="model.cn" name="cn"
+                           #name="ngModel">
+                    <div [hidden]="name.valid || name.pristine"
+                         class="alert alert-danger">
+                        Common Name - обязательное поле
+                    </div>-->
+                </div>
+
+
                 <button [disabled]="!certForm.form.valid" class="btn btn-success" type="submit">Генерация</button>
                 <button (click)="certForm.reset()" class="btn btn-default" type="button">Сброс</button>
             </form>
@@ -13,14 +30,17 @@
     <div class="row mb-4"></div>
 
 
-    <div *ngIf="output" class="row">
+
+
+
+    <div *ngIf="output" class="row m-2">
         <div class="col-12">
-            <textarea class="form-control" [rows]="output.certificate.split('\n').length">{{output.certificate}}</textarea>
+            <textarea class="form-control" [rows]="output?.certificate?.split('\n')?.length">{{output.certificate}}</textarea>
         </div>
     </div>
-    <div class="row">
+    <div class="row m-2">
         <div class="col-12">
-            <textarea class="form-control" [rows]="output.privateKey.split('\n').length">{{output.privateKey}}</textarea>
+            <textarea class="form-control" [rows]="output?.privateKey?.split('\n')?.length">{{output.privateKey}}</textarea>
         </div>
     </div>
 </div>

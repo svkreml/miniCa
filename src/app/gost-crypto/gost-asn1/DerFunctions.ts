@@ -28,7 +28,9 @@ export class DerFunctions {
         element.tagNumber = BERtypes.UTF8String;
         return element;
     }
-
+    public static createByOid(input: any, oid: ObjectIdentifier): DERElement {
+return null;
+    }
     public static createByTag(input: any, tag: number): DERElement {
         let element: DERElement = new DERElement();
         element.tagNumber = tag;
