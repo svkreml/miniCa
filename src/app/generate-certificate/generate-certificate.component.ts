@@ -157,17 +157,14 @@ export class GenerateCertificateComponent implements OnInit {
             tbsCertificate.toBytes()
         );
 
-        let signatureAlgorithm: AlgorithmIdentifier = new AlgorithmIdentifier(
-            new ObjectIdentifier([1, 2, 840, 113549, 1, 1, 11]), // TODO get signatureAlgorithm from issuerKeyPair
-            new DERElement(),
-        );
+        let signatureAlgorithm: AlgorithmIdentifier = Alg.findAlgBySubtleParams(issuerKeyPair.privateKey.algorithm).signatureOid;
         let signatureValue: boolean[] = BitUtils.toBooleanArray(signature);
 
         return new Certificate(tbsCertificate, signatureAlgorithm, signatureValue);
     }
 
     ngOnInit(): void {
-        Alg.getAlgs().forEach((v: Alg, k: string) => {
+        Alg.algs.forEach((v: Alg, k: string) => {
             this.algorithms.push(v);
         });
 
@@ -185,7 +182,7 @@ export class GenerateCertificateComponent implements OnInit {
     }
 
     setAlgorithm(alg: string) {
-        this.certModel.algorithm = Alg.getAlgs().get(alg);
+        this.certModel.algorithm = Alg.algs.get(alg);
     }
 }
 
