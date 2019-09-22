@@ -9,6 +9,12 @@ import {DerFunctions} from './gost-crypto/gost-asn1/DerFunctions';
 describe('TS-X509', () => {
     it('should recreate rsa cert', () => {
         let c: Certificate = Certificate.fromBytes(new Uint8Array(Base64.decode(GostViewerTestData.certRsa)));
+
+        for (const extension of c.tbsCertificate.extensions) {
+            console.log(extension.extnID.dotDelimitedNotation);
+        }
+
+
         let s: string = Base64.encode(c.toBytes());
         console.log(s);
         expect(isSimilar(s, GostViewerTestData.certRsa)).toBeTruthy();

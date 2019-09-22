@@ -213,7 +213,7 @@ describe('GostViewer', () => {
 
 
 
-    it('print create x500Name', () => {
+/*    it('print create x500Name', () => {
 
         let subject: Map<string, Meta> = new Map<string, Meta>();
 
@@ -224,7 +224,7 @@ describe('GostViewer', () => {
         let x500Name: string = Base64.encode(GostViewer.asn1.Name.encode(name));
         console.log('\n' + x500Name);
         expect(isSimilar(x500Name, 'MBoxCzAJBgIpARIDMTIzMQswCQYCKQIMAzEyMw==')).toBeTruthy();
-    });
+    });*/
 
 });
 

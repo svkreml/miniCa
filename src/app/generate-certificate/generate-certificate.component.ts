@@ -191,10 +191,14 @@ export class CertModel {
     version: Version;
     algorithm: Alg;
     subject: { oidInfo: OidInfo, value: string }[] = [];
-    exts: [] = [];
+    exts: ExtensionModel[] = [];
     validity: ValidityDto;
 }
-
+export class ExtensionModel {
+    oid: string;
+    isCritical: boolean;
+    data: any;
+}
 export class ValidityDto {
     notBefore: Date;
     notAfter: Date;
