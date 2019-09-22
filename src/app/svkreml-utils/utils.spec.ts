@@ -1,4 +1,4 @@
-import { Utils } from './bitUtils';
+import { Utils } from './Utils';
 
 describe('Utils', () => {
   it('should create an instance', () => {

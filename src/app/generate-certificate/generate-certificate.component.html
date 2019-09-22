@@ -5,42 +5,86 @@
         <div class="col-6">
             <h1>Генерация сертификата</h1>
             <form #certForm="ngForm" (ngSubmit)="onSubmit()">
-                <div *ngFor="let item of name">
-                    <div class="">
-                        <label for="value">{{item.oidInfo.name}}</label>
-                        <input type="text" class="form-control" id="value" [(ngModel)]="item.value" name="{{item.oidInfo.name}}">
+
+
+                <div>
+                    <div>
+                        <label for="serial">Serial number</label>
+                        <input type="text" class="form-control" id="serial" [(ngModel)]="this.certModel.serialNumber"
+                               name="serialNumber">
                     </div>
-<!--                    <label for="cn">Common Name</label>
-                    <input type="text" class="form-control" id="cn"
-                           required
-                           [(ngModel)]="model.cn" name="cn"
-                           #name="ngModel">
-                    <div [hidden]="name.valid || name.pristine"
-                         class="alert alert-danger">
-                        Common Name - обязательное поле
-                    </div>-->
+                </div>
+                <div>
+                    <label for="ver">Version</label>
+                    <select class="form-control" id="ver"
+                            required
+                            [(ngModel)]="this.certModel.version" name="ver">
+                        <option *ngFor="let version of versions" [value]="version">V{{version + 1}}</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="alg">Алгоритм</label>
+                    <select class="form-control" id="alg"
+                            required
+                            [(ngModel)]="this.certModel.algorithm"
+                            name="alg">
+                        <option *ngFor="let alg of algorithms" [ngValue]="alg">{{alg.title}}</option>
+                    </select>
                 </div>
 
+                <div class="h5 mt-3">Subject</div>
+                <div *ngFor="let item of this.certModel.subject">
+                    <div>
+                        <label for="name_{{item.oidInfo.name}}">{{item.oidInfo.name}}</label>
+                        <input type="text" class="form-control" id="name_{{item.oidInfo.name}}" [(ngModel)]="item.value"
+                               name="{name_{{item.oidInfo.name}}">
+                    </div>
+                </div>
+                <div class="h5 mt-3">Validity</div>
+                <div>
+                    <div>
+                        <label for="date_notBefore">Date NotBefore</label>
+                        <input type="date" class="form-control" id="date_notBefore"
+                               [ngModel]="this.certModel.validity.notBefore | date:'yyyy-MM-dd'"
+                               (ngModelChange)="this.certModel.validity.notBefore = parseDate($event)"
+                               name="date_notBefore">
+                    </div>
+                    <div>
+                        <label for="date_notAfter">Date NotAfter</label>
+                        <input type="date" class="form-control" id="date_notAfter"
+                               [ngModel]="this.certModel.validity.notAfter | date:'yyyy-MM-dd'"
+                               (ngModelChange)="this.certModel.validity.notAfter = parseDate($event)"
+                               name="date_notAfter">
+                    </div>
+                </div>
+                <div class="h5 mt-3">Extensions</div>
+                <div *ngFor="let item of this.certModel.exts">
+                    <!--                    <div class="">
+                                            <label for="ext">{{item.oidInfo.name}}</label>
+                                            <input type="text" class="form-control" id="ext" [(ngModel)]="item.value" name="{{item.oidInfo.name}}">
+                                        </div>-->
+                </div>
 
-                <button [disabled]="!certForm.form.valid" class="btn btn-success" type="submit">Генерация</button>
-                <button (click)="certForm.reset()" class="btn btn-default" type="button">Сброс</button>
+                <div class="m-3">
+                    <button [disabled]="!certForm.form.valid" class="btn btn-success" type="submit">Генерация</button>
+                    <button (click)="certForm.reset()" class="btn btn-default" type="button">Сброс</button>
+                </div>
             </form>
         </div>
     </div>
     <div class="row mb-4"></div>
 
 
-
-
-
     <div *ngIf="output" class="row m-2">
         <div class="col-12">
-            <textarea class="form-control" [rows]="output?.certificate?.split('\n')?.length">{{output.certificate}}</textarea>
+            <textarea class="form-control"
+                      [rows]="output?.certificate?.split('\n')?.length">{{output.certificate}}</textarea>
         </div>
     </div>
     <div class="row m-2">
         <div class="col-12">
-            <textarea class="form-control" [rows]="output?.privateKey?.split('\n')?.length">{{output.privateKey}}</textarea>
+            <textarea class="form-control"
+                      [rows]="output?.privateKey?.split('\n')?.length">{{output.privateKey}}</textarea>
         </div>
     </div>
 </div>

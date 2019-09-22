@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {CertReqDto} from '../dto/cert-req-dto';
 import {Alg} from '../dto/algs.enum';
 
 
@@ -23,8 +22,8 @@ import {DERElement, ObjectIdentifier} from 'asn1-ts';
 import {ValidateCertificateComponent} from '../validate-certificate/validate-certificate.component';
 import {CryptoModule} from '../crypto-module';
 import {DerFunctions} from '../gost-crypto/gost-asn1/DerFunctions';
-import {Base64} from '../gost-crypto/gost-coding/gost-coding';
-import {BitUtils} from '../svkreml-utils/Utils';
+import {Base64, Hex} from '../gost-crypto/gost-coding/gost-coding';
+import {BitUtils, PemConstant} from '../svkreml-utils/Utils';
 import {OidInfo, OidMapper} from '../svkreml-utils/oid-mapper';
 
 @Component({
@@ -32,14 +31,20 @@ import {OidInfo, OidMapper} from '../svkreml-utils/oid-mapper';
     templateUrl: './generate-certificate.component.html',
     styleUrls: ['./generate-certificate.component.css']
 })
+
+
 export class GenerateCertificateComponent implements OnInit {
+    versions = [Version.v1, Version.v2, Version.v3];
+
+    algorithms: Alg[] = [];
 
 
-    algs: Alg[] = Alg.getAlgs();
-    model = new CertReqDto();
+    // model = new CertReqDto();
     output: CertDto = new CertDto();
+    certModel: CertModel = new CertModel();
 
-    name: { oidInfo: OidInfo, value: string }[] = [];
+    /*    name: { oidInfo: OidInfo, value: string }[] = [];
+        exts: Extension[] = [];*/
 
 
     constructor() {
@@ -52,12 +57,7 @@ export class GenerateCertificateComponent implements OnInit {
         try {
 
             let keyPair: CryptoKeyPair = await CryptoModule.gCrypto.subtle.generateKey(
-                {
-                    name: 'RSASSA-PKCS1-v1_5',
-                    modulusLength: 2048,
-                    publicExponent: new Uint8Array([1, 0, 1]),
-                    hash: 'SHA-256'
-                },
+                this.certModel.algorithm.subtleParams,
                 true,
                 [
                     'sign',
@@ -65,16 +65,17 @@ export class GenerateCertificateComponent implements OnInit {
                 ]
             );
 
-            let ver: Version = Version.v1;
-            let serialNumber: CertificateSerialNumber = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0]);
-            let signatureAlgorithmIdentifier: AlgorithmIdentifier = new AlgorithmIdentifier(
-                new ObjectIdentifier([1, 2, 840, 113549, 1, 1, 11]),
-                new DERElement(),
-            );
+            let ver: Version = this.certModel.version;
+            let serialNumber: CertificateSerialNumber = new Uint8Array(Hex.decode(this.certModel.serialNumber));
+
+            let subjectSignatureAlgorithmIdentifier: AlgorithmIdentifier = this.certModel.algorithm.signatureOid;
+
             let rdns: RelativeDistinguishedName[] = [];
-            this.name.forEach((name) => {
+            this.certModel.subject.forEach((name) => {
                 try {
-                    if (!name.value) return; // if empty do not do anything
+                    if (!name.value) {
+                        return;
+                    } // if empty do not do anything
                     const atal: AttributeTypeAndValue = new AttributeTypeAndValue(
                         name.oidInfo.oid,
                         DerFunctions.createByTag(name.value, name.oidInfo.tag),
@@ -88,7 +89,7 @@ export class GenerateCertificateComponent implements OnInit {
 
             let issuer: Name = new RDNSequence(rdns.reverse()); // reverse for the right order as in OidMapper
 
-            let validity: Validity = new Validity(new Date(), new Date(2025, 12, 12));
+            let validity: Validity = new Validity(this.certModel.validity.notBefore, this.certModel.validity.notAfter);
 
             let subject: Name = issuer;
 
@@ -117,7 +118,7 @@ export class GenerateCertificateComponent implements OnInit {
             let tbsCertificate: TBSCertificate = new TBSCertificate(
                 ver,
                 serialNumber,
-                signatureAlgorithmIdentifier,
+                subjectSignatureAlgorithmIdentifier,
                 issuer,
                 validity,
                 subject,
@@ -127,29 +128,16 @@ export class GenerateCertificateComponent implements OnInit {
                 extensions
             );
 
+            let certificate: Certificate = await this.signCertificate(tbsCertificate, keyPair);
 
-            let signature = await CryptoModule.gCrypto.subtle.sign(
-                keyPair.privateKey.algorithm.name,
-                keyPair.privateKey,
-                tbsCertificate.toBytes()
-            );
-
-            let signatureAlgorithm: AlgorithmIdentifier = new AlgorithmIdentifier(
-                new ObjectIdentifier([1, 2, 840, 113549, 1, 1, 11]),
-                new DERElement(),
-            );
-            let signatureValue: boolean[] = BitUtils.toBooleanArray(signature);
-
-
-            let certificate: Certificate = new Certificate(tbsCertificate, signatureAlgorithm, signatureValue);
-            this.output.certificate = Base64.encode(certificate.toBytes());
-
+            this.output.certificate = PemConstant.wrapCertificate(Base64.encode(certificate.toBytes()));
 
             const privateKey: ArrayBuffer = await CryptoModule.gCrypto.subtle.exportKey(
                 'pkcs8',
                 keyPair.privateKey,
             );
-            this.output.privateKey = Base64.encode(privateKey);
+
+            this.output.privateKey = PemConstant.wrapPrivateKey(Base64.encode(privateKey));
 
 
             let result = await ValidateCertificateComponent.validateCert(this.output.certificate);
@@ -158,13 +146,68 @@ export class GenerateCertificateComponent implements OnInit {
             }
         } catch (e) {
             alert(e);
+            console.error(e);
         }
+    }
+
+    async signCertificate(tbsCertificate: TBSCertificate, issuerKeyPair: CryptoKeyPair): Promise<Certificate> {
+        let signature = await CryptoModule.gCrypto.subtle.sign(
+            issuerKeyPair.privateKey.algorithm.name,
+            issuerKeyPair.privateKey,
+            tbsCertificate.toBytes()
+        );
+
+        let signatureAlgorithm: AlgorithmIdentifier = new AlgorithmIdentifier(
+            new ObjectIdentifier([1, 2, 840, 113549, 1, 1, 11]), // TODO get signatureAlgorithm from issuerKeyPair
+            new DERElement(),
+        );
+        let signatureValue: boolean[] = BitUtils.toBooleanArray(signature);
+
+        return new Certificate(tbsCertificate, signatureAlgorithm, signatureValue);
     }
 
     ngOnInit(): void {
+        Alg.getAlgs().forEach((v: Alg, k: string) => {
+            this.algorithms.push(v);
+        });
+
         for (let oidM in OidMapper) {
-            this.name.push({oidInfo: OidMapper[oidM], value: undefined});
+            this.certModel.subject.push({oidInfo: OidMapper[oidM], value: 'vvvvvvvvv'});
         }
+        this.certModel.serialNumber = (Math.random() * 10000000000000000000).toString(16);
+        this.certModel.validity = new ValidityDto(new Date(), new Date(new Date().getFullYear() + 5, 1, 1));
+        this.certModel.version = Version.v1;
+        this.certModel.algorithm = this.algorithms[0];
     }
 
+    private parseDate($event: string): Date {
+        return new Date(Date.parse($event));
+    }
+
+    setAlgorithm(alg: string) {
+        this.certModel.algorithm = Alg.getAlgs().get(alg);
+    }
 }
+
+export class CertModel {
+    serialNumber: string;
+    version: Version;
+    algorithm: Alg;
+    subject: { oidInfo: OidInfo, value: string }[] = [];
+    exts: [] = [];
+    validity: ValidityDto;
+}
+
+export class ValidityDto {
+    notBefore: Date;
+    notAfter: Date;
+
+    constructor(notBefore: Date, notAfter: Date) {
+        this.notBefore = notBefore;
+        this.notAfter = notAfter;
+    }
+}
+
+
+
+

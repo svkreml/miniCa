@@ -2,6 +2,7 @@ import {AlgorithmIdentifier} from 'x509-ts';
 
 export class Utils {
 }
+
 export class CryptoSubtleMapper {
     static oidToParam(algorithmIdentifier: AlgorithmIdentifier): string | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | DhImportKeyParams | AesKeyAlgorithm {
         switch (algorithmIdentifier.algorithm.toString()) {
@@ -76,8 +77,9 @@ export class BitUtils {
         let output: boolean[] = [];
         for (let i = 0; i < inputBytes.byteLength; i++) {
             let b = inputBytes[i].toString(2);
-            while (b.length < 8)
+            while (b.length < 8) {
                 b = '0' + b;
+            }
             output.push(
                 b.charAt(0) === '1',
                 b.charAt(1) === '1',
@@ -92,9 +94,28 @@ export class BitUtils {
         return output;
     }
 }
+
 export class PemConstant {
- static readonly pemPrivateKeyHeader = '-----BEGIN PRIVATE KEY-----';
- static readonly pemPrivateKeyFooter = '-----END PRIVATE KEY-----';
- static readonly pemPublicKeyHeader = '-----BEGIN PUBLIC KEY-----';
- static readonly pemPublicKeyFooter = '-----END PUBLIC KEY-----';
+    static readonly pemPrivateKeyHeader = '-----BEGIN PRIVATE KEY-----';
+    static readonly pemPrivateKeyFooter = '-----END PRIVATE KEY-----';
+    static readonly pemCertificateHeader = '-----BEGIN CERTIFICATE-----';
+    static readonly pemCertificateFooter = '-----END CERTIFICATE-----';
+    static readonly pemPublicKeyHeader = '-----BEGIN PUBLIC KEY-----';
+    static readonly pemPublicKeyFooter = '-----END PUBLIC KEY-----';
+
+    public static wrapCertificate(cert: string): string {
+        return PemConstant.pemCertificateHeader + '\n' + cert + '\n' + PemConstant.pemCertificateFooter;
+    }
+
+    public static unwrapCertificate(cert: string): string {
+        return cert.replace(PemConstant.pemCertificateHeader, '').replace(PemConstant.pemCertificateFooter, '').trim();
+    }
+
+    public static wrapPrivateKey(privateKey: string): string {
+        return PemConstant.pemPrivateKeyHeader + '\n' + privateKey + '\n' + PemConstant.pemPrivateKeyFooter;
+    }
+
+    public static unwrapPrivateKey(cert: string): string {
+        return cert.replace(PemConstant.pemPrivateKeyHeader, '').replace(PemConstant.pemPrivateKeyFooter, '').trim();
+    }
 }

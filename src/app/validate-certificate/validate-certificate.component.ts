@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Certificate, TBSCertificate, Validity} from 'x509-ts';
 import {Base64} from '../gost-crypto/gost-coding/gost-coding';
 import {CryptoModule} from '../crypto-module';
-import {BitUtils, CryptoSubtleMapper} from '../svkreml-utils/Utils';
+import {BitUtils, CryptoSubtleMapper, PemConstant} from '../svkreml-utils/Utils';
 
 
 class V3ValidationResult {
@@ -32,9 +32,6 @@ export class ValidateCertificateComponent implements OnInit {
     constructor() {
     }
 
-    static removeHeaderAndFooter(input: string): string {
-        return input;
-    }
 
 
     static validateCertDate(validity: Validity): boolean {
@@ -67,7 +64,7 @@ export class ValidateCertificateComponent implements OnInit {
         let certificate: Certificate = Certificate.fromBytes(
             new Uint8Array(
                 Base64.decode(
-                    ValidateCertificateComponent.removeHeaderAndFooter(inputCert)
+                    PemConstant.unwrapCertificate(inputCert)
                 )
             )
         );

@@ -20,7 +20,7 @@ export class GostCoding {
 export class Hex {
 
 
-    public static decode(s: string, endean): ArrayBufferLike {
+    public static decode(s: string, endean?): ArrayBufferLike {
         s = s.replace(/[^A-fa-f0-9]/g, '');
         const n = Math.ceil(s.length / 2);
         const r = new Uint8Array(n);
@@ -38,7 +38,7 @@ export class Hex {
         return r.buffer;
     }
 
-    public static encode(data: Uint8Array | ArrayBuffer, endean): string {
+    public static encode(data: Uint8Array | ArrayBuffer, endean?): string {
         const s = [];
         const d = new Uint8Array(GostCoding.buffer(data));
         const n = d.length;
