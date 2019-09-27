@@ -18,7 +18,6 @@ import {
     Validity,
     Version
 } from 'x509-ts';
-import {DERElement, ObjectIdentifier} from 'asn1-ts';
 import {ValidateCertificateComponent} from '../validate-certificate/validate-certificate.component';
 import {CryptoModule} from '../crypto-module';
 import {DerFunctions} from '../gost-crypto/gost-asn1/DerFunctions';
@@ -71,7 +70,7 @@ export class GenerateCertificateComponent implements OnInit {
             let subjectSignatureAlgorithmIdentifier: AlgorithmIdentifier = this.certModel.algorithm.signatureOid;
 
             let rdns: RelativeDistinguishedName[] = [];
-            this.certModel.subject.forEach((name) => {
+            this.certModel.subject.forEach((name: { oidInfo: OidInfo; value: string }) => {
                 try {
                     if (!name.value) {
                         return;
@@ -141,7 +140,7 @@ export class GenerateCertificateComponent implements OnInit {
 
 
             let result = await ValidateCertificateComponent.validateCert(this.output.certificate);
-            if (!result.isSignValid) {
+            if (!result.isValid) {
                 alert('Созданный сертификат не валиден');
             }
         } catch (e) {

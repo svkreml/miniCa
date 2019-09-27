@@ -28,6 +28,16 @@ export class Alg {
 
         this._algs.set('RSA-4096-SHA-1', new Alg('RSA-4096-SHA-1', 'RSA-4096-SHA-1', {
                 name: 'RSASSA-PKCS1-v1_5',
+                modulusLength: 4096,
+                publicExponent: new Uint8Array([1, 0, 1]),
+                hash: 'SHA-1'
+            },
+            new AlgorithmIdentifier(
+                new ObjectIdentifier([1, 2, 840, 113549, 1, 1, 5]),
+                new DERElement(),
+            )));
+        this._algs.set('RSA-2048-SHA-1', new Alg('RSA-2048-SHA-1', 'RSA-2048-SHA-1', {
+                name: 'RSASSA-PKCS1-v1_5',
                 modulusLength: 2048,
                 publicExponent: new Uint8Array([1, 0, 1]),
                 hash: 'SHA-1'
@@ -68,7 +78,7 @@ export class Alg {
 
     static findAlgBySubtleParams(subtleParams: any): Alg {
         let a;
-        this.algs.forEach((v: Alg, k: string) => {
+        this.algs.forEach((v: any, k: string) => {
             if (subtleParams.name && v.subtleParams.name === subtleParams.name &&
                 subtleParams.hash && v.subtleParams.hash && v.subtleParams.hash === subtleParams.hash.name &&
                 subtleParams.modulusLength && v.subtleParams.modulusLength && v.subtleParams.modulusLength === subtleParams.modulusLength)
