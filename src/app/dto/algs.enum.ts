@@ -16,7 +16,7 @@ export class Alg {
     }
 
     // tslint:disable-next-line:variable-name
-   private static _algs;
+    private static _algs;
 
     public static get algs(): Map<string, Alg> {
         if (this._algs) {
@@ -25,7 +25,33 @@ export class Alg {
 
         this._algs = new Map<string, Alg>();
 
-
+        this._algs.set('ECDSA-P-256', new Alg('ECDSA-P-256', 'ECDSA-P-256', {
+                name: 'ECDSA',
+                namedCurve: 'P-256',
+                hash: {name: 'SHA-256'},
+                /*       hash: 'SHA-256'*/
+            },
+            new AlgorithmIdentifier(
+                new ObjectIdentifier([1, 2, 840, 10045, 4, 3, 2]),
+                new DERElement(),
+            )));
+        this._algs.set('ECDSA-P-384', new Alg('ECDSA-P-384', 'ECDSA-P-384', {
+                name: 'ECDSA',
+                namedCurve: 'P-384',
+                hash: {name: 'SHA-384'}
+            },
+            new AlgorithmIdentifier(
+                new ObjectIdentifier([1, 2, 840, 10045, 4, 3, 3]),
+                new DERElement(),
+            )));
+        this._algs.set('ECDSA-P-521', new Alg('ECDSA-P-521', 'ECDSA-P-521', {
+                name: 'ECDSA',
+                namedCurve: 'P-521'
+            },
+            new AlgorithmIdentifier(
+                new ObjectIdentifier([1, 2, 840, 10045, 4, 3, 4]),
+                new DERElement(),
+            )));
         this._algs.set('RSA-4096-SHA-1', new Alg('RSA-4096-SHA-1', 'RSA-4096-SHA-1', {
                 name: 'RSASSA-PKCS1-v1_5',
                 modulusLength: 4096,
@@ -79,11 +105,19 @@ export class Alg {
     static findAlgBySubtleParams(subtleParams: any): Alg {
         let a;
         this.algs.forEach((v: any, k: string) => {
-            if (subtleParams.name && v.subtleParams.name === subtleParams.name &&
-                subtleParams.hash && v.subtleParams.hash && v.subtleParams.hash === subtleParams.hash.name &&
-                subtleParams.modulusLength && v.subtleParams.modulusLength && v.subtleParams.modulusLength === subtleParams.modulusLength)
-                a = v;
-        });
+                if (subtleParams.name && v.subtleParams.name === subtleParams.name &&
+                    subtleParams.hash && v.subtleParams.hash && v.subtleParams.hash === subtleParams.hash.name &&
+                    subtleParams.modulusLength && v.subtleParams.modulusLength && v.subtleParams.modulusLength === subtleParams.modulusLength) {
+                    a = v;
+                } else if (
+                    subtleParams.namedCurve && v.subtleParams.namedCurve &&
+                    v.subtleParams.name === subtleParams.name &&
+                    v.subtleParams.namedCurve === subtleParams.namedCurve
+                ) {
+                    a = v;
+                }
+            }
+        );
         return a;
     }
 }

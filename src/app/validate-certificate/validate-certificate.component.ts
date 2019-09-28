@@ -50,8 +50,30 @@ export class ValidateCertificateComponent implements OnInit {
             ['verify']
         );
 
+        let signAlg: any = publicKey.algorithm.name;
+        if (publicKey.algorithm.name === 'ECDSA')
+        {
+            // @ts-ignore
+            if (publicKey.algorithm.namedCurve === 'P-256')
+                signAlg = {
+                    name: 'ECDSA',
+                    hash: {name: 'SHA-256'},
+                };
+            // @ts-ignore
+            if (publicKey.algorithm.namedCurve === 'P-384')
+                signAlg = {
+                    name: 'ECDSA',
+                    hash: {name: 'SHA-384'},
+                };
+            // @ts-ignore
+            if (publicKey.algorithm.namedCurve === 'P-521')
+                signAlg = {
+                    name: 'ECDSA',
+                    hash: {name: 'SHA-512'},
+                };
+        }
         isSignValid = await CryptoModule.gCrypto.subtle.verify(
-            publicKey.algorithm.name,
+            signAlg,
             publicKey,
             BitUtils.fromBooleanArray(signatureValue),
             certificate.tbsCertificate.toBytes(),
