@@ -44,12 +44,21 @@ describe('TS-X509', () => {
     });
 
     it('should recreate certGoogleECDSAP256', () => {
-        let c: Certificate = Certificate.fromBytes(new Uint8Array(Base64.decode(GostViewerTestData.certRsa)));
+        let c: Certificate = Certificate.fromBytes(new Uint8Array(Base64.decode(GostViewerTestData.certGoogleECDSAP256)));
         let s: string = Base64.encode(c.toBytes());
         // console.log('-------------------JSON --------------------------------------');
         // console.log(JSON.stringify(c, null, 2));
         console.log(s);
-        expect(isSimilar(s, GostViewerTestData.certRsa)).toBeTruthy();
+        expect(isSimilar(s, GostViewerTestData.certGoogleECDSAP256)).toBeTruthy();
+    });
+
+    it('should recreate certEcdsaFull cloudflare cert', () => {
+        let c: Certificate = Certificate.fromBytes(new Uint8Array(Base64.decode(GostViewerTestData.certEcdsaFull)));
+        let s: string = Base64.encode(c.toBytes());
+        // console.log('-------------------JSON --------------------------------------');
+        // console.log(JSON.stringify(c, null, 2));
+        console.log(s);
+        expect(isSimilar(s, GostViewerTestData.certEcdsaFull)).toBeTruthy();
     });
 
     it('should create keyUsageOid', () => {

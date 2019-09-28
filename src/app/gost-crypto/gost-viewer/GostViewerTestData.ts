@@ -86,6 +86,41 @@ export class GostViewerTestData {
         '4rK5IgvYKmWy7q6cImF4wCsnLb1tXd03Rv7w50tVJhbaEb0mbthlJY4HTyJNIbYZ\n' +
         '8NbBpaFKLqmbZe6fG/52UbzJc8rNkOA9qyQjMkPnz9mudRt8EsJeNb+bEYNcNv2m\n' +
         'oOPrvHZIUA==';
+    public static certEcdsaFull: string =
+        'MIIGDzCCBZWgAwIBAgIQCmi7mEpQc5n0cW6AmkSnsDAKBggqhkjOPQQDAjB0MQsw\n' +
+        'CQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cu\n' +
+        'ZGlnaWNlcnQuY29tMTMwMQYDVQQDEypEaWdpQ2VydCBFQ0MgRXh0ZW5kZWQgVmFs\n' +
+        'aWRhdGlvbiBTZXJ2ZXIgQ0EwHhcNMTgxMDMwMDAwMDAwWhcNMjAxMTAzMTIwMDAw\n' +
+        'WjCBzzEdMBsGA1UEDwwUUHJpdmF0ZSBPcmdhbml6YXRpb24xEzARBgsrBgEEAYI3\n' +
+        'PAIBAxMCVVMxGTAXBgsrBgEEAYI3PAIBAhMIRGVsYXdhcmUxEDAOBgNVBAUTBzQ3\n' +
+        'MTA4NzUxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQH\n' +
+        'Ew1TYW4gRnJhbmNpc2NvMRkwFwYDVQQKExBDbG91ZGZsYXJlLCBJbmMuMRcwFQYD\n' +
+        'VQQDEw5jbG91ZGZsYXJlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABM7X\n' +
+        'YUlJ/Us1ixuGvKPFvNggbjEXLZKKtzT02xFwTkkWYfyu+n+6bwwFU3TGeX+BEor3\n' +
+        '4l5s9foQaWtn2dWWUbCjggOrMIIDpzAfBgNVHSMEGDAWgBT4JdmmOcfDgYclPjBU\n' +
+        'kRghQJsXnTAdBgNVHQ4EFgQU3n9/5nzt7WFDYEdnXYYvhP2meK0wLQYDVR0RBCYw\n' +
+        'JIIOY2xvdWRmbGFyZS5jb22CEnd3dy5jbG91ZGZsYXJlLmNvbTAOBgNVHQ8BAf8E\n' +
+        'BAMCB4AwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMIGfBgNVHR8EgZcw\n' +
+        'gZQwSKBGoESGQmh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEVDQ0V4\n' +
+        'dGVuZGVkVmFsaWRhdGlvblNlcnZlckNBLmNybDBIoEagRIZCaHR0cDovL2NybDQu\n' +
+        'ZGlnaWNlcnQuY29tL0RpZ2lDZXJ0RUNDRXh0ZW5kZWRWYWxpZGF0aW9uU2VydmVy\n' +
+        'Q0EuY3JsMEsGA1UdIAREMEIwNwYJYIZIAYb9bAIBMCowKAYIKwYBBQUHAgEWHGh0\n' +
+        'dHBzOi8vd3d3LmRpZ2ljZXJ0LmNvbS9DUFMwBwYFZ4EMAQEwgYcGCCsGAQUFBwEB\n' +
+        'BHsweTAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMFEGCCsG\n' +
+        'AQUFBzAChkVodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRFQ0NF\n' +
+        'eHRlbmRlZFZhbGlkYXRpb25TZXJ2ZXJDQS5jcnQwDAYDVR0TAQH/BAIwADCCAX4G\n' +
+        'CisGAQQB1nkCBAIEggFuBIIBagFoAHYApLkJkLQYWBSHuxOizGdwCjw1mAT5G9+4\n' +
+        '43fNDsgN3BAAAAFmxoh1DAAABAMARzBFAiEAzenMFsA9n1D/J+H/XmaL3hGzK3e8\n' +
+        'QFKtAsiP0Fg6j4QCIHG5UotqeYii1bpVaDbbLFarWXeJZthUroAdhco/GzBRAHYA\n' +
+        'h3W/51l8+IxDmV+9827/Vo1HVjb/SrVgwbTq/16ggw8AAAFmxoh2ywAABAMARzBF\n' +
+        'AiAwbN3c/gPILHLRYuUb3XyTO6sBCeSnpXO8V2l1HDqBBQIhAPbYKCsHQtCFsCVa\n' +
+        '8YGOlfc6dmf3WTJKnncxIlNE1UHbAHYAu9nfvB+KcbWTlCOXqpJ7RzhXlQqrUuga\n' +
+        'kJZkNo4e0YUAAAFmxoh1EQAABAMARzBFAiB54/V5wvYQapweKriha1ch1AiwQSPL\n' +
+        'Y5nwVBUcyjgItgIhAMVQjCVeMn9YBrSdXwsNe/7oMvhNZQK+VsAyfo+r1S7aMAoG\n' +
+        'CCqGSM49BAMCA2gAMGUCMB4bPRCaUCMu5oYRE0aoHehj+C9glkNJCkkwc1X4JWMd\n' +
+        'RlnaqUuYaJk9UKjE/FIP4wIxANJkzK34krZr/repTowGO/vTCJ/ZBBCAuVKXChQk\n' +
+        'pFqK1yc8HobLt6i+w8CY+kqRrg==';
+
     public static certRsaAsn1: string = '    0 30  898: SEQUENCE {\n' +
         '    4 30  618:  SEQUENCE {\n' +
         '    8 a0    3:   [0] {\n' +
