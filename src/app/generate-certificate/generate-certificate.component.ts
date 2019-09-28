@@ -5,7 +5,7 @@ import {Alg} from '../dto/algs.enum';
 import {CertDto} from '../dto/cert-dto';
 import {
     AlgorithmIdentifier,
-    AttributeTypeAndValue,
+    AttributeTypeAndValue, AuthorityKeyIdentifier,
     Certificate,
     CertificateSerialNumber,
     Extension,
@@ -13,6 +13,7 @@ import {
     Name,
     RDNSequence,
     RelativeDistinguishedName,
+    SubjectKeyIdentifier,
     SubjectPublicKeyInfo,
     TBSCertificate,
     UniqueIdentifier,
@@ -25,7 +26,6 @@ import {DerFunctions} from '../gost-crypto/gost-asn1/DerFunctions';
 import {Base64, Hex} from '../gost-crypto/gost-coding/gost-coding';
 import {BitUtils, PemConstant} from '../svkreml-utils/Utils';
 import {OidInfo, OidMapper} from '../svkreml-utils/oid-mapper';
-import SubjectKeyIdentifier from 'x509-ts/dist/CertificateExtensions/SubjectKeyIdentifier';
 import {ObjectIdentifier} from 'asn1-ts';
 
 @Component({
@@ -36,7 +36,7 @@ import {ObjectIdentifier} from 'asn1-ts';
 
 
 export class GenerateCertificateComponent implements OnInit {
-    versions = [Version.v1, Version.v2, Version.v3];
+    versions = [Version.v3, Version.v2, Version.v1];
 
     algorithms: Alg[] = [];
 
@@ -51,6 +51,26 @@ export class GenerateCertificateComponent implements OnInit {
 
     constructor() {
 
+    }
+
+    async  getSubjectKeyIdentifier(publicKeyInfo: SubjectPublicKeyInfo): Promise<Extension> {
+        const hash: ArrayBuffer = await crypto.subtle.digest('SHA-1', BitUtils.fromBooleanArray(publicKeyInfo.subjectPublicKey));
+        let subjectKeyIdentifier: SubjectKeyIdentifier = new Uint8Array(hash);
+        return new Extension(
+            new ObjectIdentifier([2, 5, 29, 14]),
+            undefined,
+            DerFunctions.createOctetString(subjectKeyIdentifier).toBytes()
+        );
+    }
+
+    async  getAuthorityKeyIdentifier(publicKeyInfo: SubjectPublicKeyInfo): Promise<Extension> {
+        const hash: ArrayBuffer = await crypto.subtle.digest('SHA-1', BitUtils.fromBooleanArray(publicKeyInfo.subjectPublicKey));
+        let authorityKeyIdentifier: AuthorityKeyIdentifier = new AuthorityKeyIdentifier(new Uint8Array(hash), undefined, undefined);
+        return new Extension(
+            new ObjectIdentifier([2, 5, 29, 35]),
+            undefined,
+            authorityKeyIdentifier.toBytes()
+        );
     }
 
 
@@ -101,23 +121,20 @@ export class GenerateCertificateComponent implements OnInit {
                 keyPair.publicKey,
             );
 
-           // let extensions: Extensions = this.getExtensions();
+            // let extensions: Extensions = this.getExtensions();
 
             let subjectPublicKeyInfo: SubjectPublicKeyInfo = SubjectPublicKeyInfo.fromBytes(new Uint8Array(wrapped));
             let extensions: Extensions = [];
-            const hash: ArrayBuffer = await crypto.subtle.digest('SHA-1', BitUtils.fromBooleanArray(subjectPublicKeyInfo.subjectPublicKey));
-            let subjectKeyIdentifier: SubjectKeyIdentifier = new Uint8Array(hash);
-            extensions.push(
-                new Extension(
-                    new ObjectIdentifier([2, 5, 29, 14]),
-                    false,
-                    subjectKeyIdentifier
-                )
-            );
+
+
+            extensions.push(await this.getSubjectKeyIdentifier(subjectPublicKeyInfo));
+            extensions.push(await this.getAuthorityKeyIdentifier(subjectPublicKeyInfo));
+
+
 
             let issuerUniqueID: UniqueIdentifier; // BitUtils.toBooleanArray(hash);
             let subjectUniqueID: UniqueIdentifier; // BitUtils.toBooleanArray(hash);
-           // return extensions;
+            // return extensions;
 
 
             let tbsCertificate: TBSCertificate = new TBSCertificate(
@@ -204,7 +221,7 @@ export class GenerateCertificateComponent implements OnInit {
         }
         this.certModel.serialNumber = (Math.random() * 10000000000000000000).toString(16);
         this.certModel.validity = new ValidityDto(new Date(), new Date(new Date().getFullYear() + 5, 1, 1));
-        this.certModel.version = Version.v1;
+        this.certModel.version = Version.v3;
         this.certModel.algorithm = this.algorithms[0];
     }
 

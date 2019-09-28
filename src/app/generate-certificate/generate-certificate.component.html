@@ -19,7 +19,7 @@
                     <select class="form-control" id="ver"
                             required
                             [(ngModel)]="this.certModel.version" name="ver">
-                        <option *ngFor="let version of versions" [value]="version">V{{version + 1}}</option>
+                        <option *ngFor="let version of versions" [ngValue]="version">V{{version + 1}}</option>
                     </select>
                 </div>
                 <div>
